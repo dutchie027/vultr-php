@@ -46,6 +46,13 @@ class API
     public const BACKUPS_URL = self::API_URL . '/backups';
 
     /**
+     * Endpoint for Bare Metal
+     *
+     * @const string
+     */
+    public const BARE_METAL_URL = self::API_URL . '/bare-metals';
+
+    /**
      * Endpoint for Block Storage
      *
      * @const string
@@ -53,25 +60,39 @@ class API
     public const BLOCK_STORAGE_URL = self::API_URL . '/blocks';
 
     /**
-     * Endpoint for Block Storage
+     * Endpoint for DNS
+     *
+     * @const string
+     */
+    public const DNS_URL = self::API_URL . '/domains';
+
+    /**
+     * Endpoint for Firewalls
      *
      * @const string
      */
     public const FIREWALLS_URL = self::API_URL . '/firewalls';
-
-    /**
-     * Endpoint for Regions API
-     *
-     * @const string
-     */
-    public const REGIONS_URL = self::API_URL . '/regions';
-
+ 
     /**
      * Endpoint for Instances API
      *
      * @const string
      */
     public const INSTANCES_URL = self::API_URL . '/instances';
+
+    /**
+     * Endpoint for ISO API
+     *
+     * @const string
+     */
+    public const ISO_URL = self::API_URL . '/iso';
+
+    /**
+     * Endpoint for Load Balacers
+     *
+     * @const string
+     */
+    public const LOAD_BALANCERS_URL = self::API_URL . '/load-balancers';
 
     /**
      * Endpoint for Object Storage API
@@ -86,6 +107,69 @@ class API
      * @const string
      */
     public const OBJECT_CLUSTERS_URL = self::OBJECT_STORAGE_URL . '/clusters';
+
+    /**
+     * Endpoint for Operating Systems
+     *
+     * @const string
+     */
+    public const OS_URL = self::API_URL . '/os';
+
+    /**
+     * Endpoint for Plans
+     *
+     * @const string
+     */
+    public const PLANS_URL = self::API_URL . '/plans';
+
+    /**
+     * Endpoint for Private Networks
+     *
+     * @const string
+     */
+    public const PRIVATE_NETWORKS_URL = self::API_URL . '/private-networks';
+
+    /**
+     * Endpoint for Reserved IPs
+     *
+     * @const string
+     */
+    public const RESERVED_IPS_URL = self::API_URL . '/reserved-ips';
+
+    /**
+     * Endpoint for Regions API
+     *
+     * @const string
+     */
+    public const REGIONS_URL = self::API_URL . '/regions';
+
+    /**
+     * Endpoint for Snapshots
+     *
+     * @const string
+     */
+    public const SNAPSHOTS_URL = self::API_URL . '/snapshots';
+
+    /**
+     * Endpoint for SSH Keys
+     *
+     * @const string
+     */
+    public const SSH_KEYS_URL = self::API_URL . '/ssh-keys';
+
+    /**
+     * Endpoint for Startup Scripts
+     *
+     * @const string
+     */
+    public const STARTUP_SCRIPTS_URL = self::API_URL . '/startup-scripts';
+
+    /**
+     * Endpoint for Users
+     *
+     * @const string
+     */
+    public const USERS_URL = self::API_URL . '/users';
 
     /**
      * API Token

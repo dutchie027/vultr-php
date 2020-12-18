@@ -29,6 +29,8 @@ class API
     public const BLOCK_STORAGE_URL = self::API_URL . '/blocks';
     public const REGIONS_URL = self::API_URL . '/regions';
     public const INSTANCES_URL = self::API_URL . '/instances';
+    public const OBJECT_STORAGE_URL = self::API_URL . '/object-storage';
+    public const OBJECT_CLUSTERS_URL = self::OBJECT_STORAGE_URL . '/clusters';
 
     /**
      * API Token
@@ -169,6 +171,12 @@ class API
     {
         $bs = new BlockStorage($this);
         return $bs;
+    }
+
+    public function objectStorage()
+    {
+        $os = new ObjectStorage($this);
+        return $os;
     }
 
     public function regions()

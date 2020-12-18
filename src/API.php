@@ -72,7 +72,7 @@ class API
      * @const string
      */
     public const FIREWALLS_URL = self::API_URL . '/firewalls';
- 
+
     /**
      * Endpoint for Instances API
      *
@@ -385,14 +385,14 @@ class API
         return $dns;
     }
 
-     /**
-     * firewalls
-     * Pointer to the \Firewalls class
-     *
-     *
-     * @return object
-     *
-     */
+    /**
+    * firewalls
+    * Pointer to the \Firewalls class
+    *
+    *
+    * @return object
+    *
+    */
     public function firewalls()
     {
         $fw = new Firewalls($this);

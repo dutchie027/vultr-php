@@ -114,7 +114,7 @@ class Users
     }
 
     /**
-     * loadusers
+     * loadUsers
      * Loads User Information in to arrays
      *
      *

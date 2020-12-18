@@ -123,6 +123,13 @@ class API
     public const PLANS_URL = self::API_URL . '/plans';
 
     /**
+     * Endpoint for Bare Metal Plans
+     *
+     * @const string
+     */
+    public const METAL_PLANS_URL = self::API_URL . '/plans-metal';
+
+    /**
      * Endpoint for Private Networks
      *
      * @const string

@@ -1,0 +1,19 @@
+{
+    "name": "dutchie027/vultr",
+    "description": "Vultr PHP API Wrapper",
+    "type": "library",
+    "require": {
+        "monolog/monolog": "^2.2",
+        "guzzlehttp/guzzle": "^7.2"
+    },
+    "autoload": {
+        "psr-4": {
+            "dutchie027\\Vultr\\": "src/"
+        }
+    },
+    "license": "MIT",
+    "authors": [{
+        "name": "Justin Rodino",
+        "email": "justin@227volts.com"
+    }]
+}

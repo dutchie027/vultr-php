@@ -28,6 +28,7 @@ class API
     public const ACCOUNT_URL = self::API_URL . '/account';
     public const BLOCK_STORAGE_URL = self::API_URL . '/blocks';
     public const REGIONS_URL = self::API_URL . '/regions';
+    public const INSTANCES_URL = self::API_URL . '/instances';
 
     /**
      * API Token

@@ -10,26 +10,60 @@ use Monolog\Handler\StreamHandler;
 
 class API
 {
-
     /**
-     * Root of the API.
+     * Version of the Library
      *
      * @const string
      */
-    protected const LIBRARY_VERSION = '1.0';
+    protected const LIBRARY_VERSION = '1.0.0';
 
     /**
-     * Root of the API.
+     * Root of the API
      *
      * @const string
      */
     protected const API_URL = 'https://api.vultr.com/v2';
 
+    /**
+     * Endpoint for Account API
+     *
+     * @const string
+     */
     public const ACCOUNT_URL = self::API_URL . '/account';
+
+    /**
+     * Endpoint for Block Storage
+     *
+     * @const string
+     */
     public const BLOCK_STORAGE_URL = self::API_URL . '/blocks';
+
+    /**
+     * Endpoint for Regions API
+     *
+     * @const string
+     */
     public const REGIONS_URL = self::API_URL . '/regions';
+
+    /**
+     * Endpoint for Instances API
+     *
+     * @const string
+     */
     public const INSTANCES_URL = self::API_URL . '/instances';
+
+    /**
+     * Endpoint for Object Storage API
+     *
+     * @const string
+     */
     public const OBJECT_STORAGE_URL = self::API_URL . '/object-storage';
+
+    /**
+     * Endpoint for Object Storage Clusters
+     *
+     * @const string
+     */
     public const OBJECT_CLUSTERS_URL = self::OBJECT_STORAGE_URL . '/clusters';
 
     /**
@@ -72,7 +106,8 @@ class API
      *
      * @var array
      */
-    protected $log_literals = [ "debug",
+    protected $log_literals = [
+        "debug",
         "info",
         "notice",
         "warning",
@@ -161,30 +196,70 @@ class API
         return $this->p_token;
     }
 
+    /**
+     * account
+     * Pointer to the \Account class
+     *
+     *
+     * @return object
+     *
+     */
     public function account()
     {
         $account = new Account($this);
         return $account;
     }
 
+    /**
+     * blockStorage
+     * Pointer to the \BlockStorage class
+     *
+     *
+     * @return object
+     *
+     */
     public function blockStorage()
     {
         $bs = new BlockStorage($this);
         return $bs;
     }
 
+    /**
+     * objectStorage
+     * Pointer to the \ObjectStorage cass
+     *
+     *
+     * @return object
+     *
+     */
     public function objectStorage()
     {
         $os = new ObjectStorage($this);
         return $os;
     }
 
+    /**
+     * regions
+     * Pointer to the \Regions class
+     *
+     *
+     * @return object
+     *
+     */
     public function regions()
     {
         $regions = new Regions($this);
         return $regions;
     }
 
+    /**
+     * instances
+     * Pointer to the \Instances class
+     *
+     *
+     * @return object
+     *
+     */
     public function instances()
     {
         $instances = new Instances($this);
@@ -196,7 +271,7 @@ class API
      * Returns a referencd to the logger
      *
      *
-     * @return reference
+     * @return object
      *
      */
     public function getLogPointer()
@@ -256,6 +331,18 @@ class API
     }
 
 
+    /**
+     * makeAPICall
+     * Makes the API Call
+     *
+     * @param $type string GET|POST|DELETE|PATCH
+     * @param $url string endpoint
+     * @param $body string - usually passed as JSON
+     *
+     * @return string Body Object
+     * @throws string error message
+     *
+     */
     public function makeAPICall($type, $url, $body = null)
     {
         $data['headers'] = $this->setHeaders();

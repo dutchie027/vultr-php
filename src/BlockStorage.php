@@ -4,25 +4,78 @@ namespace dutchie027\Vultr;
 
 class BlockStorage
 {
-
+    /**
+     * Reference to \API object
+     *
+     * @var object
+     */
     protected $api;
+
+    /**
+     * Default Region to user
+     *
+     * @var string
+     */
     private $d_region = "ewr";
+
+    /**
+     * Default size (in GB)
+     *
+     * @var int
+     */
     private $d_size = 20;
+
+    /**
+     * Default label
+     *
+     * @var string
+     */
     private $d_label = "";
 
-    public $block_array = array();
+    /**
+     * Array containing block IDs
+     *
+     * @var array
+     */
+    public $block_array = [];
 
+    /**
+     * __construct
+     * Main Construct - Loads Regions in to arrays and creates reference
+     * from main API class
+     *
+     * @param $api
+     *
+     * @return void
+     *
+     */
     public function __construct(API $api)
     {
         $this->api = $api;
         $this->loadBlocks();
     }
 
+    /**
+     * listBlockStorage
+     * Lists All Block Storage
+     *
+     *
+     * @return string
+     *
+     */
     public function listBlockStorage()
     {
         return $this->api->makeAPICall('GET', $this->api::BLOCK_STORAGE_URL);
     }
 
+    /**
+     * loadBlocks
+     * Loads Blocks Used in to Array
+     *
+     *
+     * @return void
+     *
+     */
     public function loadBlocks()
     {
         $ba = json_decode($this->listBlockStorage(), true);
@@ -31,6 +84,15 @@ class BlockStorage
         }
     }
 
+    /**
+     * createBlockStorage
+     * Creates Block Storage
+     *
+     * @param array $sa
+     *
+     * @return string
+     *
+     */
     public function createBlockStorage($sa = [])
     {
         $block_ids = $this->api->regions()->getBlockIds();
@@ -52,6 +114,15 @@ class BlockStorage
         return $this->api->makeAPICall('POST', $this->api::BLOCK_STORAGE_URL, $body);
     }
 
+    /**
+     * getBlockStorage
+     * Gets information on block storage
+     *
+     * @param string $blockid
+     *
+     * @return string
+     *
+     */
     public function getBlockStorage($blockid)
     {
         if (in_array($blockid, $this->block_array)) {
@@ -62,6 +133,15 @@ class BlockStorage
         }
     }
 
+    /**
+     * deleteBlockStorage
+     * Deletes Block Storage
+     *
+     * @param string $blockid
+     *
+     * @return string
+     *
+     */
     public function deleteBlockStorage($blockid)
     {
         if (in_array($blockid, $this->block_array)) {
@@ -72,6 +152,15 @@ class BlockStorage
         }
     }
 
+    /**
+     * updateBlockStorage
+     * Updates Block Storage Size and Label
+     *
+     * @param array $options
+     *
+     * @return string
+     *
+     */
     public function updateBlockStorage($options)
     {
         if (in_array($options['blockid'], $this->block_array)) {
@@ -97,6 +186,15 @@ class BlockStorage
         }
     }
 
+    /**
+     * attachBlockStorage
+     * Attaches Block Storage to an Instance
+     *
+     * @param array $options
+     *
+     * @return string
+     *
+     */
     public function attachBlockStorage($options)
     {
         $instance_ids = $this->api->instances()->getIds();
@@ -124,6 +222,15 @@ class BlockStorage
         }
     }
 
+    /**
+     * detatchBlockStorage
+     * Detatches Block Storage from Instance
+     *
+     * @param array $options
+     *
+     * @return string
+     *
+     */
     public function detatchBlockStorage($options)
     {
         if (in_array($options['blockid'], $this->block_array)) {

@@ -4,16 +4,65 @@ namespace dutchie027\Vultr;
 
 class ObjectStorage
 {
+    /**
+     * Reference to \API object
+     *
+     * @var object
+     */
     protected $api;
 
+    /**
+     * Array containing block IDs
+     *
+     * @var array
+     */
     protected $ids = [];
+
+    /**
+     * Array containing Regions
+     *
+     * @var array
+     */
     protected $regions = [];
+
+    /**
+     * Array Mapping Region Names to IDs
+     *
+     * @var array
+     */
     protected $region_map = [];
+
+    /**
+     * Array containing Storage IDs
+     *
+     * @var array
+     */
     protected $storage_ids = [];
 
+    /**
+     * Default Cluster ID to use
+     *
+     * @var int
+     */
     protected $d_cluster_id = 2;
+
+    /**
+     * Default label to use when creating object storage
+     *
+     * @var string
+     */
     protected $d_label = "";
 
+    /**
+     * __construct
+     * Main Construct - Loads Clusters and Objects in to arrays
+     * and creates reference to main API
+     *
+     * @param $api
+     *
+     * @return void
+     *
+     */
     public function __construct(API $api)
     {
         $this->api = $api;
@@ -21,16 +70,40 @@ class ObjectStorage
         $this->loadObjectArrays();
     }
 
+    /**
+     * listObjectStorage
+     * Lists Object Storage
+     *
+     *
+     * @return string
+     *
+     */
     public function listObjectStorage()
     {
         return $this->api->makeAPICall('GET', $this->api::OBJECT_STORAGE_URL);
     }
 
+    /**
+     * listObjectClusters
+     * Lists object Clusters
+     *
+     *
+     * @return string
+     *
+     */
     public function listObjectClusters()
     {
         return $this->api->makeAPICall('GET', $this->api::OBJECT_CLUSTERS_URL);
     }
 
+    /**
+     * loadClustersArrays
+     * Loads Clusters in to an Array
+     *
+     *
+     * @return void
+     *
+     */
     public function loadClustersArrays()
     {
         $data = json_decode($this->listObjectClusters(), true);
@@ -42,6 +115,14 @@ class ObjectStorage
         }
     }
 
+    /**
+     * loadObjectArrays
+     * Load Object Stores in to array
+     *
+     *
+     * @return void
+     *
+     */
     public function loadObjectArrays()
     {
         $data = json_decode($this->listObjectStorage(), true);
@@ -50,6 +131,15 @@ class ObjectStorage
         }
     }
 
+    /**
+     * createObjectStorage
+     * Creates Object Storage
+     *
+     * @param array $options
+     *
+     * @return string
+     *
+     */
     public function createObjectStorage($options)
     {
         $ba['cluster_id'] = $this->d_cluster_id;
@@ -74,6 +164,15 @@ class ObjectStorage
         return $this->api->makeAPICall('POST', $this->api::OBJECT_STORAGE_URL, $body);
     }
 
+    /**
+     * getObjectStorage
+     * Gets Object Storage
+     *
+     * @param string $oid
+     *
+     * @return string
+     *
+     */
     public function getObjectStorage($oid)
     {
         if (in_array($oid, $this->storage_ids)) {
@@ -84,6 +183,15 @@ class ObjectStorage
         }
     }
 
+    /**
+     * deleteObjectStorage
+     * Deletes Object Storage
+     *
+     * @param string $oid
+     *
+     * @return string
+     *
+     */
     public function deleteObjectStorage($oid)
     {
         if (in_array($oid, $this->storage_ids)) {
@@ -94,6 +202,15 @@ class ObjectStorage
         }
     }
 
+    /**
+     * regenerateKeys
+     * Regenerates Object Storage Keys
+     *
+     * @param string $oid
+     *
+     * @return string
+     *
+     */
     public function regenerateKeys($oid)
     {
         if (in_array($oid, $this->storage_ids)) {
@@ -105,6 +222,15 @@ class ObjectStorage
         return $this->api->makeAPICall('POST', $url);
     }
 
+    /**
+     * updateObjectStorage
+     * Updates label of Object Storage
+     *
+     * @param array $options
+     *
+     * @return string
+     *
+     */
     public function updateObjectStorage($options)
     {
         if (in_array($options['object_id'], $this->storage_ids)) {

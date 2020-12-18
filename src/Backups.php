@@ -79,7 +79,7 @@ class Backups
      * @return string
      *
      */
-    public function getBlockStorage($id)
+    public function getBackup($id)
     {
         if (in_array($id, $this->ids)) {
             return $this->api->makeAPICall('GET', $this->api::BACKUPS_URL . "/" . $id);

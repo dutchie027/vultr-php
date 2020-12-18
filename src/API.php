@@ -45,13 +45,19 @@ class API
      */
     public const BACKUPS_URL = self::API_URL . '/backups';
 
-
     /**
      * Endpoint for Block Storage
      *
      * @const string
      */
     public const BLOCK_STORAGE_URL = self::API_URL . '/blocks';
+
+    /**
+     * Endpoint for Block Storage
+     *
+     * @const string
+     */
+    public const FIREWALLS_URL = self::API_URL . '/firewalls';
 
     /**
      * Endpoint for Regions API
@@ -254,6 +260,20 @@ class API
     }
 
     /**
+     * bareMetal
+     * Pointer to the \BareMetal class
+     *
+     *
+     * @return object
+     *
+     */
+    public function bareMetal()
+    {
+        $bm = new BareMetal($this);
+        return $bm;
+    }
+
+    /**
      * blockStorage
      * Pointer to the \BlockStorage class
      *
@@ -265,6 +285,76 @@ class API
     {
         $bs = new BlockStorage($this);
         return $bs;
+    }
+
+    /**
+     * dns
+     * Pointer to the \DNS class
+     *
+     *
+     * @return object
+     *
+     */
+    public function dns()
+    {
+        $dns = new DNS($this);
+        return $dns;
+    }
+
+     /**
+     * firewalls
+     * Pointer to the \Firewalls class
+     *
+     *
+     * @return object
+     *
+     */
+    public function firewalls()
+    {
+        $fw = new Firewalls($this);
+        return $fw;
+    }
+
+    /**
+     * instances
+     * Pointer to the \Instances class
+     *
+     *
+     * @return object
+     *
+     */
+    public function instances()
+    {
+        $instances = new Instances($this);
+        return $instances;
+    }
+
+    /**
+     * iso
+     * Pointer to the \ISO class
+     *
+     *
+     * @return object
+     *
+     */
+    public function iso()
+    {
+        $iso = new ISO($this);
+        return $iso;
+    }
+
+    /**
+     * loadBalancers
+     * Pointer to the \LoadBalancers class
+     *
+     *
+     * @return object
+     *
+     */
+    public function loadBalancers()
+    {
+        $lb = new LoadBalancers($this);
+        return $lb;
     }
 
     /**
@@ -282,6 +372,48 @@ class API
     }
 
     /**
+     * operatingSystems
+     * Pointer to the \OperatingSystems class
+     *
+     *
+     * @return object
+     *
+     */
+    public function operatingSystems()
+    {
+        $os = new OperatingSystems($this);
+        return $os;
+    }
+
+    /**
+     * plans
+     * Pointer to the \Plans class
+     *
+     *
+     * @return object
+     *
+     */
+    public function plans()
+    {
+        $plans = new Plans($this);
+        return $plans;
+    }
+
+    /**
+     * privateNetworks
+     * Pointer to the \PrivateNetworks class
+     *
+     *
+     * @return object
+     *
+     */
+    public function privateNetworks()
+    {
+        $pn = new PrivateNetworks($this);
+        return $pn;
+    }
+
+    /**
      * regions
      * Pointer to the \Regions class
      *
@@ -296,18 +428,75 @@ class API
     }
 
     /**
-     * instances
-     * Pointer to the \Instances class
+     * reservedIPs
+     * Pointer to the \ReservedIPs class
      *
      *
      * @return object
      *
      */
-    public function instances()
+    public function reservedIPs()
     {
-        $instances = new Instances($this);
-        return $instances;
+        $rip = new ReservedIPs($this);
+        return $rip;
     }
+
+    /**
+     * snapshots
+     * Pointer to the \Snapshots class
+     *
+     *
+     * @return object
+     *
+     */
+    public function snapshots()
+    {
+        $snap = new Snapshots($this);
+        return $snap;
+    }
+
+    /**
+     * instances
+     * Pointer to the \SSHKeys class
+     *
+     *
+     * @return object
+     *
+     */
+    public function sshKeys()
+    {
+        $ssh = new SSHKeys($this);
+        return $ssh;
+    }
+
+    /**
+     * startupScripts
+     * Pointer to the \StartupScripts class
+     *
+     *
+     * @return object
+     *
+     */
+    public function startupScripts()
+    {
+        $ss = new StartupScripts($this);
+        return $ss;
+    }
+
+    /**
+     * users
+     * Pointer to the \Users class
+     *
+     *
+     * @return object
+     *
+     */
+    public function users()
+    {
+        $users = new Users($this);
+        return $users;
+    }
+
 
     /**
      * getLogPointer

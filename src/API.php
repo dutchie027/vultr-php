@@ -32,6 +32,13 @@ class API
     public const ACCOUNT_URL = self::API_URL . '/account';
 
     /**
+     * Endpoint for Account API
+     *
+     * @const string
+     */
+    public const APPLICATIONS_URL = self::API_URL . '/applications';
+
+    /**
      * Endpoint for Block Storage
      *
      * @const string
@@ -208,6 +215,20 @@ class API
     {
         $account = new Account($this);
         return $account;
+    }
+
+    /**
+     * applications
+     * Pointer to the \Applications class
+     *
+     *
+     * @return object
+     *
+     */
+    public function applications()
+    {
+        $ap = new Applications($this);
+        return $ap;
     }
 
     /**

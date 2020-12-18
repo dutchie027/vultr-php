@@ -19,6 +19,13 @@ class Applications
     protected $ids = [];
 
     /**
+     * Total Count of Applications
+     *
+     * @var int
+     */
+    protected $app_count;
+
+    /**
      * Array of Names
      *
      * @var array
@@ -84,6 +91,7 @@ class Applications
             $this->short_names[] = $ap['short_name'];
             $this->deploy_names[$ap['id']] = $ap['deploy_name'];
         }
+        $this->app_count = $apps['meta']['total'];
     }
 
     /**
@@ -99,5 +107,18 @@ class Applications
         foreach ($this->ids as $id) {
             print $this->deploy_names[$id] . " ($id)" . PHP_EOL;
         }
+    }
+
+    /**
+     * getNumberOfApplications
+     * Returns total number of applications
+     *
+     *
+     * @return int
+     *
+     */
+    public function getNumberOfApplications()
+    {
+        return $this->app_count;
     }
 }

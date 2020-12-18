@@ -39,6 +39,14 @@ class API
     public const APPLICATIONS_URL = self::API_URL . '/applications';
 
     /**
+     * Endpoint for Account API
+     *
+     * @const string
+     */
+    public const BACKUPS_URL = self::API_URL . '/backups';
+
+
+    /**
      * Endpoint for Block Storage
      *
      * @const string
@@ -229,6 +237,20 @@ class API
     {
         $ap = new Applications($this);
         return $ap;
+    }
+
+    /**
+     * backups
+     * Pointer to the \Backups class
+     *
+     *
+     * @return object
+     *
+     */
+    public function backups()
+    {
+        $bu = new Backups($this);
+        return $bu;
     }
 
     /**

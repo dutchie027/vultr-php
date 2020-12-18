@@ -4,7 +4,7 @@ There are a few other PHP libraries out that do similar things, but I wasn't hap
 
 ## Installation
 ```php
-composer require dutchie027/vultr-php
+composer require dutchie027/vultr
 ```
 
 ## Usage

@@ -19,6 +19,13 @@ class Backups
     protected $ids = [];
 
     /**
+     * Total Number of Backups
+     *
+     * @var int
+     */
+    protected $backup_count;
+
+    /**
      * __construct
      * Takes reference from \API
      *
@@ -60,6 +67,7 @@ class Backups
         foreach ($backups['backups'] as $bu) {
             $this->ids[] = $bu['id'];
         }
+        $this->backup_count = $backups['meta']['total'];
     }
 
     /**
@@ -79,5 +87,18 @@ class Backups
             print "That Backup ID isn't associated with your account";
             exit;
         }
+    }
+
+    /**
+     * getNumberOfBackups
+     * Returns total number of backups
+     *
+     *
+     * @return int
+     *
+     */
+    public function getNumberOfBackups()
+    {
+        return $this->backup_count;
     }
 }

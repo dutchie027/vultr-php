@@ -182,16 +182,34 @@ require_once ('vendor/autoload.php');
 $api = new dutchie027\Vultr\API(VULTR_API_KEY);
 
 $config = [
-    'instance' => '12345434-08fa-4efb-a0fb-966a338aee07',
+	'blockid' => '98772323-044a-4efb-a0fb-1234338abb07',
+	'instance' => '12345434-08fa-4efb-a0fb-966a338aee07',
     'live' => false,
 ];
 
 $api->blockStorage()->attachBlockStorage($config);
 ```
 
-Both values are required in the `$config`. The `instance` is the instance ID of the machine you want the storage attached to. It must also be in the same location as the storage. The value `live` is either `true` or `false`. If it is set to `true` it will attach the storage but NOT restart the instance. If you set `live` to `false` it will RESTART the instance and then attach the block storage.
+All three values are required in the `$config`. The `blockid` is the ID of the block storage you want to attach. The `instance` is the instance ID of the machine you want the storage attached to. It must also be in the same location as the storage. The value `live` is either `true` or `false`. If it is set to `true` it will attach the storage but NOT restart the instance. If you set `live` to `false` it will RESTART the instance and then attach the block storage.
 
 #### Detatching Block Storage
+
+```php
+// Ensure we have the composer libraries
+require_once ('vendor/autoload.php');
+
+// Instantiate with defaults
+$api = new dutchie027\Vultr\API(VULTR_API_KEY);
+
+$config = [
+	'blockid' => '98772323-044a-4efb-a0fb-1234338abb07',
+    'live' => false,
+];
+
+$api->blockStorage()->detatchBlockStorage($config);
+```
+
+Both values are required in the `$config`. The `blockid` is the ID of the block storage you want to detatch. The value `live` is either `true` or `false`. If it is set to `true` it will attach the storage but NOT restart the instance. If you set `live` to `false` it will RESTART the instance and then detatch the block storage.
 
 ### Regions
 

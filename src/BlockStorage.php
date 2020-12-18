@@ -80,7 +80,7 @@ class BlockStorage
                 exit;
             } elseif (!is_numeric($options['size'])) {
                 print "size must be numeric";
-                exit;  
+                exit;
             } elseif ($options['size'] < 10 || $options['size'] > 10000) {
                 print "Size must be a number between 10 and 10000";
                 exit;
@@ -90,7 +90,7 @@ class BlockStorage
             (isset($sa['label'])) ? $ba['label'] = $sa['label'] : null;
 
             $body = json_encode($ba);
-            return $this->api->makeAPICall('PATCH', $this->api::BLOCK_STORAGE_URL . "/" . $options['blockid'], $body);
+            return $this->api->makeAPICall('PATCH', $this->api::BLOCK_STORAGE_URL . "/" . $options['block_id'], $body);
         } else {
             print "That block ID doesn't exist in your account";
             exit;
@@ -99,32 +99,51 @@ class BlockStorage
 
     public function attachBlockStorage($options)
     {
-        $this->api->instances->loadInstances();
-        if (in_array($options['blockid'], $this->block_array)) {
-            if (!isset($options['size'])) {
-                print "you must set the size";
+        $instance_ids = $this->api->instances()->getIds();
+        if (in_array($options['instance'], $instance_ids)) {
+            if (!in_array($options['blockid'], $this->block_array)) {
+                print "That block ID doesn't exist in your account";
                 exit;
-            } elseif (!is_numeric($options['size'])) {
-                print "size must be numeric";
-                exit;  
-            } elseif ($options['size'] < 10 || $options['size'] > 10000) {
-                print "Size must be a number between 10 and 10000";
+            } elseif (!isset($options['live'])) {
+                print "you must set the live variable";
                 exit;
-            } else {
-                $ba['size_gb'] = $options['size'];
+            } elseif (!is_bool($options['live'])) {
+                print "the live setting must be either true or false only.";
+                exit;
             }
-            (isset($sa['label'])) ? $ba['label'] = $sa['label'] : null;
+            $ba['instance_id'] = $options['instance'];
+            $ba['live'] = $options['live'];
+
+            $url = $this->api::BLOCK_STORAGE_URL . "/" . $options['block_id'] . "/attach";
 
             $body = json_encode($ba);
-            return $this->api->makeAPICall('PATCH', $this->api::BLOCK_STORAGE_URL . "/" . $options['blockid'], $body);
+            return $this->api->makeAPICall('POST', $url, $body);
         } else {
             print "That block ID doesn't exist in your account";
             exit;
         }
     }
 
-    public function detatchBlockStorage()
+    public function detatchBlockStorage($options)
     {
+        if (in_array($options['blockid'], $this->block_array)) {
+            if (!isset($options['live'])) {
+                print "you must set the live variable";
+                exit;
+            } elseif (!is_bool($options['live'])) {
+                print "the live setting must be either true or false only.";
+                exit;
+            } else {
+                $ba['live'] = $options['live'];
+            }
 
+            $url = $this->api::BLOCK_STORAGE_URL . "/" . $options['block_id'] . "/detatch";
+
+            $body = json_encode($ba);
+            return $this->api->makeAPICall('POST', $url, $body);
+        } else {
+            print "That block ID doesn't exist in your account";
+            exit;
+        }
     }
 }

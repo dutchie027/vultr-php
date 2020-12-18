@@ -12,6 +12,13 @@ class BlockStorage
     protected $api;
 
     /**
+     * Total number of block storages
+     *
+     * @var int
+     */
+    protected $total_blocks;
+
+    /**
      * Default Region to user
      *
      * @var string
@@ -82,6 +89,7 @@ class BlockStorage
         foreach ($ba['blocks'] as $bsa) {
             $this->block_array[] = $bsa['id'];
         }
+        $this->total_blocks = $ba['meta']['total'];
     }
 
     /**
@@ -252,5 +260,18 @@ class BlockStorage
             print "That block ID doesn't exist in your account";
             exit;
         }
+    }
+
+    /**
+     * getNumberOfBlocks
+     * Returns total number of blocks
+     *
+     *
+     * @return int
+     *
+     */
+    public function getNumberOfBlocks()
+    {
+        return $this->total_blocks;
     }
 }

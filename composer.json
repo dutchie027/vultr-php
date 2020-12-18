@@ -1,6 +1,7 @@
 {
     "name": "dutchie027/vultr",
     "description": "Vultr PHP API Wrapper",
+    "keywords": ["php", "automation", "Vultr", "paas", "headless", "server administration"],
     "type": "library",
     "require": {
         "monolog/monolog": "^2.2",

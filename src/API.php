@@ -60,7 +60,7 @@ class API
      *
      * @var string
      */
-    protected $p_log_tag = "govee";
+    protected $p_log_tag = "vultr";
 
     /**
      * Log Types

@@ -3,6 +3,8 @@
 namespace dutchie027\Vultr;
 
 use GuzzleHttp\Client as Guzzle;
+use GuzzleHttp\Psr7;
+use GuzzleHttp\Exception\RequestException;
 use Monolog\Logger;
 use Monolog\Handler\StreamHandler;
 
@@ -174,6 +176,12 @@ class API
         return $regions;
     }
 
+    public function instances()
+    {
+        $instances = new Instances($this);
+        return $instances;
+    }
+
     /**
      * getLogPointer
      * Returns a referencd to the logger
@@ -243,7 +251,15 @@ class API
     {
         $data['headers'] = $this->setHeaders();
         $data['body'] = $body;
-        $request = $this->guzzle->request($type, $url, $data);
-        return $request->getBody();
+        try {
+            $request = $this->guzzle->request($type, $url, $data);
+            return $request->getBody();
+        } catch (RequestException $e) {
+            if ($e->hasResponse()) {
+                $response = $e->getResponse();
+                $ja = json_decode($response->getBody()->getContents(), true);
+                print $ja['error'];
+            }
+        }
     }
 }

@@ -10,14 +10,25 @@ class BlockStorage
     private $d_size = 20;
     private $d_label = "";
 
+    public $block_array = array();
+
     public function __construct(API $api)
     {
         $this->api = $api;
+        $this->loadBlocks();
     }
 
     public function listBlockStorage()
     {
         return $this->api->makeAPICall('GET', $this->api::BLOCK_STORAGE_URL);
+    }
+
+    public function loadBlocks()
+    {
+        $ba = json_decode($this->listBlockStorage(), true);
+        foreach ($ba['blocks'] as $bsa) {
+            $this->block_array[] = $bsa['id'];
+        }
     }
 
     public function createBlockStorage($sa = [])
@@ -41,38 +52,79 @@ class BlockStorage
         return $this->api->makeAPICall('POST', $this->api::BLOCK_STORAGE_URL, $body);
     }
 
-    public function getBlockStorage()
+    public function getBlockStorage($blockid)
     {
-        $data['headers'] = $this->api->setHeaders();
-        $response = $this->api->guzzle->request('GET', $this->api::BLOCK_STORAGE_URL, $data);
-        return $response->getBody();
+        if (in_array($blockid, $this->block_array)) {
+            return $this->api->makeAPICall('GET', $this->api::BLOCK_STORAGE_URL . "/" . $blockid);
+        } else {
+            print "That Block ID isn't associated with your account";
+            exit;
+        }
     }
 
-    public function deleteBlockStorage()
+    public function deleteBlockStorage($blockid)
     {
-        $data['headers'] = $this->api->setHeaders();
-        $response = $this->api->guzzle->request('DEL', $this->api::BLOCK_STORAGE_URL, $data);
-        return $response->getBody();
+        if (in_array($blockid, $this->block_array)) {
+            return $this->api->makeAPICall('DELETE', $this->api::BLOCK_STORAGE_URL . "/" . $blockid);
+        } else {
+            print "That Block ID isn't associated with your account";
+            exit;
+        }
     }
 
-    public function updateBlockStorage()
+    public function updateBlockStorage($options)
     {
-        $data['headers'] = $this->api->setHeaders();
-        $response = $this->api->guzzle->request('PATCH', $this->api::BLOCK_STORAGE_URL, $data);
-        return $response->getBody();
+        if (in_array($options['blockid'], $this->block_array)) {
+            if (!isset($options['size'])) {
+                print "you must set the size";
+                exit;
+            } elseif (!is_numeric($options['size'])) {
+                print "size must be numeric";
+                exit;  
+            } elseif ($options['size'] < 10 || $options['size'] > 10000) {
+                print "Size must be a number between 10 and 10000";
+                exit;
+            } else {
+                $ba['size_gb'] = $options['size'];
+            }
+            (isset($sa['label'])) ? $ba['label'] = $sa['label'] : null;
+
+            $body = json_encode($ba);
+            return $this->api->makeAPICall('PATCH', $this->api::BLOCK_STORAGE_URL . "/" . $options['blockid'], $body);
+        } else {
+            print "That block ID doesn't exist in your account";
+            exit;
+        }
     }
 
-    public function attachBlockStorage()
+    public function attachBlockStorage($options)
     {
-        $data['headers'] = $this->api->setHeaders();
-        $response = $this->api->guzzle->request('POST', $this->api::BLOCK_STORAGE_URL, $data);
-        return $response->getBody();
+        $this->api->instances->loadInstances();
+        if (in_array($options['blockid'], $this->block_array)) {
+            if (!isset($options['size'])) {
+                print "you must set the size";
+                exit;
+            } elseif (!is_numeric($options['size'])) {
+                print "size must be numeric";
+                exit;  
+            } elseif ($options['size'] < 10 || $options['size'] > 10000) {
+                print "Size must be a number between 10 and 10000";
+                exit;
+            } else {
+                $ba['size_gb'] = $options['size'];
+            }
+            (isset($sa['label'])) ? $ba['label'] = $sa['label'] : null;
+
+            $body = json_encode($ba);
+            return $this->api->makeAPICall('PATCH', $this->api::BLOCK_STORAGE_URL . "/" . $options['blockid'], $body);
+        } else {
+            print "That block ID doesn't exist in your account";
+            exit;
+        }
     }
 
     public function detatchBlockStorage()
     {
-        $data['headers'] = $this->api->setHeaders();
-        $response = $this->api->guzzle->request('POST', $this->api::BLOCK_STORAGE_URL, $data);
-        return $response->getBody();
+
     }
 }

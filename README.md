@@ -75,6 +75,124 @@ print_r(json_decode($api->account()->getAccountInfo(), true));
 
 ### Block Storage
 
+#### Creating Block Storage
+
+```php
+// Ensure we have the composer libraries
+require_once ('vendor/autoload.php');
+
+// Instantiate with defaults
+$api = new dutchie027\Vultr\API(VULTR_API_KEY);
+
+$config = [
+    'region' => 'ewr',
+    'size' => '10',
+    'label' => 'my first storage',
+];
+
+$json_return = $api->blockStorage()->createBlockStorage($config);
+```
+
+##### Config
+
+If you call this without any `$config` it will still create block storage. It will use the defaults as described below.
+
+Parameter | Type | Description | Default Value
+--------- | ---- | ----------- | -------------
+`region` | string | The region where you want the storage created. *NOTE* If you choose a location that does NOT have block storate, it will revert to the default. | ewr
+`size` | integer | The size (in GB) of how much storage you want created. *NOTE* This value must be between 10 and 10000 | 10
+`label` | string | A text label to be associated with the storage | _null_
+
+##### Return Value
+
+You will be returned with a JSON payload that includes the newly created Block ID as well as the cost (in dollars) and size (in GB):
+
+```
+{
+  "block": {
+    "id": "8692c434-08fa-4efb-a0fb-966a338aee07",
+    "date_created": "2020-12-18T03:11:57+00:00",
+    "cost": 1,
+    "status": "pending",
+    "size_gb": 10,
+    "region": "ewr",
+    "attached_to_instance": "",
+    "label": "my first storage"
+  }
+}
+```
+
+#### Updating Block Storage
+
+```php
+// Ensure we have the composer libraries
+require_once ('vendor/autoload.php');
+
+// Instantiate with defaults
+$api = new dutchie027\Vultr\API(VULTR_API_KEY);
+
+$config = [
+    'blockid' => '8692c434-08fa-4efb-a0fb-966a338aee07',
+    'size' => '40',
+    'label' => 'not my first rodeo',
+];
+
+$api->blockStorage()->updateBlockStorage($config);
+```
+
+##### Config
+
+Block storage can only be updated once every 60 seconds. To update the storage you need a minimum of the `blockid` and either a `size` or new `label`.
+
+#### Deleting Block Storage
+
+```php
+// Ensure we have the composer libraries
+require_once ('vendor/autoload.php');
+
+// Instantiate with defaults
+$api = new dutchie027\Vultr\API(VULTR_API_KEY);
+
+$api->blockStorage()->deleteBlockStorage($blockid);
+```
+
+The block ID is in the form of a GUID (something like 8692c434-08fa-4efb-a0fb-966a338aee07). If you provide a GUID that isn't in your storage container, it will fail.
+
+#### Listing Specific Storage
+
+```php
+// Ensure we have the composer libraries
+require_once ('vendor/autoload.php');
+
+// Instantiate with defaults
+$api = new dutchie027\Vultr\API(VULTR_API_KEY);
+
+$json_return = $api->blockStorage()->getBlockStorage($blockid);
+```
+
+The block ID is in the form of a GUID (something like 8692c434-08fa-4efb-a0fb-966a338aee07). If you provide a GUID that isn't in your storage container, it will fail.
+
+#### Attaching Block Storage
+
+```php
+// Ensure we have the composer libraries
+require_once ('vendor/autoload.php');
+
+// Instantiate with defaults
+$api = new dutchie027\Vultr\API(VULTR_API_KEY);
+
+$config = [
+    'instance' => '12345434-08fa-4efb-a0fb-966a338aee07',
+    'live' => false,
+];
+
+$api->blockStorage()->attachBlockStorage($config);
+```
+
+Both values are required in the `$config`. The `instance` is the instance ID of the machine you want the storage attached to. It must also be in the same location as the storage. The value `live` is either `true` or `false`. If it is set to `true` it will attach the storage but NOT restart the instance. If you set `live` to `false` it will RESTART the instance and then attach the block storage.
+
+#### Detatching Block Storage
+
 ### Regions
 
 For the most part, this is a support class, but if you want to use it you can.  Here's a few things you can do with it:

@@ -32,7 +32,7 @@ The library has the following classes (strikethrough denotes not fully completed
 * DNS
 * Firewalls
 * ~~Instances~~
-* ~~ISO~~
+* ISO
 * ~~LoadBalancers~~
 * ObjectStorage
 * OperatingSystems

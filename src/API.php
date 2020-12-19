@@ -88,6 +88,13 @@ class API
     public const ISO_URL = self::API_URL . '/iso';
 
     /**
+     * Endpoint for Public ISO API
+     *
+     * @const string
+     */
+    public const ISO_PUBLIC_URL = self::API_URL . '/iso-public';
+
+    /**
      * Endpoint for Load Balacers
      *
      * @const string

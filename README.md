@@ -29,7 +29,7 @@ The library has the following classes (strikethrough denotes not fully completed
 * Backups
 * ~~BareMetal~~
 * BlockStorage
-* ~~DNS~~
+* DNS
 * Firewalls
 * ~~Instances~~
 * ~~ISO~~

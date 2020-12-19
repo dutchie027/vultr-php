@@ -12,6 +12,39 @@ class Firewalls
     protected $api;
 
     /**
+     * Array of Valid IP Types When Creating A
+     * New Firewall Rule
+     *
+     * @var array
+     */
+    private $valid_ip_types = [
+        "v4",
+        "v6"
+    ];
+
+    /**
+     * Array of Valid Protocols When Creating A
+     * New Firewall Rule
+     *
+     * @var array
+     */
+    private $valid_protos = [
+        "ICMP",
+        "TCP",
+        "UDP",
+        "GRE",
+        "ESP",
+        "AH",
+    ];
+
+    /**
+     * Default label
+     *
+     * @var string
+     */
+    private $d_note = "";
+
+    /**
      * Array of Firewall Group IDs
      *
      * @var array
@@ -81,15 +114,15 @@ class Firewalls
         $this->total_rule_groups = $fw['meta']['total'];
     }
 
-     /**
-     * getFirewallGroup
-     * Gets information on a backup
-     *
-     * @param string $id
-     *
-     * @return string
-     *
-     */
+    /**
+    * getFirewallGroup
+    * Gets information on a Firewall Group
+    *
+    * @param string $id
+    *
+    * @return string
+    *
+    */
     public function getFirewallGroup($id)
     {
         if (in_array($id, $this->ids)) {
@@ -98,6 +131,147 @@ class Firewalls
             print "That Firewall Group ID doesn't exist";
             exit;
         }
+    }
+
+    /**
+    * listFirewallRules
+    * Lists Firewall Rules
+    *
+    * @param string $id
+    *
+    * @return string
+    *
+    */
+    public function listFirewallRules($id)
+    {
+        if (in_array($id, $this->ids)) {
+            return $this->api->makeAPICall('GET', $this->api::FIREWALLS_URL . "/" . $id . "/rules");
+        } else {
+            print "That Firewall Group ID doesn't exist";
+            exit;
+        }
+    }
+
+    /**
+     * createFirewallGroup
+     * Creates a New Firewall Group
+     *
+     * @param string $name
+     *
+     * @return string
+     *
+     */
+    public function createFirewallGroup($name)
+    {
+        if (strlen($name) < 4) {
+            print "Name needs to be a minimum of 4 characters";
+            exit;
+        } else {
+            $ba['description'] = $name;
+        }
+        $body = json_encode($ba);
+        return $this->api->makeAPICall('POST', $this->api::FIREWALLS_URL, $body);
+    }
+
+    /**
+     * createFirewallRule
+     * Creates a New Rule
+     *
+     * @param array $fa
+     *
+     * @return string
+     *
+     */
+    public function createFirewallRule($fa)
+    {
+        $ba['notes'] = $this->d_note;
+        if (isset($fa['id']) && in_array($fa['id'], $this->ids)) {
+            $url = $this->api::FIREWALLS_URL . "/" . $fa['id'] . "/rules";
+        } else {
+            print "Firewall Group ID doesn't exist or noit defined";
+            exit;
+        }
+        if (isset($fa['ip_type']) && in_array($fa['ip_type'], $this->valid_ip_types)) {
+            $ba['ip_type'] = $fa['ip_type'];
+        } else {
+            print "Invalid IP Type. Must be 'v4' or 'v6'";
+            exit;
+        }
+        if (isset($fa['protocol']) && in_array(strtoupper($fa['protocol']), $this->valid_protos)) {
+            $ba['protocol'] = strtoupper($fa['protocol']);
+        } else {
+            print "Invalid protocol. Must be one of these:" . PHP_EOL;
+            print_r($this->valid_protos);
+            exit;
+        }
+        if (isset($fa['subnet']) && filter_var($fa['subnet'], FILTER_VALIDATE_IP)) {
+            $ba['subnet'] = $fa['subnet'];
+        } else {
+            print "Invalid IP address for the subnet key";
+            exit;
+        }
+        if (isset($fa['port'])) {
+            $prm = "/^(\d+)([\:\-]?)(\d+)?$/";
+            if (preg_match($prm, $fa['port'], $matches)) {
+                if (count($matches) === 3) {
+                    if ($matches[1] < 0 || $matches[1] > 65535) {
+                        print "Invalid Port - Must be between 0 and 65535";
+                        exit;
+                    } else {
+                        $port = $matches[1];
+                    }
+                    if (preg_match("/[\-\:]/", $matches[2])) {
+                        if ($port < 65535) {
+                            $port .= ":65535";
+                        }
+                    }
+                } elseif (count($matches) === 4) {
+                    $port1 = $matches[1];
+                    $port2 = $matches[3];
+                    if ($port1 < 0 || $port1 > 65535) {
+                        print "Port values must be between 0 and 65535";
+                        exit;
+                    }
+                    if ($port2 < 0 || $port2 > 65535) {
+                        print "Port values must be between 0 and 65535";
+                        exit;
+                    }
+                    if ($port1 > $port2) {
+                        print "The first port can't be lesser than the second port";
+                        exit;
+                    }
+                    if ($port1 == $port2) {
+                        $port = $port1;
+                    } else {
+                        $port = $port1 . ":" . $port2;
+                    }
+                    $ba['port'] = $port;
+                } else {
+                    print "Something went wrong";
+                    exit;
+                }
+            } else {
+                print "Port Value Invalid";
+                exit;
+            }
+        } else {
+            print "Port not set";
+            exit;
+        }
+        if (isset($fa['subnet_size']) && is_numeric($fa['subnet_size'])) {
+            if ($fa['subnet_size'] < 0 || $fa['subnet_size'] > 32) {
+                print "Subnet size is must between 0 and 32";
+                exit;
+            } else {
+                $ba['subnet_size'] = $fa['subnet_size'];
+            }
+        } else {
+            print "Subnet size is not set or is not numeric";
+            exit;
+        }
+        (isset($fa['notes'])) ? $ba['notes'] = $fa['notes'] : null;
+        $body = json_encode($ba);
+        return $this->api->makeAPICall('POST', $url, $body);
     }
 
     /**
@@ -194,5 +368,25 @@ class Firewalls
         (isset($options['description'])) ? $ba['description'] = $options['description'] : null;
         $body = json_encode($ba);
         return $this->api->makeAPICall('PUT', $url, $body);
+    }
+    
+    /**
+    * deleteFirewallGroup
+    * Deletes a Firewall Group
+    *
+    * @param string $options
+    *
+    * @return string
+    *
+    */
+    public function deleteFirewallGroup($id)
+    {
+        if (in_array($id, $this->ids)) {
+            $url = $this->api::FIREWALLS_URL . "/" . $id;
+        } else {
+            print "That Firewall Group ID isn't associated with your account";
+            exit;
+        }
+        return $this->api->makeAPICall('DELETE', $url);
     }
 }

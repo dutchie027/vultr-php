@@ -20,7 +20,32 @@ $api = new dutchie027\Vultr\API(VULTR_API_KEY);
 
 ## General Information
 
-## Classes
+### Class Listing
+
+The library has the following classes (strikethrough denotes not fully completed yet):
+
+* Account
+* API
+* Backups
+* ~~BareMetal~~
+* BlockStorage
+* ~~DNS~~
+* Firewalls
+* ~~Instances~~
+* ~~ISO~~
+* ~~LoadBalancers~~
+* ObjectStorage
+* ~~OperatingSystems~~
+* Plans
+* ~~PrivateNetworks~~
+* Regions
+* ~~ReservedIPs~~
+* ~~Snapshots~~
+* ~~SSHKeys~~
+* ~~StartupScripts~~
+* Users
+
+## Class Information
 
 ### API
 

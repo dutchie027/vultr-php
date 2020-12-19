@@ -35,7 +35,7 @@ The library has the following classes (strikethrough denotes not fully completed
 * ~~ISO~~
 * ~~LoadBalancers~~
 * ObjectStorage
-* ~~OperatingSystems~~
+* OperatingSystems
 * Plans
 * ~~PrivateNetworks~~
 * Regions

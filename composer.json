@@ -13,6 +13,11 @@
             "dutchie027\\Vultr\\": "src/"
         }
     },
+    "support": {
+        "forum": "https://github.com/dutchie027/vultr-php/discussions",
+        "issues": "https://github.com/dutchie027/vultr-php/issues",
+        "source": "https://github.com/dutchie027/vultr-php/tree/main"
+    },
     "license": "MIT",
     "authors": [{
         "name": "Justin Rodino",

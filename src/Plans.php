@@ -17,14 +17,14 @@ class Plans
      *
      * @var array
      */
-    protected $ids = [];
+    public $ids = [];
 
     /**
      * Array of Plan Information
      *
      * @var array
      */
-    protected $plan = [];
+    public $plan = [];
 
     /**
      * Count of Total Plans

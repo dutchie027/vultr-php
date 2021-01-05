@@ -47,7 +47,7 @@ The library has the following classes (strikethrough denotes not fully completed
 * ~~ReservedIPs~~
 * Snapshots
 * ~~SSHKeys~~
-* ~~StartupScripts~~
+* StartupScripts
 * Users
 
 ## Class Information

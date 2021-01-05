@@ -42,7 +42,7 @@ The library has the following classes (strikethrough denotes not fully completed
 * ObjectStorage
 * OperatingSystems
 * Plans
-* ~~PrivateNetworks~~
+* PrivateNetworks
 * Regions
 * ~~ReservedIPs~~
 * Snapshots

@@ -17,7 +17,7 @@ class OperatingSystems
      *
      * @var array
      */
-    protected $ids = [];
+    public $ids = [];
 
     /**
      * Total Count of Available OS'es

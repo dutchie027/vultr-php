@@ -175,7 +175,7 @@ class Snapshots
         }
         $ba['instance_id'] = $oa['instance_id'];
         $ba['description'] = $this->d_label;
-        (isset($options['description'])) ? $ba['description'] = $options['description'] : null;
+        (isset($oa['description'])) ? $ba['description'] = $oa['description'] : null;
         $body = json_encode($ba);
         return $this->api->makeAPICall('POST', $this->api::SNAPSHOTS_URL, $body);
     }

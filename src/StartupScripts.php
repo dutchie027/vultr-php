@@ -129,7 +129,7 @@ class StartupScripts
     public function loadStartupScripts()
     {
         $sa = json_decode($this->listStartupScripts(), true);
-        foreach ($sa['snapshots'] as $startup) {
+        foreach ($sa['startup_scripts'] as $startup) {
             $id = $startup['id'];
             $this->ids[] = $id;
             $this->startupScritps[$id]['date_created'] = $startup['date_created'];

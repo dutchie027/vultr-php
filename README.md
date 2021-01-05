@@ -46,7 +46,7 @@ The library has the following classes (strikethrough denotes not fully completed
 * Regions
 * ~~ReservedIPs~~
 * Snapshots
-* ~~SSHKeys~~
+* SSHKeys
 * StartupScripts
 * Users
 

@@ -147,7 +147,7 @@ class Snapshots
     public function updateSnapshot($options)
     {
         if (in_array($options['snapshot_id'], $this->ids)) {
-            $url = $this->api::SNAPSHOTS_URL . "/" . $options['object_id'];
+            $url = $this->api::SNAPSHOTS_URL . "/" . $options['snapshot_id'];
         } else {
             print "That Snapshot ID isn't associated with your account";
             exit;

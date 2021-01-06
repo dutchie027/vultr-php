@@ -36,7 +36,7 @@ The library has the following classes (strikethrough denotes not fully completed
 * BlockStorage
 * DNS
 * Firewalls
-* ~~Instances~~
+* Instances
 * ISO
 * ~~LoadBalancers~~
 * ObjectStorage

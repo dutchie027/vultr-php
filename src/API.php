@@ -649,7 +649,7 @@ class API
      * @return string
      *
      */
-    private function pGenRandomString($length = 6)
+    public function pGenRandomString($length = 6)
     {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);

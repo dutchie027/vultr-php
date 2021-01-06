@@ -16,7 +16,7 @@ class Applications
      *
      * @var array
      */
-    protected $ids = [];
+    public $ids = [];
 
     /**
      * Total Count of Applications
@@ -106,6 +106,21 @@ class Applications
     {
         foreach ($this->ids as $id) {
             print $this->deploy_names[$id] . " ($id)" . PHP_EOL;
+        }
+    }
+
+    /**
+     * listIds
+     * Prints Instance IDs to stdout
+     *
+     *
+     * @return void
+     *
+     */
+    public function listIds()
+    {
+        foreach ($this->ids as $id) {
+            print $id . PHP_EOL;
         }
     }
 

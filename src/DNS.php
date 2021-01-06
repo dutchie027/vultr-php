@@ -41,7 +41,7 @@ class DNS
      *
      * @var array
      */
-    private $valid_types =[
+    private $valid_types = [
         "A",
         "AAAA",
         "CNAME",
@@ -58,7 +58,7 @@ class DNS
      *
      * @var array
      */
-    private $priority_records =[
+    private $priority_records = [
         "MX",
         "SRV",
     ];

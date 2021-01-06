@@ -16,7 +16,7 @@ class Backups
      *
      * @var array
      */
-    protected $ids = [];
+    public $ids = [];
 
     /**
      * Total Number of Backups

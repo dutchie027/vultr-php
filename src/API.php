@@ -1,5 +1,18 @@
 <?php
 
+/**
+ * PHP Wrapper to Interact with Vultr 2.0 API
+ *
+ * @package Vultr
+ * @version 2.0
+ * @author  https://github.com/dutchie027
+ * @license http://www.opensource.org/licenses/mit-license.php MIT
+ * @see     https://github.com/dutche027/vultr-php
+ * @see     https://packagist.org/packages/dutchie027/vultr
+ * @see     https://www.vultr.com/api/v2
+ *
+ */
+
 namespace dutchie027\Vultr;
 
 use GuzzleHttp\Client as Guzzle;
@@ -286,7 +299,7 @@ class API
         } else {
             $this->p_log->pushHandler(new StreamHandler($this->pGetLogPath(), Logger::INFO));
         }
-        $this->guzzle = $guzzle ? : new Guzzle();
+        $this->guzzle = $guzzle ?: new Guzzle();
     }
 
     /**
@@ -400,13 +413,13 @@ class API
     }
 
     /**
-    * firewalls
-    * Pointer to the \Firewalls class
-    *
-    *
-    * @return object
-    *
-    */
+     * firewalls
+     * Pointer to the \Firewalls class
+     *
+     *
+     * @return object
+     *
+     */
     public function firewalls()
     {
         $fw = new Firewalls($this);

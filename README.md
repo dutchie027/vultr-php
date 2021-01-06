@@ -264,6 +264,9 @@ $api->regions()->listNames();
 
 * Bring in more of the function(s) from Vultr
 * Document the class(es) with proper doc blocks better
+* Move the documentation in to separate markdowns
+* Rework the error functions to be cleaner
+* Fix the STDOUT and create a handler to deal with displaying JSON returned
 * Clean up the code a bit more
 * Stuff I'm obviously missing...
 

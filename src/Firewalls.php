@@ -115,14 +115,14 @@ class Firewalls
     }
 
     /**
-    * getFirewallGroup
-    * Gets information on a Firewall Group
-    *
-    * @param string $id
-    *
-    * @return string
-    *
-    */
+     * getFirewallGroup
+     * Gets information on a Firewall Group
+     *
+     * @param string $id
+     *
+     * @return string
+     *
+     */
     public function getFirewallGroup($id)
     {
         if (in_array($id, $this->ids)) {
@@ -134,14 +134,14 @@ class Firewalls
     }
 
     /**
-    * listFirewallRules
-    * Lists Firewall Rules
-    *
-    * @param string $id
-    *
-    * @return string
-    *
-    */
+     * listFirewallRules
+     * Lists Firewall Rules
+     *
+     * @param string $id
+     *
+     * @return string
+     *
+     */
     public function listFirewallRules($id)
     {
         if (in_array($id, $this->ids)) {
@@ -348,6 +348,21 @@ class Firewalls
     }
 
     /**
+     * listIds
+     * Prints Instance IDs to stdout
+     *
+     *
+     * @return void
+     *
+     */
+    public function listIds()
+    {
+        foreach ($this->ids as $id) {
+            print $id . PHP_EOL;
+        }
+    }
+
+    /**
      * updateFirewallGroup
      * Updates label of Firewall Group
      *
@@ -369,16 +384,16 @@ class Firewalls
         $body = json_encode($ba);
         return $this->api->makeAPICall('PUT', $url, $body);
     }
-    
+
     /**
-    * deleteFirewallGroup
-    * Deletes a Firewall Group
-    *
-    * @param string $options
-    *
-    * @return string
-    *
-    */
+     * deleteFirewallGroup
+     * Deletes a Firewall Group
+     *
+     * @param string $options
+     *
+     * @return string
+     *
+     */
     public function deleteFirewallGroup($id)
     {
         if (in_array($id, $this->ids)) {

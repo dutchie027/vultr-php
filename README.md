@@ -44,7 +44,7 @@ The library has the following classes (strikethrough denotes not fully completed
 * Plans
 * PrivateNetworks
 * Regions
-* ~~ReservedIPs~~
+* ReservedIPs
 * Snapshots
 * SSHKeys
 * StartupScripts

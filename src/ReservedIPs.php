@@ -26,6 +26,27 @@ class ReservedIPs
     protected $api;
 
     /**
+     * Array of All Reserved IP IDs
+     *
+     * @var array
+     */
+    public $ids = [];
+
+    /**
+     * Array of IP Information
+     *
+     * @var array
+     */
+    public $reservedIP = [];
+
+    /**
+     * Count of Total IPs
+     *
+     * @var int
+     */
+    protected $total_reserved_ips;
+
+    /**
      * __construct
      * Takes reference from \API
      *
@@ -37,5 +58,220 @@ class ReservedIPs
     public function __construct(API $api)
     {
         $this->api = $api;
+        $this->loadReservedIPs();
+    }
+
+    /**
+     * listIds
+     * Prints Instance IDs to stdout
+     *
+     *
+     * @return void
+     *
+     */
+    public function listIds()
+    {
+        foreach ($this->ids as $id) {
+            print $id . PHP_EOL;
+        }
+    }
+
+    /**
+     * listReservedIPs
+     * List all Reserved IPs in your account.
+     *
+     *
+     * @return string
+     *
+     * @see https://www.vultr.com/api/v2/#operation/list-reserved-ips
+     *
+     */
+    public function listReservedIPs()
+    {
+        return $this->api->makeAPICall('GET', $this->api::RESERVED_IPS_URL);
+    }
+
+    /**
+     * loadReservedIPs
+     * Loads Reserved IP Information in to arrays
+     *
+     *
+     * @return void
+     *
+     */
+    public function loadReservedIPs()
+    {
+        $ipa = json_decode($this->listReservedIPs(), true);
+        foreach ($ipa['reserved_ips'] as $key) {
+            $id = $key['id'];
+            $this->ids[] = $id;
+            $this->reservedIP[$id]['region'] = $key['region'];
+            $this->reservedIP[$id]['ip_type'] = $key['ip_type'];
+            $this->reservedIP[$id]['subnet'] = $key['subnet'];
+            $this->reservedIP[$id]['subnet_size'] = $key['subnet_size'];
+            $this->reservedIP[$id]['label'] = $key['label'];
+            $this->reservedIP[$id]['instance_id'] = $key['instance_id'];
+        }
+        $this->total_reserved_ips = $ipa['meta']['total'];
+    }
+    /**
+     * deleteReservedIP
+     * Delete a Reserved IP.
+     *
+     * @var string $id
+     *
+     * @return string
+     *
+     * @see https://www.vultr.com/api/v2/#operation/delete-reserved-ip
+     *
+     */
+    public function deleteReservedIP($id)
+    {
+        return $this->api->makeAPICall('DELETE', $this->api::RESERVED_IPS_URL . "/" . $id);
+    }
+
+    /**
+     * getReservedIP
+     * Get information about a Reserved IP.
+     *
+     * @var string $id
+     *
+     * @return string
+     *
+     * @see https://www.vultr.com/api/v2/#operation/get-reserved-ip
+     *
+     */
+    public function getReservedIP($id)
+    {
+        return $this->api->makeAPICall('GET', $this->api::RESERVED_IPS_URL . "/" . $id);
+    }
+
+
+    /**
+     * createReservedIP
+     * Create a new Reserved IP.
+     * The region and ip_type attributes are required.
+     *
+     * @param array $options
+     *
+     * @return string
+     *
+     * @see https://www.vultr.com/api/v2/#operation/create-reserved-ip
+     *
+     */
+    public function createReservedIP($oa)
+    {
+        if (!isset($oa['region']) || !in_array($oa['region'], $this->api->regions()->ids)) {
+            print "Invalid Region";
+            exit;
+        } else {
+            $ba['region'] = $oa['region'];
+        }
+        if (!isset($oa['ip_type']) || !preg_match("/v[46]/", $oa['ip_type'])) {
+            print "Invalid IP Type";
+            exit;
+        } else {
+            $ba['ip_type'] = $oa['ip_type'];
+        }
+        (isset($oa['label'])) ? $ba['label'] = $oa['label'] : null;
+        $body = json_encode($ba);
+        return $this->api->makeAPICall('POST', $this->api::RESERVED_IPS_URL, $body);
+    }
+
+    /**
+     * attachReservedIP
+     * Attach a Reserved IP to an instance_id.
+     *
+     * @param array $options
+     *
+     * @return string
+     *
+     * @see https://www.vultr.com/api/v2/#operation/attach-reserved-ip
+     *
+     */
+    public function attachReservedIP($oa)
+    {
+        if (!isset($oa['instance_id']) || !$this->api->instances()->checkInstanceId($oa['instance_id'])) {
+            print "Invalid or Missing Instance ID";
+            exit;
+        } else {
+            $ba['instance_id'] = $oa['instance_id'];
+        }
+        if (!isset($oa['reserved_ip']) || !$this->checkReservedIP($oa['reserved_ip'])) {
+            print "Invalid or Missing Instance IP";
+            exit;
+        } else {
+            $ip = $oa['reserved_ip'];
+        }
+        $body = json_encode($ba);
+        return $this->api->makeAPICall('POST', $this->api::RESERVED_IPS_URL . "/" . $ip . "/attach", $body);
+    }
+
+    /**
+     * detachReservedIP
+     * Attach a Reserved IP to an instance_id.
+     *
+     * @param string $ip
+     *
+     * @return string
+     *
+     * @see https://www.vultr.com/api/v2/#operation/detach-reserved-ip
+     *
+     */
+    public function detachReservedIP($ip)
+    {
+        $this->checkReservedIP($ip);
+        return $this->api->makeAPICall('POST', $this->api::RESERVED_IPS_URL . "/" . $ip . "/detach");
+    }
+
+    /**
+     * convertInstanceIPToReservedIP
+     * Convert ip_address on instance_id into a Reserved IP.
+     *
+     * @param array $oa
+     *
+     * @return string
+     *
+     * @see https://www.vultr.com/api/v2/#operation/convert-reserved-ip
+     *
+     */
+    // TODO: Find if the API has a flaw and fix
+    // public function convertInstanceIPToReservedIP($oa)
+    // {
+    //     if (!isset($oa['instance_id']) || !$this->api->instances()->checkInstanceId($oa['instance_id'])) {
+    //         print "Invalid or Missing Instance ID";
+    //         exit;
+    //     } else {
+    //         $ba['instance_id'] = $oa['instance_id'];
+    //     }
+    //     if (!isset($oa['reserved_ip']) || !$this->checkReservedIP($oa['reserved_ip'])) {
+    //         print "Invalid or Missing Instance IP";
+    //         exit;
+    //     } else {
+    //         $ip = $oa['reserved_ip'];
+    //     }
+    //     (isset($oa['label'])) ? $ba['label'] = $oa['label'] : null;
+    //     $body = json_encode($ba);
+    //     return $this->api->makeAPICall('POST', $this->api::RESERVED_IPS_URL . "/convert", $body);
+    // }
+
+
+    /**
+     * checkReservedIP
+     * Checks's if an IP ID is valid or not
+     *
+     * @var string $id
+     *
+     * @return bool
+     *
+     */
+    public function checkReservedIP($id)
+    {
+        if (in_array($id, $this->ids)) {
+            return true;
+        } else {
+            print "IP Not Found";
+            exit;
+        }
     }
 }

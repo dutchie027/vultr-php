@@ -29,26 +29,26 @@ $api = new dutchie027\Vultr\API(VULTR_API_KEY);
 
 The library has the following classes (strikethrough denotes not fully completed yet):
 
-* Account
-* API
-* Backups
-* BareMetal
-* BlockStorage
-* DNS
-* Firewalls
-* Instances
-* ISO
-* LoadBalancers
-* ObjectStorage
-* OperatingSystems
-* Plans
-* PrivateNetworks
-* Regions
-* ReservedIPs
-* Snapshots
-* SSHKeys
-* StartupScripts
-* Users
+* [Account](/docs/Account.md)
+* [API](/docs/API.md)
+* [Backups](/docs/Backups.md)
+* [BareMetal](/docs/BareMetal.md)
+* [BlockStorage](/docs/BlockStorage.md)
+* [DNS](/docs/DNS.md)
+* [Firewalls](/docs/Firewalls.md)
+* [Instances](/docs/Instances.md)
+* [ISO](/docs/ISO.md)
+* [LoadBalancers](/docs/LoadBalancers.md)
+* [ObjectStorage](/docs/ObjectStorage.md)
+* [OperatingSystems](/docs/OperatingSystems.md)
+* [Plans](/docs/Plans.md)
+* [PrivateNetworks](/docs/PrivateNetworks.md)
+* [Regions](/docs/Regions.md)
+* [ReservedIPs](/docs/ReservedIPs.md)
+* [Snapshots](/docs/Snapshots.md)
+* [SSHKeys](/docs/SSHKeys.md)
+* [StartupScripts](/docs/StartupScripts.md)
+* [Users](/docs/Users.md)
 
 ## Class Information
 

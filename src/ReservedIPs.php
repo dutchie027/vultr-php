@@ -230,25 +230,18 @@ class ReservedIPs
      * @see https://www.vultr.com/api/v2/#operation/convert-reserved-ip
      *
      */
-    // TODO: Find if the API has a flaw and fix
-    // public function convertInstanceIPToReservedIP($oa)
-    // {
-    //     if (!isset($oa['instance_id']) || !$this->api->instances()->checkInstanceId($oa['instance_id'])) {
-    //         print "Invalid or Missing Instance ID";
-    //         exit;
-    //     } else {
-    //         $ba['instance_id'] = $oa['instance_id'];
-    //     }
-    //     if (!isset($oa['reserved_ip']) || !$this->checkReservedIP($oa['reserved_ip'])) {
-    //         print "Invalid or Missing Instance IP";
-    //         exit;
-    //     } else {
-    //         $ip = $oa['reserved_ip'];
-    //     }
-    //     (isset($oa['label'])) ? $ba['label'] = $oa['label'] : null;
-    //     $body = json_encode($ba);
-    //     return $this->api->makeAPICall('POST', $this->api::RESERVED_IPS_URL . "/convert", $body);
-    // }
+    public function convertInstanceIPToReservedIP($oa)
+    {
+        if (!isset($oa['ip_address']) || !$this->checkReservedIP($oa['ip_address'])) {
+            print "Invalid or Missing IP";
+            exit;
+        } else {
+            $ba['ip_address'] = $oa['ip_address'];
+        }
+        (isset($oa['label'])) ? $ba['label'] = $oa['label'] : null;
+        $body = json_encode($ba);
+        return $this->api->makeAPICall('POST', $this->api::RESERVED_IPS_URL . "/convert", $body);
+    }
 
 
     /**

@@ -32,7 +32,7 @@ The library has the following classes (strikethrough denotes not fully completed
 * Account
 * API
 * Backups
-* ~~BareMetal~~
+* BareMetal
 * BlockStorage
 * DNS
 * Firewalls

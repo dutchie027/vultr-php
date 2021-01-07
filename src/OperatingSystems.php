@@ -88,9 +88,7 @@ class OperatingSystems
         foreach ($osa['os'] as $os) {
             $id = $os['id'];
             $this->ids[] = $id;
-            $this->os[$id]['name'] = $os['name'];
-            $this->os[$id]['arch'] = $os['arch'];
-            $this->os[$id]['family'] = $os['family'];
+            $this->os[$id] = $os;
         }
         $this->total_os_count = $osa['meta']['total'];
     }

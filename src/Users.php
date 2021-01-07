@@ -140,9 +140,7 @@ class Users
         foreach ($ua['users'] as $usr) {
             $id = $usr['id'];
             $this->ids[] = $id;
-            $this->users[$id]['email'] = $usr['email'];
-            $this->users[$id]['api_enabled'] = $usr['api_enabled'];
-            $this->users[$id]['acls'] = $usr['acls'];
+            $this->users[$id] = $usr;
         }
         $this->total_blocks = $ua['meta']['total'];
     }

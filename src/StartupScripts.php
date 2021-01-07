@@ -25,7 +25,7 @@ class StartupScripts
      */
     protected $api;
 
-     /**
+    /**
      * Array of All Script IDs
      *
      * @var array
@@ -90,7 +90,7 @@ class StartupScripts
         }
     }
 
-     /**
+    /**
      * listStartupScripts
      * Lists Startup Scripts
      *
@@ -131,7 +131,7 @@ class StartupScripts
         return $this->api->makeAPICall('GET', $this->api::STARTUP_SCRIPTS_URL . "/" . $id);
     }
 
-     /**
+    /**
      * loadStartupScripts
      * Loads Startup Script Information in to arrays
      *
@@ -145,10 +145,7 @@ class StartupScripts
         foreach ($sa['startup_scripts'] as $startup) {
             $id = $startup['id'];
             $this->ids[] = $id;
-            $this->startupScritps[$id]['date_created'] = $startup['date_created'];
-            $this->startupScritps[$id]['date_modified'] = $startup['date_modified'];
-            $this->startupScritps[$id]['name'] = $startup['name'];
-            $this->startupScritps[$id]['type'] = $startup['type'];
+            $this->startupScritps[$id] = $startup;
         }
         $this->total_startup_scripts = $sa['meta']['total'];
     }

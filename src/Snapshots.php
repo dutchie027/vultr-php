@@ -25,7 +25,7 @@ class Snapshots
      */
     protected $api;
 
-     /**
+    /**
      * Array of All Snapshot IDs
      *
      * @var array
@@ -83,7 +83,7 @@ class Snapshots
         }
     }
 
-     /**
+    /**
      * listSnapshots
      * Lists Snapshots
      *
@@ -124,7 +124,7 @@ class Snapshots
         return $this->api->makeAPICall('GET', $this->api::SNAPSHOTS_URL . "/" . $id);
     }
 
-     /**
+    /**
      * loadSnapshots
      * Loads Snapshot Information in to arrays
      *
@@ -138,12 +138,7 @@ class Snapshots
         foreach ($sa['snapshots'] as $snap) {
             $id = $snap['id'];
             $this->ids[] = $id;
-            $this->snapshots[$id]['date_created'] = $snap['date_created'];
-            $this->snapshots[$id]['description'] = $snap['description'];
-            $this->snapshots[$id]['size'] = $snap['size'];
-            $this->snapshots[$id]['status'] = $snap['status'];
-            $this->snapshots[$id]['os_id'] = $snap['os_id'];
-            $this->snapshots[$id]['app_id'] = $snap['app_id'];
+            $this->snapshots[$id] = $snap;
         }
         $this->total_snapshots = $sa['meta']['total'];
     }

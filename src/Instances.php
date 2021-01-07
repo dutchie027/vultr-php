@@ -207,33 +207,7 @@ class Instances
         foreach ($ia['instances'] as $inst) {
             $id = $inst['id'];
             $this->ids[] = $id;
-            $this->instance[$id]['os'] = $inst['os'];
-            $this->instance[$id]['ram'] = $inst['ram'];
-            $this->instance[$id]['disk'] = $inst['disk'];
-            $this->instance[$id]['main_ip'] = $inst['main_ip'];
-            $this->instance[$id]['vcpu_count'] = $inst['vcpu_count'];
-            $this->instance[$id]['region'] = $inst['region'];
-            $this->instance[$id]['plan'] = $inst['plan'];
-            $this->instance[$id]['date_created'] = $inst['date_created'];
-            $this->instance[$id]['status'] = $inst['status'];
-            $this->instance[$id]['allowed_bandwidth'] = $inst['allowed_bandwidth'];
-            $this->instance[$id]['netmask_v4'] = $inst['netmask_v4'];
-            $this->instance[$id]['gateway_v4'] = $inst['gateway_v4'];
-            $this->instance[$id]['power_status'] = $inst['power_status'];
-            $this->instance[$id]['server_status'] = $inst['server_status'];
-            $this->instance[$id]['v6_network'] = $inst['v6_network'];
-            $this->instance[$id]['v6_main_ip'] = $inst['v6_main_ip'];
-            $this->instance[$id]['v6_network_size'] = $inst['v6_network_size'];
-            $this->instance[$id]['label'] = $inst['label'];
-            $this->instance[$id]['internal_ip'] = $inst['internal_ip'];
-            $this->instance[$id]['kvm'] = $inst['kvm'];
-            $this->instance[$id]['tag'] = $inst['tag'];
-            $this->instance[$id]['os_id'] = $inst['os_id'];
-            $this->instance[$id]['app_id'] = $inst['app_id'];
-            $this->instance[$id]['firewall_group_id'] = $inst['firewall_group_id'];
-            foreach ($inst['features'] as $feat) {
-                $this->instance[$id]['feature'][] = $feat;
-            }
+            $this->instance[$id] = $inst;
         }
         $this->total_instances = $ia['meta']['total'];
     }

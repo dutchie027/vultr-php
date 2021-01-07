@@ -123,13 +123,7 @@ class Plans
         foreach ($pa['plans'] as $plan) {
             $id = $plan['id'];
             $this->ids[] = $id;
-            $this->plan[$id]['type'] = $plan['type'];
-            $this->plan[$id]['monthly_cost'] = $plan['monthly_cost'];
-            $this->plan[$id]['bandwidth'] = $plan['bandwidth'];
-            $this->plan[$id]['disk'] = $plan['disk'];
-            $this->plan[$id]['ram'] = $plan['ram'];
-            $this->plan[$id]['vcpu_count'] = $plan['vcpu_count'];
-            $this->plan[$id]['locations'] = $plan['locations'];
+            $this->plan[$id] = $plan;
         }
         $this->total_plans = $pa['meta']['total'];
     }
@@ -148,15 +142,7 @@ class Plans
         foreach ($pa['plans_metal'] as $plan) {
             $id = $plan['id'];
             $this->metal_ids[] = $id;
-            $this->metal_plan[$id]['cpu_count'] = $plan['cpu_count'];
-            $this->metal_plan[$id]['cpu_threads'] = $plan['cpu_threads'];
-            $this->metal_plan[$id]['cpu_model'] = $plan['cpu_model'];
-            $this->metal_plan[$id]['disk'] = $plan['disk'];
-            $this->metal_plan[$id]['ram'] = $plan['ram'];
-            $this->metal_plan[$id]['monthly_cost'] = $plan['monthly_cost'];
-            $this->metal_plan[$id]['bandwidth'] = $plan['bandwidth'];
-            $this->metal_plan[$id]['type'] = $plan['type'];
-            $this->metal_plan[$id]['locations'] = $plan['locations'];
+            $this->metal_plan[$id] = $plan;
         }
         $this->total_metal_plans = $pa['meta']['total'];
     }

@@ -25,7 +25,7 @@ class SSHKeys
      */
     protected $api;
 
-     /**
+    /**
      * Array of All SSH Key IDs
      *
      * @var array
@@ -83,7 +83,7 @@ class SSHKeys
         }
     }
 
-     /**
+    /**
      * listSSHKeys
      * Lists SSH Keys
      *
@@ -124,7 +124,7 @@ class SSHKeys
         return $this->api->makeAPICall('GET', $this->api::SSH_KEYS_URL . "/" . $id);
     }
 
-     /**
+    /**
      * loadSSHKeys
      * Loads Snapshot Information in to arrays
      *
@@ -138,9 +138,7 @@ class SSHKeys
         foreach ($ka['ssh_keys'] as $key) {
             $id = $key['id'];
             $this->ids[] = $id;
-            $this->sshKey[$id]['date_created'] = $key['date_created'];
-            $this->sshKey[$id]['name'] = $key['name'];
-            $this->sshKey[$id]['ssh_key'] = $key['ssh_key'];
+            $this->sshKey[$id] = $key;
         }
         $this->total_ssh_keys = $ka['meta']['total'];
     }

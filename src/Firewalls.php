@@ -119,10 +119,7 @@ class Firewalls
         foreach ($fw['firewall_groups'] as $fire) {
             $id = $fire['id'];
             $this->ids[] = $fire['id'];
-            $this->fwrga[$id]['desc'] = $fire['description'];
-            $this->fwrga[$id]['instance_count'] = $fire['instance_count'];
-            $this->fwrga[$id]['rule_count'] = $fire['rule_count'];
-            $this->fwrga[$id]['max_rule_count'] = $fire['max_rule_count'];
+            $this->fwrga[$id] = $fire;
         }
         $this->total_rule_groups = $fw['meta']['total'];
     }

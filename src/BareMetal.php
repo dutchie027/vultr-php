@@ -90,29 +90,7 @@ class BareMetal
         foreach ($bma['bare_metals'] as $metal) {
             $id = $metal['id'];
             $this->ids[] = $id;
-            $this->metals[$id]['os'] = $metal['os'];
-            $this->metals[$id]['ram'] = $metal['ram'];
-            $this->metals[$id]['disk'] = $metal['disk'];
-            $this->metals[$id]['main_ip'] = $metal['main_ip'];
-            $this->metals[$id]['cpu_count'] = $metal['cpu_count'];
-            $this->metals[$id]['region'] = $metal['region'];
-            $this->metals[$id]['default_password'] = $metal['default_password'];
-            $this->metals[$id]['date_created'] = $metal['date_created'];
-            $this->metals[$id]['status'] = $metal['status'];
-            $this->metals[$id]['netmask_v4'] = $metal['netmask_v4'];
-            $this->metals[$id]['gateway_v4'] = $metal['gateway_v4'];
-            $this->metals[$id]['plan'] = $metal['plan'];
-            $this->metals[$id]['v6_network'] = $metal['v6_network'];
-            $this->metals[$id]['v6_main_ip'] = $metal['v6_main_ip'];
-            $this->metals[$id]['v6_network_size'] = $metal['v6_network_size'];
-            $this->metals[$id]['label'] = $metal['label'];
-            $this->metals[$id]['mac_address'] = $metal['mac_address'];
-            $this->metals[$id]['tag'] = $metal['tag'];
-            $this->metals[$id]['os_id'] = $metal['os_id'];
-            $this->metals[$id]['app_id'] = $metal['app_id'];
-            foreach ($metal['features'] as $feat) {
-                $this->metals[$id]['feature'][] = $feat;
-            }
+            $this->metals[$id] = $metal;
         }
         $this->bare_metal_count = $bma['meta']['total'];
     }

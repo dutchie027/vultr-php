@@ -25,7 +25,7 @@ class PrivateNetworks
      */
     protected $api;
 
-     /**
+    /**
      * Array of All Private Network IDs
      *
      * @var array
@@ -83,7 +83,7 @@ class PrivateNetworks
         }
     }
 
-     /**
+    /**
      * listPrivateNetworks
      * Lists Private Networks
      *
@@ -124,7 +124,7 @@ class PrivateNetworks
         return $this->api->makeAPICall('GET', $this->api::PRIVATE_NETWORKS_URL . "/" . $id);
     }
 
-     /**
+    /**
      * loadPrivateNetworks
      * Loads Startup Script Information in to arrays
      *
@@ -138,11 +138,7 @@ class PrivateNetworks
         foreach ($pna['networks'] as $net) {
             $id = $net['id'];
             $this->ids[] = $id;
-            $this->privateNetwork[$id]['region'] = $net['region'];
-            $this->privateNetwork[$id]['date_created'] = $net['date_created'];
-            $this->privateNetwork[$id]['description'] = $net['description'];
-            $this->privateNetwork[$id]['v4_subnet'] = $net['v4_subnet'];
-            $this->privateNetwork[$id]['v4_subnet_mask'] = $net['v4_subnet_mask'];
+            $this->privateNetwork[$id] = $net;
         }
         $this->total_private_networks = $pna['meta']['total'];
     }
@@ -205,7 +201,7 @@ class PrivateNetworks
 
     private function checkPrivateIP($ip)
     {
-        $pri_addrs = array (
+        $pri_addrs = array(
             '10.0.0.0|10.255.255.255', // single class A network
             '172.16.0.0|172.31.255.255', // 16 contiguous class B network
             '192.168.0.0|192.168.255.255', // 256 contiguous class C network
@@ -214,9 +210,9 @@ class PrivateNetworks
         $long_ip = ip2long($ip);
         if ($long_ip != -1) {
             foreach ($pri_addrs as $pri_addr) {
-                list ($start, $end) = explode('|', $pri_addr);
+                list($start, $end) = explode('|', $pri_addr);
                 if ($long_ip >= ip2long($start) && $long_ip <= ip2long($end)) {
-                     return true;
+                    return true;
                 }
             }
         }

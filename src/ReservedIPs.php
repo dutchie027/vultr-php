@@ -105,12 +105,7 @@ class ReservedIPs
         foreach ($ipa['reserved_ips'] as $key) {
             $id = $key['id'];
             $this->ids[] = $id;
-            $this->reservedIP[$id]['region'] = $key['region'];
-            $this->reservedIP[$id]['ip_type'] = $key['ip_type'];
-            $this->reservedIP[$id]['subnet'] = $key['subnet'];
-            $this->reservedIP[$id]['subnet_size'] = $key['subnet_size'];
-            $this->reservedIP[$id]['label'] = $key['label'];
-            $this->reservedIP[$id]['instance_id'] = $key['instance_id'];
+            $this->reservedIP[$id] = $key;
         }
         $this->total_reserved_ips = $ipa['meta']['total'];
     }

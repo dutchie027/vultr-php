@@ -160,12 +160,7 @@ class ISO
         foreach ($ia['isos'] as $iso) {
             $id = $iso['id'];
             $this->ids[] = $id;
-            $this->isos[$id]['date_created'] = $iso['date_created'];
-            $this->isos[$id]['filename'] = $iso['filename'];
-            $this->isos[$id]['size'] = $iso['size'];
-            $this->isos[$id]['md5sum'] = $iso['md5sum'];
-            $this->isos[$id]['sha512sum'] = $iso['sha512sum'];
-            $this->isos[$id]['status'] = $iso['status'];
+            $this->isos[$id] = $iso;
         }
         $this->total_isos = $ia['meta']['total'];
     }

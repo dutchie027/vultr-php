@@ -26,6 +26,49 @@ class LoadBalancers
     protected $api;
 
     /**
+     * Array of All Reserved IP IDs
+     *
+     * @var array
+     */
+    public $ids = [];
+
+    /**
+     * Array of IP Information
+     *
+     * @var array
+     */
+    public $loadBalancer = [];
+
+    /**
+     * Count of Total IPs
+     *
+     * @var int
+     */
+    protected $total_load_balancers;
+
+    /**
+     * Frontend Protocols
+     *
+     * @var array
+     */
+    private $frontend_proto = [
+        "HTTP",
+        "HTTPS",
+        "TCP",
+    ];
+
+    /**
+     * Backend Protocols
+     *
+     * @var array
+     */
+    private $backend_proto = [
+        "HTTP",
+        "HTTPS",
+        "TCP",
+    ];
+
+    /**
      * __construct
      * Takes reference from \API
      *
@@ -37,5 +80,233 @@ class LoadBalancers
     public function __construct(API $api)
     {
         $this->api = $api;
+        $this->loadLoadBalancers();
+    }
+
+    /**
+     * listIds
+     * Prints Instance IDs to stdout
+     *
+     *
+     * @return void
+     *
+     */
+    public function listIds()
+    {
+        foreach ($this->ids as $id) {
+            print $id . PHP_EOL;
+        }
+    }
+
+    /**
+     * listLoadBalancers
+     * List all Reserved IPs in your account.
+     *
+     *
+     * @return string
+     *
+     * @see https://www.vultr.com/api/v2/#operation/list-load-balancers
+     *
+     */
+    public function listLoadBalancers()
+    {
+        return $this->api->makeAPICall('GET', $this->api::LOAD_BALANCERS_URL);
+    }
+
+    /**
+     * loadReservedIPs
+     * Loads Reserved IP Information in to arrays
+     *
+     *
+     * @return void
+     *
+     */
+    public function loadLoadBalancers()
+    {
+        $lba = json_decode($this->listLoadBalancers(), true);
+        foreach ($lba['load_balancers'] as $key) {
+            $id = $key['id'];
+            $this->ids[] = $id;
+            $this->loadBalancer[$id] = $key;
+        }
+        $this->total_load_balancers = $lba['meta']['total'];
+    }
+
+    /**
+     * getLoadBalancer
+     * Get information for a Load Balancer.
+     *
+     *
+     * @return string
+     *
+     * @see https://www.vultr.com/api/v2/#operation/get-load-balancer
+     *
+     */
+    public function getLoadBalancer($id)
+    {
+        return $this->api->makeAPICall('GET', $this->api::LOAD_BALANCERS_URL . "/" . $id);
+    }
+
+    /**
+     * deleteLoadBalancer
+     * Delete a Load Balancer.
+     *
+     *
+     * @return string
+     *
+     * @see https://www.vultr.com/api/v2/#operation/delete-load-balancer
+     *
+     */
+    public function deleteLoadBalancer($id)
+    {
+        return $this->api->makeAPICall('DELETE', $this->api::LOAD_BALANCERS_URL . "/" . $id);
+    }
+
+
+    /**
+     * listForwardingRules
+     * List the fowarding rules for a Load Balancer.
+     *
+     *
+     * @return string
+     *
+     * @see https://www.vultr.com/api/v2/#operation/list-load-balancer-forwarding-rules
+     *
+     */
+    public function listForwardingRules($id)
+    {
+        $url = $this->api::LOAD_BALANCERS_URL . "/" . $id . "/forwarding-rules";
+        return $this->api->makeAPICall('GET', $url);
+    }
+
+    /**
+     * createForwardingRule
+     * List the fowarding rules for a Load Balancer.
+     *
+     *
+     * @return string
+     *
+     * @see https://www.vultr.com/api/v2/#operation/create-load-balancer-forwarding-rules
+     *
+     */
+    public function createForwardingRule($oa)
+    {
+        $this->checkLoadBalancer($oa['load-balancer-id']);
+        if (!isset($oa['frontend_protocol']) || !in_array($oa['frontend_protocol'], $this->frontend_proto)) {
+            print "Front End Protocol Missing or Invalid";
+            exit;
+        }
+        if (!isset($oa['backend_protocol']) || !in_array($oa['backend_protocol'], $this->backend_proto)) {
+            print "Front End Protocol Missing or Invalid";
+            exit;
+        }
+        if (!isset($oa['frontend_port']) || $oa['frontend_port'] > 65535 || $oa['frontend_port'] < 1) {
+            print "frontend port invalid";
+            exit;
+        }
+        if (!isset($oa['backend_port']) || $oa['backend_port'] > 65535 || $oa['backend_port'] < 1) {
+            print "backend port invalid";
+            exit;
+        }
+        $ba['frontend_protocol'] = $oa['frontend_protocol'];
+        $ba['backend_protocol'] = $oa['backend_protocol'];
+        $ba['frontend_port'] = $oa['frontend_port'];
+        $ba['backend_port'] = $oa['backend_port'];
+        $body = json_encode($ba);
+        $url = $this->api::LOAD_BALANCERS_URL . "/" . $oa['load-balancer-id'] . "/forwarding-rules";
+        return $this->api->makeAPICall('POST', $url, $body);
+    }
+
+    // TODO: Add more check logic to ensure the rule id exists first
+    /**
+     * getForwardingRule
+     * List the fowarding rules for a Load Balancer.
+     *
+     *
+     * @return string
+     *
+     * @see https://www.vultr.com/api/v2/#operation/get-load-balancer-forwarding-rule
+     *
+     */
+    public function getForwardingRule($oa)
+    {
+        $this->checkLoadBalancer($oa['load-balancer-id']);
+        // TODO: Check to ensure the rule here is right
+        $lbid = $oa['load-balancer-id'];
+        $rid = $oa['forwarding-rule-id'];
+        $url = $this->api::LOAD_BALANCERS_URL . "/" . $lbid . "/forwarding-rules/" . $rid;
+        return $this->api->makeAPICall('GET', $url);
+    }
+
+    // TODO: Add more check logic to ensure the rule id exists first
+    /**
+     * deleteForwardingRule
+     * List the fowarding rules for a Load Balancer.
+     *
+     *
+     * @return string
+     *
+     * @see https://www.vultr.com/api/v2/#operation/delete-load-balancer-forwarding-rule
+     *
+     */
+    public function deleteForwardingRule($oa)
+    {
+        $this->checkLoadBalancer($oa['load-balancer-id']);
+        // TODO: Check to ensure the rule here is right
+        $lbid = $oa['load-balancer-id'];
+        $rid = $oa['forwarding-rule-id'];
+        $url = $this->api::LOAD_BALANCERS_URL . "/" . $lbid . "/forwarding-rules/" . $rid;
+        return $this->api->makeAPICall('DELETE', $url);
+    }
+
+    /**
+     * checkLoadBalancer
+     * Checks's if a Load Balancer ID is valid or not
+     *
+     * @var string $id
+     *
+     * @return bool
+     *
+     */
+    public function checkLoadBalancer($id)
+    {
+        if (in_array($id, $this->ids)) {
+            return true;
+        } else {
+            print "Load Balancer ID Not Found";
+            exit;
+        }
+    }
+
+    // TODO: Stubbed Out but Not finished
+    /**
+     * createLoadBalancer
+     * Create a new Load Balancer in a particular region.
+     *
+     * @var string $id
+     *
+     * @return bool
+     * 
+     * @see https://www.vultr.com/api/v2/#operation/create-load-balancer
+     *
+     */
+    public function createLoadBalancer($oa)
+    {
+    }
+
+    // TODO: Stubbed Out but Not finished
+    /**
+     * updateLoadBalancer
+     * Create a new Load Balancer in a particular region.
+     *
+     * @var string $id
+     *
+     * @return bool
+     * 
+     * @see https://www.vultr.com/api/v2/#operation/update-load-balancer
+     *
+     */
+    public function updateLoadBalancer($oa)
+    {
     }
 }

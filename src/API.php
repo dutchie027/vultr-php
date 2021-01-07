@@ -28,7 +28,7 @@ class API
      *
      * @const string
      */
-    protected const LIBRARY_VERSION = '1.1.0';
+    protected const LIBRARY_VERSION = '1.9.0';
 
     /**
      * Root of the API

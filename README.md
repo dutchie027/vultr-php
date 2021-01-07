@@ -38,7 +38,7 @@ The library has the following classes (strikethrough denotes not fully completed
 * Firewalls
 * Instances
 * ISO
-* ~~LoadBalancers~~
+* LoadBalancers
 * ObjectStorage
 * OperatingSystems
 * Plans

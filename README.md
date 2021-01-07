@@ -27,7 +27,7 @@ $api = new dutchie027\Vultr\API(VULTR_API_KEY);
 
 ### Class Listing
 
-The library has the following classes (strikethrough denotes not fully completed yet):
+The library has the following classes:
 
 * [Account](/docs/Account.md)
 * [API](/docs/API.md)

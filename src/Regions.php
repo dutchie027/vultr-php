@@ -88,6 +88,13 @@ class Regions
     public $ddos_flag = "ddos_protection";
 
     /**
+     * Cached region data.
+     *
+     * @var array
+     */
+    private $region_data = [];
+
+    /**
      * __construct
      * Main Construct - Loads Regions in to arrays and creates reference
      * from main API class
@@ -116,6 +123,14 @@ class Regions
         return $this->api->makeAPICall('GET', $this->api::REGIONS_URL);
     }
 
+    public function getRegions() {
+        $build_data = array();
+        foreach ($this->region_data['regions'] as $line) {
+            $build_data['id'] = $line;
+        }
+        return $build_data;
+    }
+
     /**
      * loadRegionArrays
      * Loads arrays with region information
@@ -126,7 +141,7 @@ class Regions
      */
     public function loadRegionArrays()
     {
-        $data = json_decode($this->listRegions(), true);
+        $this->region_data = $data = json_decode($this->listRegions(), true);
         foreach ($data['regions'] as $line) {
             $this->ids[] = $line['id'];
             $this->cities[] = $line['city'];

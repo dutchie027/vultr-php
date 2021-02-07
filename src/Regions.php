@@ -123,10 +123,19 @@ class Regions
         return $this->api->makeAPICall('GET', $this->api::REGIONS_URL);
     }
 
-    public function getRegions() {
+    /**
+     * getRegions
+     * Gets the regions with associated data from API
+     *
+     *
+     * @return array
+     *
+     */
+    public function getRegions()
+    {
         $build_data = array();
         foreach ($this->region_data['regions'] as $line) {
-            $build_data['id'] = $line;
+            $build_data[$line['id']] = $line;
         }
         return $build_data;
     }

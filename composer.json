@@ -6,7 +6,8 @@
     "require": {
         "monolog/monolog": "^2.2",
         "guzzlehttp/guzzle": "^7.2",
-        "aws/aws-sdk-php": "^3.171"
+        "aws/aws-sdk-php": "^3.171",
+        "ext-json": "*"
     },
     "autoload": {
         "psr-4": {

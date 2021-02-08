@@ -15,6 +15,8 @@
 
 namespace dutchie027\Vultr;
 
+use dutchie027\Vultr\Exceptions\InvalidParameterException;
+
 class SSHKeys
 {
 
@@ -142,14 +144,12 @@ class SSHKeys
         if (in_array($oa['id'], $this->ids)) {
             $url = $this->api::SSH_KEYS_URL . "/" . $oa['id'];
         } else {
-            print "That SSH Key ID isn't associated with your account";
-            exit;
+            throw new InvalidParameterException("That SSH Key ID isn't associated with your account");
         }
         (isset($oa['name'])) ? $ba['name'] = $oa['name'] : null;
         (isset($oa['ssh_key'])) ? $ba['ssh_key'] = $oa['ssh_key'] : null;
         if (!isset($ba['name']) && !isset($ba['ssh_key'])) {
-            print "You didn't provide any details to update - either a new key or a new description";
-            exit;
+            throw new InvalidParameterException("You didn't provide any details to update - either a new key or a new description");
         } else {
             $body = json_encode($ba);
             return $this->api->makeAPICall('PATCH', $url, $body);
@@ -168,16 +168,13 @@ class SSHKeys
     public function createSSHKey($oa)
     {
         if (!isset($oa['name'])) {
-            print "Missing a name for your SSH Key";
-            exit;
+            throw new InvalidParameterException("Missing a name for your SSH Key");
         }
         if (!isset($oa['ssh_key'])) {
-            print "Missing an SSH Key";
-            exit;
+            throw new InvalidParameterException("Missing an SSH Key");
         }
         if (!$this->validateKey($oa['ssh_key'])) {
-            print "Key is not a valid SSH Key";
-            exit;
+            throw new InvalidParameterException("Key is not a valid SSH Key");
         }
         $ba['ssh_key'] = $oa['ssh_key'];
         $ba['name'] = $oa['name'];

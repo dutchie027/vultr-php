@@ -15,6 +15,8 @@
 
 namespace dutchie027\Vultr;
 
+use dutchie027\Vultr\Exceptions\InvalidParameterException;
+
 class DNS
 {
 
@@ -190,12 +192,11 @@ class DNS
     public function getRecord($oa)
     {
         if (!isset($oa['domain'])) {
-            print "Domain Not Set";
+            throw new InvalidParameterException("Domain Not Set");
         }
         $this->validateDomain($oa['domain']);
         if (!isset($oa['id'])) {
-            print "id not set";
-            exit;
+            throw new InvalidParameterException("ID not set");
         }
         $url = $this->api::DNS_URL . "/" . $oa['domain'] . "/records/" . $oa['id'];
         return $this->api->makeAPICall('GET', $url);
@@ -213,12 +214,11 @@ class DNS
     public function deleteRecord($oa)
     {
         if (!isset($oa['domain'])) {
-            print "Domain Not Set";
+            throw new InvalidParameterException("Domain Not Set");
         }
         $this->validateDomain($oa['domain']);
         if (!isset($oa['id'])) {
-            print "id not set";
-            exit;
+            throw new InvalidParameterException("ID not set");
         }
         $url = $this->api::DNS_URL . "/" . $oa['domain'] . "/records/" . $oa['id'];
         return $this->api->makeAPICall('DELETE', $url);
@@ -236,16 +236,14 @@ class DNS
     public function updateDomain($oa)
     {
         if (!isset($oa['domain'])) {
-            print "Domain Not Set";
+            throw new InvalidParameterException("Domain Not Set");
         }
         $this->validateDomain($oa['domain']);
         if (!isset($oa['dns_sec'])) {
-            print "dns_sec not set";
-            exit;
+            throw new InvalidParameterException("dns_sec not set");
         }
         if (!in_array($oa['dns_sec'], $this->valid_dnssec)) {
-            print "dns_sec must be enabled/disabled. It's not one of those";
-            exit;
+            throw new InvalidParameterException("dns_sec must be enabled/disabled. It's not one of those");
         }
         $ba['dns_sec'] = $oa['dns_sec'];
         $body = json_encode($ba);
@@ -265,14 +263,13 @@ class DNS
     {
         $execute = false;
         if (!isset($oa['domain'])) {
-            print "Domain Not Set";
+            throw new InvalidParameterException("Domain Not Set");
         }
         $this->validateDomain($oa['domain']);
         $url = $this->api::DNS_URL . "/" . $oa['domain'] . "/soa";
         if (isset($oa['email'])) {
             if (!filter_var($oa['email'], FILTER_VALIDATE_EMAIL)) {
-                print "Email is invalid";
-                exit;
+                throw new InvalidParameterException("Email is invalid");
             } else {
                 $execute = true;
                 $ba['email'] = $oa['email'];
@@ -281,8 +278,7 @@ class DNS
 
         if (isset($oa['nsprimary'])) {
             if (!filter_var($oa['nsprimary'], FILTER_VALIDATE_DOMAIN)) {
-                print "NS Primary Is Invalid";
-                exit;
+                throw new InvalidParameterException("NS Primary Is Invalid");
             } else {
                 $execute = true;
                 $ba['nsprimary'] = $oa['nsprimary'];
@@ -307,20 +303,17 @@ class DNS
     {
         $ba['dns_sec'] = $this->d_dns_sec;
         if (!isset($oa['domain'])) {
-            print "Domain is not set";
-            exit;
+            throw new InvalidParameterException("Domain is not set");
         }
         $this->validateDomain($oa['domain']);
         $ba['domain'] = $oa['domain'];
         if (isset($oa['ip']) && !filter_var($oa['ip'], FILTER_VALIDATE_IP)) {
-            print "IP is set but is invalid";
-            exit;
+            throw new InvalidParameterException("IP is set but is invalid");
         } elseif (isset($oa['ip']) && filter_var($oa['ip'], FILTER_VALIDATE_IP)) {
             $ba['ip'] = $oa['ip'];
         }
         if (isset($oa['dns_sec']) && !in_array($oa['dns_sec'], $this->valid_dnssec)) {
-            print "DNS SEC is set but is not a valud option (enabled/disabled)";
-            exit;
+            throw new InvalidParameterException("DNS SEC is set but is not a valud option (enabled/disabled)");
         } elseif (isset($oa['dns_sec'])) {
             $ba['dns_sec'] = $oa['dns_sec'];
         }
@@ -341,43 +334,35 @@ class DNS
     {
         $ba['ttl'] = $this->d_ttl;
         if (!isset($oa['domain'])) {
-            print "Domain is not set";
-            exit;
+            throw new InvalidParameterException("Domain is not set");
         }
         $this->validateDomain($oa['domain']);
         $url = $this->api::DNS_URL . "/" . $oa['domain'] . "/records";
         if (!isset($oa['type'])) {
-            print "Type is required";
-            exit;
+            throw new InvalidParameterException("Type is required");
         }
         if (!in_array($oa['type'], $this->valid_types)) {
-            print "Invalid Type";
-            exit;
+            throw new InvalidParameterException("Invalid Type");
         }
         if (in_array($oa['type'], $this->priority_records)) {
             if (!isset($oa['priority']) || !is_numeric($oa['priority'])) {
-                print "Priority must be set and be numeric if you use the type you used";
-                exit;
+                throw new InvalidParameterException("Priority must be set and be numeric if you use the type you used");
             } else {
                 $ba['priority'] = $oa['priority'];
             }
         }
         if (!isset($oa['data'])) {
-            print "Data is required";
-            exit;
+            throw new InvalidParameterException("Data is required");
         }
         if (!isset($oa['name'])) {
-            print "Name is required";
-            exit;
+            throw new InvalidParameterException("Name is required");
         }
         if ($oa['type'] == "A" && !filter_var($oa['data'], FILTER_VALIDATE_IP)) {
-            print "Type is A but data is not a valid IP";
-            exit;
+            throw new InvalidParameterException("Type is A but data is not a valid IP");
         }
         if (isset($oa['ttl'])) {
             if (!is_numeric($oa['ttl'])) {
-                print "TTL must be numeric";
-                exit;
+                throw new InvalidParameterException("TTL must be numeric");
             }
             $ba['ttl'] = $oa['ttl'];
         }
@@ -401,12 +386,10 @@ class DNS
     {
         $exe = false;
         if (!isset($oa['domain'])) {
-            print "Domain is not set";
-            exit;
+            throw new InvalidParameterException("Domain is not set");
         }
         if (!isset($oa['id'])) {
-            print "ID is not set";
-            exit;
+            throw new InvalidParameterException("ID is not set");
         }
         $this->validateDomain($oa['domain']);
         $url = $this->api::DNS_URL . "/" . $oa['domain'] . "/records/" . $oa['id'];
@@ -420,16 +403,14 @@ class DNS
         }
         if (isset($oa['ttl'])) {
             if (!is_numeric($oa['ttl'])) {
-                print "TTL must be numeric";
-                exit;
+                throw new InvalidParameterException("TTL must be numeric");
             }
             $ba['ttl'] = $oa['ttl'];
             $exe = true;
         }
         if (isset($oa['priority'])) {
             if (!is_numeric($oa['priority'])) {
-                print "priority must be numeric";
-                exit;
+                throw new InvalidParameterException("Priority must be numeric");
             }
             $ba['priority'] = $oa['priority'];
             $exe = true;
@@ -443,8 +424,7 @@ class DNS
     private function validateDomain($domain)
     {
         if (!preg_match("/([0-9a-z-]+\.)?[0-9a-z-]+\.[a-z]{2,7}/", $domain)) {
-            print "Domain is not valid";
-            exit;
+            throw new InvalidParameterException("Domain is not valid");
         }
         return true;
     }

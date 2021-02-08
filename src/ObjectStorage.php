@@ -15,6 +15,8 @@
 
 namespace dutchie027\Vultr;
 
+use dutchie027\Vultr\Exceptions\InvalidParameterException;
+
 class ObjectStorage
 {
     /**
@@ -162,13 +164,13 @@ class ObjectStorage
             if (in_array($options['cluster_id'], $this->ids)) {
                 $ba['cluster_id'] = $options['cluster_id'];
             } else {
-                print "Bad Cluster ID";
+                throw new InvalidParameterException("Bad Cluster ID");
             }
         } elseif (isset($options['region'])) {
             if (in_array($options['region'], $this->regions)) {
                 $ba['cluster_id'] = $this->region_map[$options['region']];
             } else {
-                print "Bad Region";
+                throw new InvalidParameterException("Bad Region");
             }
         }
 
@@ -191,8 +193,7 @@ class ObjectStorage
         if (in_array($oid, $this->storage_ids)) {
             return $this->api->makeAPICall('GET', $this->api::OBJECT_STORAGE_URL . "/" . $oid);
         } else {
-            print "That Storage ID isn't associated with your account";
-            exit;
+            throw new InvalidParameterException("That Storage ID isn't associated with your account");
         }
     }
 
@@ -210,8 +211,7 @@ class ObjectStorage
         if (in_array($oid, $this->storage_ids)) {
             return $this->api->makeAPICall('DELETE', $this->api::OBJECT_STORAGE_URL . "/" . $oid);
         } else {
-            print "That Storage ID isn't associated with your account";
-            exit;
+            throw new InvalidParameterException("That Storage ID isn't associated with your account");
         }
     }
 
@@ -229,8 +229,7 @@ class ObjectStorage
         if (in_array($oid, $this->storage_ids)) {
             $url = $this->api::OBJECT_STORAGE_URL . "/" . $oid . "/regenerate-keys";
         } else {
-            print "That Storage ID isn't associated with your account";
-            exit;
+            throw new InvalidParameterException("That Storage ID isn't associated with your account");
         }
         return $this->api->makeAPICall('POST', $url);
     }
@@ -249,8 +248,7 @@ class ObjectStorage
         if (in_array($options['object_id'], $this->storage_ids)) {
             $url = $this->api::OBJECT_STORAGE_URL . "/" . $options['object_id'];
         } else {
-            print "That Storage ID isn't associated with your account";
-            exit;
+            throw new InvalidParameterException("That Storage ID isn't associated with your account");
         }
         $ba['label'] = $this->d_label;
         (isset($options['label'])) ? $ba['label'] = $options['label'] : null;

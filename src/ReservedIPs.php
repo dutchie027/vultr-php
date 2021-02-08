@@ -15,6 +15,8 @@
 
 namespace dutchie027\Vultr;
 
+use dutchie027\Vultr\Exceptions\InvalidParameterException;
+
 class ReservedIPs
 {
 
@@ -142,14 +144,12 @@ class ReservedIPs
     public function createReservedIP($oa)
     {
         if (!isset($oa['region']) || !in_array($oa['region'], $this->api->regions()->ids)) {
-            print "Invalid Region";
-            exit;
+            throw new InvalidParameterException("Invalid Region");
         } else {
             $ba['region'] = $oa['region'];
         }
         if (!isset($oa['ip_type']) || !preg_match("/v[46]/", $oa['ip_type'])) {
-            print "Invalid IP Type";
-            exit;
+            throw new InvalidParameterException("Invalid IP Type");
         } else {
             $ba['ip_type'] = $oa['ip_type'];
         }
@@ -172,14 +172,12 @@ class ReservedIPs
     public function attachReservedIP($oa)
     {
         if (!isset($oa['instance_id']) || !$this->api->instances()->checkInstanceId($oa['instance_id'])) {
-            print "Invalid or Missing Instance ID";
-            exit;
+            throw new InvalidParameterException("Invalid or Missing Instance ID");
         } else {
             $ba['instance_id'] = $oa['instance_id'];
         }
         if (!isset($oa['reserved_ip']) || !$this->checkReservedIP($oa['reserved_ip'])) {
-            print "Invalid or Missing Instance IP";
-            exit;
+            throw new InvalidParameterException("Invalid or Missing Instance IP");
         } else {
             $ip = $oa['reserved_ip'];
         }
@@ -218,8 +216,7 @@ class ReservedIPs
     public function convertInstanceIPToReservedIP($oa)
     {
         if (!isset($oa['ip_address']) || !$this->checkReservedIP($oa['ip_address'])) {
-            print "Invalid or Missing IP";
-            exit;
+            throw new InvalidParameterException("Invalid or Missing IP");
         } else {
             $ba['ip_address'] = $oa['ip_address'];
         }
@@ -243,8 +240,7 @@ class ReservedIPs
         if (in_array($id, $this->ids)) {
             return true;
         } else {
-            print "IP Not Found";
-            exit;
+            throw new InvalidParameterException("IP Not Found");
         }
     }
 }

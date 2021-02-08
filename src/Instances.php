@@ -15,6 +15,8 @@
 
 namespace dutchie027\Vultr;
 
+use dutchie027\Vultr\Exceptions\InvalidParameterException;
+
 class Instances
 {
     /**
@@ -83,14 +85,12 @@ class Instances
     {
         $hasOS = false;
         if (!isset($oa['region']) || !in_array($oa['region'], $this->api->regions()->ids)) {
-            print "Invalid Region";
-            exit;
+            throw new InvalidParameterException("Invalid Region");
         } else {
             $ba['region'] = $oa['region'];
         }
         if (!isset($oa['plan']) || !in_array($oa['plan'], $this->api->plans()->ids)) {
-            print "Invalid Plan";
-            exit;
+            throw new InvalidParameterException("Invalid Plan");
         } else {
             $ba['plan'] = $oa['plan'];
         }
@@ -111,8 +111,7 @@ class Instances
             $ba['app_id'] = $oa['app_id'];
         }
         if (!$hasOS) {
-            print "A Valid OS (os_id, iso_id, snapshot_id or app_id) is missing";
-            exit;
+            throw new InvalidParameterException("A Valid OS (os_id, iso_id, snapshot_id or app_id) is missing")
         }
         (isset($oa['ipxe_chain_url'])) ? $ba['ipxe_chain_url'] = $oa['ipxe_chain_url'] : null;
         (isset($oa['label'])) ? $ba['label'] = $oa['label'] : null;
@@ -129,8 +128,7 @@ class Instances
         }
         if (isset($oa['ddos_protection']) && $oa['ddos_protection'] == true) {
             if (!in_array($oa['region'], $this->api->regions()->ddos_ids)) {
-                print "You chose to set DDOS, but the region is not capable of it";
-                exit;
+                throw new InvalidParameterException("You chose to set DDOS, but the region is not capable of it")
             }
             $ba['ddos_protection'] = true;
         } else {
@@ -143,13 +141,11 @@ class Instances
         }
         if (isset($oa['enable_private_network']) && $oa['enable_private_network'] == true) {
             if (!isset($oa['attach_private_network']) || !is_array($oa['attach_private_network'])) {
-                print "You chose to enable private networks but you didn't provide one or it's not an array";
-                exit;
+                throw new InvalidParameterException("You chose to enable private networks but you didn't provide one or it's not an array")
             }
             foreach ($oa['attach_private_network'] as $pnet) {
                 if (!in_array($pnet, $this->api->privateNetworks()->ids)) {
-                    print "Private Network Not Found";
-                    exit;
+                    throw new InvalidParameterException("Private Network Not Found")
                 }
             }
             $ba['enable_private_network'] = true;
@@ -160,26 +156,22 @@ class Instances
         if (isset($oa['sshkey_id']) && in_array($oa['sshkey_id'], $this->api->sshKeys()->ids)) {
             $ba['sshkey_id'] = $oa['sshkey_id'];
         } elseif (isset($oa['sshkey_id']) && !in_array($oa['sshkey_id'], $this->api->sshKeys()->ids)) {
-            print "You provided an SSH Key ID and it's not part of your account";
-            exit;
+            throw new InvalidParameterException("You provided an SSH Key ID and it's not part of your account");
         }
         if (isset($oa['script_id']) && in_array($oa['script_id'], $this->api->startupScripts()->ids)) {
             $ba['script_id'] = $oa['script_id'];
         } elseif (isset($oa['script_id']) && !in_array($oa['script_id'], $this->api->startupScripts()->ids)) {
-            print "You provided an Startup Script and it's not part of your account";
-            exit;
+            throw new InvalidParameterException("You provided an Startup Script and it's not part of your account");
         }
         if (isset($oa['firewall_group_id']) && in_array($oa['firewall_group_id'], $this->api->firewalls()->ids)) {
             $ba['firewall_group_id'] = $oa['firewall_group_id'];
         } elseif (isset($oa['firewall_group_id']) && !in_array($oa['firewall_group_id'], $this->api->firewalls()->ids)) {
-            print "You provided a Firewall ID that is not part of your account";
-            exit;
+            throw new InvalidParameterException("You provided a Firewall ID that is not part of your account");
         }
         if (isset($oa['reserved_ipv4']) && in_array($oa['reserved_ipv4'], $this->api->reservedIPs()->ids)) {
             $ba['reserved_ipv4'] = $oa['reserved_ipv4'];
         } elseif (isset($oa['reserved_ipv4']) && !in_array($oa['reserved_ipv4'], $this->api->reservedIPs()->ids)) {
-            print "You provided a Reserved IP and it's not part of your account";
-            exit;
+            throw new InvalidParameterException("You provided a Reserved IP and it's not part of your account");
         }
         if (isset($oa['user_data'])) {
             $ba['user_data'] = $oa['user_data'];
@@ -242,8 +234,7 @@ class Instances
         if (isset($oa['firewall_group_id']) && in_array($oa['firewall_group_id'], $this->api->firewalls()->ids)) {
             $ba['firewall_group_id'] = $oa['firewall_group_id'];
         } elseif (isset($oa['firewall_group_id']) && !in_array($oa['firewall_group_id'], $this->api->firewalls()->ids)) {
-            print "You provided a Firewall ID that is not part of your account";
-            exit;
+            throw new InvalidParameterException("You provided a Firewall ID that is not part of your account");
         }
         if (isset($oa['user_data'])) {
             $ba['user_data'] = $oa['user_data'];
@@ -252,13 +243,11 @@ class Instances
         if (isset($oa['plan']) && in_array($oa['plan'], $this->api->plans()->ids)) {
             $ba['plan'] = $oa['plan'];
         } elseif (isset($oa['plan'])) {
-            print "Invalid Plan";
-            exit;
+            throw new InvalidParameterException("Invalid Plan");
         }
         if (isset($oa['ddos_protection']) && $oa['ddos_protection'] == true) {
             if (!in_array($oa['region'], $this->api->regions()->ddos_ids)) {
-                print "You chose to set DDOS, but the region is not capable of it";
-                exit;
+                throw new InvalidParameterException("You chose to set DDOS, but the region is not capable of it");
             }
             $ba['ddos_protection'] = true;
         } elseif (isset($oa['ddos_protection']) && $oa['ddos_protection'] == false) {
@@ -266,13 +255,11 @@ class Instances
         }
         if (isset($oa['enable_private_network']) && $oa['enable_private_network'] == true) {
             if (!isset($oa['attach_private_network']) || !is_array($oa['attach_private_network'])) {
-                print "You chose to enable private networks but you didn't provide one or it's not an array";
-                exit;
+                throw new InvalidParameterException("You chose to enable private networks but you didn't provide one or it's not an array");
             }
             foreach ($oa['attach_private_network'] as $pnet) {
                 if (!in_array($pnet, $this->api->privateNetworks()->ids)) {
-                    print "Private Network Not Found";
-                    exit;
+                    throw new InvalidParameterException("Private Network Not Found");
                 }
             }
             $ba['enable_private_network'] = true;
@@ -281,8 +268,7 @@ class Instances
         if (isset($oa['detach_private_network']) && is_array($oa['detach_private_network'])) {
             $ba['detach_private_network'] = $oa['detach_private_network'];
         } elseif (isset($oa['detach_private_network']) && !is_array($oa['detach_private_network'])) {
-            print "Detatch Networks Is Not Valid";
-            exit;
+            throw new InvalidParameterException("Detatch Networks Is Not Valid");
         }
         $body = json_encode($ba);
         return $this->api->makeAPICall('PATCH', $this->api::INSTANCES_URL . "/" . $oa['id'], $body);
@@ -469,8 +455,7 @@ class Instances
     {
         $this->checkInstanceId($oa['id']);
         if (!isset($oa['iso_id']) || !in_array($oa['iso_id'], $this->api->iso()->ids)) {
-            print "ISO Not Found";
-            exit;
+            throw new InvalidParameterException("ISO Not Found");
         }
         $ba['iso_id'] = $oa['iso_id'];
         $body = json_encode($ba);
@@ -505,8 +490,7 @@ class Instances
     {
         $this->checkInstanceId($oa['id']);
         if (!isset($oa['network_id']) || !in_array($oa['network_id'], $this->api->privateNetworks()->ids)) {
-            print "Network ID Not Found";
-            exit;
+            throw new InvalidParameterException("Network ID Not Found");
         }
         $url = $this->api::INSTANCES_URL . "/" . $oa['id'] . "/private-networks/attach";
         $ba['network_id'] = $oa['network_id'];
@@ -527,8 +511,7 @@ class Instances
     {
         $this->checkInstanceId($oa['id']);
         if (!isset($oa['network_id']) || !in_array($oa['network_id'], $this->api->privateNetworks()->ids)) {
-            print "Network ID Not Found";
-            exit;
+            throw new InvalidParameterException("Network ID Not Found");
         }
         $url = $this->api::INSTANCES_URL . "/" . $oa['id'] . "/private-networks/detach";
         $ba['network_id'] = $oa['network_id'];
@@ -549,50 +532,42 @@ class Instances
     {
         $this->checkInstanceId($oa['id']);
         if (!isset($oa['type'])) {
-            print "Backup Type Missing";
-            exit;
+            throw new InvalidParameterException("Backup Type Missing");
         }
         if ($oa['type'] == "daily") {
             if (!isset($oa['hour']) || !is_numeric($oa['hour']) || $oa['hour'] > 24 || $oa['hour'] < 0) {
-                print "Hour is invalid";
-                exit;
+                throw new InvalidParameterException("Hour is invalid");
             }
             $ba['type'] = $oa['type'];
             $ba['hour'] = $oa['hour'];
         } elseif ($oa['type'] == "weekly") {
             if (!isset($oa['hour']) || !is_numeric($oa['hour']) || $oa['hour'] > 24 || $oa['hour'] < 0) {
-                print "Hour is invalid";
-                exit;
+                throw new InvalidParameterException("Hour is invalid");
             }
             if (!isset($oa['dow']) || !is_numeric($oa['dow']) || $oa['dow'] > 7 || $oa['dow'] < 0) {
-                print "Day of Week (dow) is invalid";
-                exit;
+                throw new InvalidParameterException("Day of Week (dow) is invalid");
             }
             $ba['type'] = $oa['type'];
             $ba['hour'] = $oa['hour'];
             $ba['dow'] = $oa['dow'];
         } elseif ($oa['type'] == "monthly") {
             if (!isset($oa['hour']) || !is_numeric($oa['hour']) || $oa['hour'] > 24 || $oa['hour'] < 0) {
-                print "Hour is invalid";
-                exit;
+                throw new InvalidParameterException("Hour is invalid");
             }
             if (!isset($oa['dom']) || !is_numeric($oa['dom']) || $oa['dom'] > 28 || $oa['dom'] < 1) {
-                print "Day of Month (dom) is invalid";
-                exit;
+                throw new InvalidParameterException("Day of Month (dom) is invalid");
             }
             $ba['type'] = $oa['type'];
             $ba['hour'] = $oa['hour'];
             $ba['dom'] = $oa['dom'];
         } elseif ($oa['type'] == "daily_alt_even" || $oa['type'] == "daily_alt_odd") {
             if (!isset($oa['hour']) || !is_numeric($oa['hour']) || $oa['hour'] > 24 || $oa['hour'] < 0) {
-                print "Hour is invalid";
-                exit;
+                throw new InvalidParameterException("Hour is invalid");
             }
             $ba['type'] = $oa['type'];
             $ba['hour'] = $oa['hour'];
         } else {
-            print "Type is invalid";
-            exit;
+            throw new InvalidParameterException("Type is invalid");
         }
         $body = json_encode($ba);
         return $this->api->makeAPICall('POST', $this->api::INSTANCES_URL . "/" . $oa['id'] . "/backup-schedule", $body);
@@ -635,8 +610,7 @@ class Instances
             $ba['backup_id'] = $oa['backup_id'];
         }
         if (!$hasOS) {
-            print "A Valid OS (snapshot_id or backup_id) is missing";
-            exit;
+            throw new InvalidParameterException("A Valid OS (snapshot_id or backup_id) is missing");
         }
         $body = json_encode($ba);
         return $this->api->makeAPICall('POST', $this->api::INSTANCES_URL . "/" . $oa['id'] . "/restore", $body);
@@ -707,12 +681,10 @@ class Instances
     {
         $this->checkInstanceId($oa['id']);
         if (!isset($oa['ip']) || !filter_var($oa['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
-            print "IP Address missing or invalid";
-            exit;
+            throw new InvalidParameterException("IP Address missing or invalid");
         }
         if (!isset($oa['reverse']) || !filter_var($oa['reverse'], FILTER_VALIDATE_DOMAIN)) {
-            print "Reverse missing or it's not a valid domain";
-            exit;
+            throw new InvalidParameterException("Reverse missing or it's not a valid domain");
         }
         $ba['ip'] = $oa['ip'];
         $ba['reverse'] = $oa['reverse'];
@@ -748,12 +720,10 @@ class Instances
     {
         $this->checkInstanceId($oa['id']);
         if (!isset($oa['ip']) || !filter_var($oa['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-            print "IP Address missing or invalid";
-            exit;
+            throw new InvalidParameterException("IP Address missing or invalid");
         }
         if (!isset($oa['reverse']) || !filter_var($oa['reverse'], FILTER_VALIDATE_DOMAIN)) {
-            print "Reverse missing or it's not a valid domain";
-            exit;
+            throw new InvalidParameterException("Reverse missing or it's not a valid domain");
         }
         $ba['ip'] = $oa['ip'];
         $ba['reverse'] = $oa['reverse'];
@@ -804,12 +774,10 @@ class Instances
     public function setDefaultReverseDNSEntry($oa)
     {
         if (!in_array($oa['id'], $this->ids)) {
-            print "Instance ID Not Found";
-            exit;
+            throw new InvalidParameterException("Instance ID Not Found");
         }
         if (!isset($oa['ip']) || !filter_var($oa['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-            print "IP Address missing or invalid";
-            exit;
+            throw new InvalidParameterException("IP Address missing or invalid");
         }
         $ba['ip'] = $oa['ip'];
         $url = $this->api::INSTANCES_URL . "/" . $oa['id'] . "/ipv4/reverse/default";
@@ -829,12 +797,10 @@ class Instances
     public function deleteIPv4Address($oa)
     {
         if (!in_array($oa['id'], $this->ids)) {
-            print "Instance ID Not Found";
-            exit;
+            throw new InvalidParameterException("Instance ID Not Found");
         }
         if (!isset($oa['ip']) || !filter_var($oa['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV4)) {
-            print "IP Address missing or invalid";
-            exit;
+            throw new InvalidParameterException("IP Address missing or invalid");
         }
         $url = $this->api::INSTANCES_URL . "/" . $oa['id'] . "/ipv4/" . $oa['ip'];
         return $this->api->makeAPICall('DELETE', $url);
@@ -852,12 +818,10 @@ class Instances
     public function deleteInstanceReverseIPv6($oa)
     {
         if (!in_array($oa['id'], $this->ids)) {
-            print "Instance ID Not Found";
-            exit;
+            throw new InvalidParameterException("Instance ID Not Found");
         }
         if (!isset($oa['ip']) || !filter_var($oa['ip'], FILTER_VALIDATE_IP, FILTER_FLAG_IPV6)) {
-            print "IP Address missing or invalid";
-            exit;
+            throw new InvalidParameterException("IP Address missing or invalid");
         }
         $url = $this->api::INSTANCES_URL . "/" . $oa['id'] . "/ipv6/reverse/" . $oa['ip'];
         return $this->api->makeAPICall('DELETE', $url);
@@ -933,8 +897,7 @@ class Instances
         if (in_array($id, $this->ids)) {
             return true;
         } else {
-            print "Instance Not Found";
-            exit;
+            throw new InvalidParameterException("Instance Not Found");
         }
     }
 }

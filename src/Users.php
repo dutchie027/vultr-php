@@ -15,6 +15,8 @@
 
 namespace dutchie027\Vultr;
 
+use dutchie027\Vultr\Exceptions\InvalidParameterException;
+
 class Users
 {
 
@@ -108,8 +110,7 @@ class Users
         if (in_array($id, $this->ids)) {
             return $this->api->makeAPICall('GET', $this->api::USERS_URL . "/" . $id);
         } else {
-            print "That User ID isn't associated with your account";
-            exit;
+            throw new InvalidParameterException("That User ID isn't associated with your account");
         }
     }
 
@@ -159,8 +160,7 @@ class Users
         if (in_array($oa['id'], $this->ids)) {
             $url = $this->api::USERS_URL . "/" . $oa['id'];
         } else {
-            print "That User ID doesn't exist";
-            exit;
+            throw new InvalidParameterException("That User ID doesn't exist");
         }
         $cr = false;
         if (isset($oa['email'])) {
@@ -168,14 +168,12 @@ class Users
                 $cr = true;
                 $ba['email'] = $oa['email'];
             } else {
-                print "Email included but is invalid";
-                exit;
+                throw new InvalidParameterException("Email included but is invalid");
             }
         }
         if (isset($oa['password'])) {
             if (strlen($oa['password']) < 8) {
-                print "Password included but is less than 8 characters";
-                exit;
+                throw new InvalidParameterException("Password included but is less than 8 characters");
             } else {
                 $cr = true;
                 $ba['password'] = $oa['password'];
@@ -183,8 +181,7 @@ class Users
         }
         if (isset($oa['name'])) {
             if (strlen($oa['name']) < 4) {
-                print "Name included but is less than 4 characters";
-                exit;
+                throw new InvalidParameterException("Name included but is less than 4 characters");
             } else {
                 $cr = true;
                 $ba['name'] = $oa['name'];
@@ -192,8 +189,7 @@ class Users
         }
         if (isset($oa['api_enabled'])) {
             if (!is_bool($oa['api_enabled'])) {
-                print "API Enabled Flag Is Invalid";
-                exit;
+                throw new InvalidParameterException("API Enabled Flag Is Invalid");
             } else {
                 $cr = true;
                 $ba['api_enabled'] = $oa['api_enabled'];
@@ -208,14 +204,13 @@ class Users
                     }
                 }
                 if (!$acl_valid) {
-                    print "Invalid ACLS";
-                    exit;
+                    throw new InvalidParameterException("Invalid ACLS");
                 } else {
                     $ba['acls'] = $oa['acls'];
                     $cr = true;
                 }
             } else {
-                print "ACL Value(s) passed invalid. Must be an array";
+                throw new InvalidParameterException("ACL Value(s) passed invalid. Must be an array");
             }
         }
         if ($cr) {
@@ -238,20 +233,17 @@ class Users
         $ba['api_enabled'] = $this->d_api_enabled;
         $ba['acls'] = $this->d_acl;
         if (!isset($oa['email']) || !filter_var($oa['email'], FILTER_VALIDATE_EMAIL)) {
-            print "Email required or is invalid";
-            exit;
+            throw new InvalidParameterException("Email required or is invalid");
         } else {
             $ba['email'] = $oa['email'];
         }
         if (!isset($oa['password']) || strlen($oa['password']) < 8) {
-            print "Password Required or is less than 8 characters";
-            exit;
+            throw new InvalidParameterException("Password Required or is less than 8 characters");
         } else {
             $ba['password'] = $oa['password'];
         }
         if (!isset($oa['name']) || strlen($oa['name']) < 4) {
-            print "Name Required or is less than 4 characters";
-            exit;
+            throw new InvalidParameterException("Name Required or is less than 4 characters");
         } else {
             $ba['name'] = $oa['name'];
         }
@@ -263,8 +255,7 @@ class Users
                 }
             }
             if (!$acl_valid) {
-                print "Invalid ACLS";
-                exit;
+                throw new InvalidParameterException("Invalid ACLS");
             } else {
                 $ba['acls'] = $oa['acls'];
             }
@@ -287,8 +278,7 @@ class Users
         if (in_array($id, $this->ids)) {
             return $this->api->makeAPICall('DELETE', $this->api::USERS_URL . "/" . $id);
         } else {
-            print "That User ID isn't associated with your account";
-            exit;
+            throw new InvalidParameterException("That User ID isn't associated with your account");
         }
     }
 

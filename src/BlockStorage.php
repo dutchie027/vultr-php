@@ -15,6 +15,8 @@
 
 namespace dutchie027\Vultr;
 
+use dutchie027\Vultr\Exceptions\InvalidParameterException;
+
 class BlockStorage
 {
     /**
@@ -122,8 +124,6 @@ class BlockStorage
         $ba['size_gb'] = $this->d_size;
         $ba['label'] = $this->d_label;
 
-        print_r($block_ids);
-
         (isset($sa['region']) && in_array($sa['region'], $block_ids)) ? $ba['region'] = $sa['region'] : null;
         if (isset($sa['size']) && is_numeric($sa['size'])) {
             if ($sa['size'] > 9 && $sa['size'] < 10001) {
@@ -149,8 +149,7 @@ class BlockStorage
         if (in_array($blockid, $this->block_array)) {
             return $this->api->makeAPICall('GET', $this->api::BLOCK_STORAGE_URL . "/" . $blockid);
         } else {
-            print "That Block ID isn't associated with your account";
-            exit;
+            throw new InvalidParameterException("That Block ID isn't associated with your account");
         }
     }
 
@@ -168,8 +167,7 @@ class BlockStorage
         if (in_array($blockid, $this->block_array)) {
             return $this->api->makeAPICall('DELETE', $this->api::BLOCK_STORAGE_URL . "/" . $blockid);
         } else {
-            print "That Block ID isn't associated with your account";
-            exit;
+            throw new InvalidParameterException("That Block ID isn't associated with your account");
         }
     }
 
@@ -186,14 +184,11 @@ class BlockStorage
     {
         if (in_array($options['blockid'], $this->block_array)) {
             if (!isset($options['size'])) {
-                print "you must set the size";
-                exit;
+                throw new InvalidParameterException("You must set the size");
             } elseif (!is_numeric($options['size'])) {
-                print "size must be numeric";
-                exit;
+                throw new InvalidParameterException("Size must be numeric");
             } elseif ($options['size'] < 10 || $options['size'] > 10000) {
-                print "Size must be a number between 10 and 10000";
-                exit;
+                throw new InvalidParameterException("Size must be a number between 10 and 10000");
             } else {
                 $ba['size_gb'] = $options['size'];
             }
@@ -202,8 +197,7 @@ class BlockStorage
             $body = json_encode($ba);
             return $this->api->makeAPICall('PATCH', $this->api::BLOCK_STORAGE_URL . "/" . $options['block_id'], $body);
         } else {
-            print "That block ID doesn't exist in your account";
-            exit;
+            throw new InvalidParameterException("That block ID doesn't exist in your account");
         }
     }
 
@@ -221,14 +215,11 @@ class BlockStorage
         $instance_ids = $this->api->instances()->getIds();
         if (in_array($options['instance'], $instance_ids)) {
             if (!in_array($options['blockid'], $this->block_array)) {
-                print "That block ID doesn't exist in your account";
-                exit;
+                throw new InvalidParameterException("That block ID doesn't exist in your account");
             } elseif (!isset($options['live'])) {
-                print "you must set the live variable";
-                exit;
+                throw new InvalidParameterException("You must set the live variable");
             } elseif (!is_bool($options['live'])) {
-                print "the live setting must be either true or false only.";
-                exit;
+                throw new InvalidParameterException("The live setting must be either true or false only.");
             }
             $ba['instance_id'] = $options['instance'];
             $ba['live'] = $options['live'];
@@ -238,8 +229,7 @@ class BlockStorage
             $body = json_encode($ba);
             return $this->api->makeAPICall('POST', $url, $body);
         } else {
-            print "That block ID doesn't exist in your account";
-            exit;
+            throw new InvalidParameterException("That block ID doesn't exist in your account");
         }
     }
 
@@ -256,11 +246,9 @@ class BlockStorage
     {
         if (in_array($options['blockid'], $this->block_array)) {
             if (!isset($options['live'])) {
-                print "you must set the live variable";
-                exit;
+                throw new InvalidParameterException("You must set the live variable");
             } elseif (!is_bool($options['live'])) {
-                print "the live setting must be either true or false only.";
-                exit;
+                throw new InvalidParameterException("The live setting must be either true or false only.");
             } else {
                 $ba['live'] = $options['live'];
             }
@@ -270,8 +258,7 @@ class BlockStorage
             $body = json_encode($ba);
             return $this->api->makeAPICall('POST', $url, $body);
         } else {
-            print "That block ID doesn't exist in your account";
-            exit;
+            throw new InvalidParameterException("That block ID doesn't exist in your account");
         }
     }
 

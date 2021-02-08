@@ -15,6 +15,8 @@
 
 namespace dutchie027\Vultr;
 
+use dutchie027\Vultr\Exceptions\InvalidParameterException;
+
 class Backups
 {
     /**
@@ -97,8 +99,7 @@ class Backups
         if (in_array($id, $this->ids)) {
             return $this->api->makeAPICall('GET', $this->api::BACKUPS_URL . "/" . $id);
         } else {
-            print "That Backup ID isn't associated with your account";
-            exit;
+            throw new InvalidParameterException("That Backup ID isn't associated with your account");
         }
     }
 

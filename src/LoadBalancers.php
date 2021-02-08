@@ -15,6 +15,8 @@
 
 namespace dutchie027\Vultr;
 
+use dutchie027\Vultr\Exceptions\InvalidParameterException;
+
 class LoadBalancers
 {
 
@@ -178,20 +180,16 @@ class LoadBalancers
     {
         $this->checkLoadBalancer($oa['load-balancer-id']);
         if (!isset($oa['frontend_protocol']) || !in_array($oa['frontend_protocol'], $this->frontend_proto)) {
-            print "Front End Protocol Missing or Invalid";
-            exit;
+            throw new InvalidParameterException("Front End Protocol Missing or Invalid");
         }
         if (!isset($oa['backend_protocol']) || !in_array($oa['backend_protocol'], $this->backend_proto)) {
-            print "Front End Protocol Missing or Invalid";
-            exit;
+            throw new InvalidParameterException("Front End Protocol Missing or Invalid");
         }
         if (!isset($oa['frontend_port']) || $oa['frontend_port'] > 65535 || $oa['frontend_port'] < 1) {
-            print "frontend port invalid";
-            exit;
+            throw new InvalidParameterException("Frontend port invalid");
         }
         if (!isset($oa['backend_port']) || $oa['backend_port'] > 65535 || $oa['backend_port'] < 1) {
-            print "backend port invalid";
-            exit;
+            throw new InvalidParameterException("Backend port invalid");
         }
         $ba['frontend_protocol'] = $oa['frontend_protocol'];
         $ba['backend_protocol'] = $oa['backend_protocol'];
@@ -258,8 +256,7 @@ class LoadBalancers
         if (in_array($id, $this->ids)) {
             return true;
         } else {
-            print "Load Balancer ID Not Found";
-            exit;
+            throw new InvalidParameterException("Load Balancer ID Not Found");
         }
     }
 

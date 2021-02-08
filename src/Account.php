@@ -43,7 +43,6 @@ class Account
      * getAccountInfo
      * Gets account info
      *
-     *
      * @return string
      *
      */

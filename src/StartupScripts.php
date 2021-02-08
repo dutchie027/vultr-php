@@ -15,6 +15,8 @@
 
 namespace dutchie027\Vultr;
 
+use dutchie027\Vultr\Exceptions\InvalidParameterException;
+
 class StartupScripts
 {
 
@@ -149,8 +151,7 @@ class StartupScripts
         if (in_array($oa['id'], $this->ids)) {
             $url = $this->api::STARTUP_SCRIPTS_URL . "/" . $oa['id'];
         } else {
-            print "That Startup Script ID isn't associated with your account";
-            exit;
+            throw new InvalidParameterException("That Startup Script ID isn't associated with your account");
         }
         (isset($oa['name'])) ? $ba['name'] = $oa['name'] : null;
         (isset($oa['script'])) ? $ba['script'] = $oa['script'] : null;
@@ -176,19 +177,16 @@ class StartupScripts
             if (in_array($oa['type'], $this->validStartupTypes)) {
                 $ba['type'] = $oa['type'];
             } else {
-                print "Startup Script Type is invalid";
-                exit;
+                throw new InvalidParameterException("Startup Script Type is invalid");
             }
         }
         if (!isset($oa['name'])) {
-            print "Startup Script Name Required";
-            exit;
+            throw new InvalidParameterException("Startup Script Name Required");
         } else {
             $ba['name'] = $oa['name'];
         }
         if (!isset($oa['script'])) {
-            print "Startup Script Missing";
-            exit;
+            throw new InvalidParameterException("Startup Script Missing");
         } else {
             $ba['script'] = $oa['script'];
         }

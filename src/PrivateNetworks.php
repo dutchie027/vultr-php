@@ -144,7 +144,7 @@ class PrivateNetworks
         if (in_array($oa['id'], $this->ids)) {
             $url = $this->api::PRIVATE_NETWORKS_URL . "/" . $oa['id'];
         } else {
-            throw new InvalidParameterException("That Private Network ID isn't associated with your account")
+            throw new InvalidParameterException("That Private Network ID isn't associated with your account");
         }
         $ba['description'] = $this->d_label;
         (isset($oa['description'])) ? $ba['description'] = $oa['description'] : null;

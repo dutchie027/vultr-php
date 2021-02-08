@@ -111,7 +111,7 @@ class Instances
             $ba['app_id'] = $oa['app_id'];
         }
         if (!$hasOS) {
-            throw new InvalidParameterException("A Valid OS (os_id, iso_id, snapshot_id or app_id) is missing")
+            throw new InvalidParameterException("A Valid OS (os_id, iso_id, snapshot_id or app_id) is missing");
         }
         (isset($oa['ipxe_chain_url'])) ? $ba['ipxe_chain_url'] = $oa['ipxe_chain_url'] : null;
         (isset($oa['label'])) ? $ba['label'] = $oa['label'] : null;
@@ -128,7 +128,7 @@ class Instances
         }
         if (isset($oa['ddos_protection']) && $oa['ddos_protection'] == true) {
             if (!in_array($oa['region'], $this->api->regions()->ddos_ids)) {
-                throw new InvalidParameterException("You chose to set DDOS, but the region is not capable of it")
+                throw new InvalidParameterException("You chose to set DDOS, but the region is not capable of it");
             }
             $ba['ddos_protection'] = true;
         } else {
@@ -141,11 +141,11 @@ class Instances
         }
         if (isset($oa['enable_private_network']) && $oa['enable_private_network'] == true) {
             if (!isset($oa['attach_private_network']) || !is_array($oa['attach_private_network'])) {
-                throw new InvalidParameterException("You chose to enable private networks but you didn't provide one or it's not an array")
+                throw new InvalidParameterException("You chose to enable private networks but you didn't provide one or it's not an array");
             }
             foreach ($oa['attach_private_network'] as $pnet) {
                 if (!in_array($pnet, $this->api->privateNetworks()->ids)) {
-                    throw new InvalidParameterException("Private Network Not Found")
+                    throw new InvalidParameterException("Private Network Not Found");
                 }
             }
             $ba['enable_private_network'] = true;

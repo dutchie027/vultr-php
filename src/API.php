@@ -15,6 +15,7 @@
 
 namespace dutchie027\Vultr;
 
+use dutchie027\Vultr\Exceptions\VultrAPIRequestException;
 use GuzzleHttp\Client as Guzzle;
 use GuzzleHttp\Psr7;
 use GuzzleHttp\Exception\RequestException;
@@ -336,7 +337,7 @@ class API
      * @return object
      *
      */
-    public function account()
+    public function account(): Account
     {
         $account = new Account($this);
         return $account;
@@ -350,7 +351,7 @@ class API
      * @return object
      *
      */
-    public function applications()
+    public function applications(): Applications
     {
         $ap = new Applications($this);
         return $ap;
@@ -364,7 +365,7 @@ class API
      * @return object
      *
      */
-    public function backups()
+    public function backups(): Backups
     {
         $bu = new Backups($this);
         return $bu;
@@ -378,7 +379,7 @@ class API
      * @return object
      *
      */
-    public function bareMetal()
+    public function bareMetal(): BareMetal
     {
         $bm = new BareMetal($this);
         return $bm;
@@ -392,7 +393,7 @@ class API
      * @return object
      *
      */
-    public function blockStorage()
+    public function blockStorage(): BlockStorage
     {
         $bs = new BlockStorage($this);
         return $bs;
@@ -406,7 +407,7 @@ class API
      * @return object
      *
      */
-    public function dns()
+    public function dns(): DNS
     {
         $dns = new DNS($this);
         return $dns;
@@ -420,7 +421,7 @@ class API
      * @return object
      *
      */
-    public function firewalls()
+    public function firewalls(): Firewalls
     {
         $fw = new Firewalls($this);
         return $fw;
@@ -434,7 +435,7 @@ class API
      * @return object
      *
      */
-    public function instances()
+    public function instances(): Instances
     {
         $instances = new Instances($this);
         return $instances;
@@ -448,7 +449,7 @@ class API
      * @return object
      *
      */
-    public function iso()
+    public function iso(): ISO
     {
         $iso = new ISO($this);
         return $iso;
@@ -462,7 +463,7 @@ class API
      * @return object
      *
      */
-    public function loadBalancers()
+    public function loadBalancers(): LoadBalancers
     {
         $lb = new LoadBalancers($this);
         return $lb;
@@ -476,7 +477,7 @@ class API
      * @return object
      *
      */
-    public function objectStorage()
+    public function objectStorage(): ObjectStorage
     {
         $os = new ObjectStorage($this);
         return $os;
@@ -490,7 +491,7 @@ class API
      * @return object
      *
      */
-    public function operatingSystems()
+    public function operatingSystems(): OperatingSystems
     {
         $os = new OperatingSystems($this);
         return $os;
@@ -504,7 +505,7 @@ class API
      * @return object
      *
      */
-    public function plans()
+    public function plans(): Plans
     {
         $plans = new Plans($this);
         return $plans;
@@ -518,7 +519,7 @@ class API
      * @return object
      *
      */
-    public function privateNetworks()
+    public function privateNetworks(): PrivateNetworks
     {
         $pn = new PrivateNetworks($this);
         return $pn;
@@ -532,7 +533,7 @@ class API
      * @return object
      *
      */
-    public function regions()
+    public function regions(): Regions
     {
         $regions = new Regions($this);
         return $regions;
@@ -546,7 +547,7 @@ class API
      * @return object
      *
      */
-    public function reservedIPs()
+    public function reservedIPs(): ReservedIPs
     {
         $rip = new ReservedIPs($this);
         return $rip;
@@ -560,7 +561,7 @@ class API
      * @return object
      *
      */
-    public function snapshots()
+    public function snapshots(): Snapshots
     {
         $snap = new Snapshots($this);
         return $snap;
@@ -574,7 +575,7 @@ class API
      * @return object
      *
      */
-    public function sshKeys()
+    public function sshKeys(): SSHKeys
     {
         $ssh = new SSHKeys($this);
         return $ssh;
@@ -588,7 +589,7 @@ class API
      * @return object
      *
      */
-    public function startupScripts()
+    public function startupScripts(): StartupScripts
     {
         $ss = new StartupScripts($this);
         return $ss;
@@ -602,7 +603,7 @@ class API
      * @return object
      *
      */
-    public function users()
+    public function users(): Users
     {
         $users = new Users($this);
         return $users;
@@ -683,7 +684,7 @@ class API
      * @param $body string - usually passed as JSON
      *
      * @return string Body Object
-     * @throws string error message
+     * @throws VultrAPIRequestException Exception with details regarding the failed request
      *
      */
     public function makeAPICall($type, $url, $body = null)
@@ -697,8 +698,9 @@ class API
             if ($e->hasResponse()) {
                 $response = $e->getResponse();
                 $ja = json_decode($response->getBody()->getContents(), true);
-                print $ja['error'];
+                throw new VultrAPIRequestException('An error occurred while performing the request to ' . $url . ' -> ' . $ja['error']);
             }
+            throw new VultrAPIRequestException(('An unknown error ocurred while performing the request to ' . $url));
         }
     }
 }

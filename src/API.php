@@ -683,7 +683,7 @@ class API
      * @param $url string endpoint
      * @param $body string - usually passed as JSON
      *
-     * @return string Body Object
+     * @return Psr7\Stream Object
      * @throws VultrAPIRequestException Exception with details regarding the failed request
      *
      */

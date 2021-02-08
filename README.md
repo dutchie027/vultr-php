@@ -1,16 +1,10 @@
 # vultr-php
 
-[![Latest Stable Version](https://poser.pugx.org/dutchie027/vultr/v)](//packagist.org/packages/dutchie027/vultr)
-[![Total Downloads](https://poser.pugx.org/dutchie027/vultr/downloads)](//packagist.org/packages/dutchie027/vultr)
-[![License](https://poser.pugx.org/dutchie027/vultr/license)](//packagist.org/packages/dutchie027/vultr)
-[![CodeFactor](https://www.codefactor.io/repository/github/dutchie027/vultr-php/badge)](https://www.codefactor.io/repository/github/dutchie027/vultr-php)
-
 PHP Library Intended to Interact with [Vultr's v2 API](https://www.vultr.com/api/v2)
-There are a few other PHP libraries out that do similar things, but I wasn't happy that they were very monolithic and also they used cURL and not Guzzle. Further, there was no logging in any of the libraries, so I wrote this one.
 
 ## Installation
 ```php
-composer require dutchie027/vultr
+composer require comp-mc/vultr
 ```
 
 ## Usage

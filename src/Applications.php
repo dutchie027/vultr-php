@@ -108,36 +108,6 @@ class Applications
     }
 
     /**
-     * printNames
-     * Prints Names and IDs to stdout
-     *
-     *
-     * @return void
-     *
-     */
-    public function printNames()
-    {
-        foreach ($this->ids as $id) {
-            print $this->deploy_names[$id] . " ($id)" . PHP_EOL;
-        }
-    }
-
-    /**
-     * listIds
-     * Prints Instance IDs to stdout
-     *
-     *
-     * @return void
-     *
-     */
-    public function listIds()
-    {
-        foreach ($this->ids as $id) {
-            print $id . PHP_EOL;
-        }
-    }
-
-    /**
      * getNumberOfApplications
      * Returns total number of applications
      *

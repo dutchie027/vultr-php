@@ -69,21 +69,6 @@ class PrivateNetworks
     }
 
     /**
-     * listIds
-     * Prints Instance IDs to stdout
-     *
-     *
-     * @return void
-     *
-     */
-    public function listIds()
-    {
-        foreach ($this->ids as $id) {
-            print $id . PHP_EOL;
-        }
-    }
-
-    /**
      * listPrivateNetworks
      * Lists Private Networks
      *

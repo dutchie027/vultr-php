@@ -62,21 +62,6 @@ class ReservedIPs
     }
 
     /**
-     * listIds
-     * Prints Instance IDs to stdout
-     *
-     *
-     * @return void
-     *
-     */
-    public function listIds()
-    {
-        foreach ($this->ids as $id) {
-            print $id . PHP_EOL;
-        }
-    }
-
-    /**
      * listReservedIPs
      * List all Reserved IPs in your account.
      *

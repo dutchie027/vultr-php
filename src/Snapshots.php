@@ -69,21 +69,6 @@ class Snapshots
     }
 
     /**
-     * listIds
-     * Prints Instance IDs to stdout
-     *
-     *
-     * @return void
-     *
-     */
-    public function listIds()
-    {
-        foreach ($this->ids as $id) {
-            print $id . PHP_EOL;
-        }
-    }
-
-    /**
      * listSnapshots
      * Lists Snapshots
      *

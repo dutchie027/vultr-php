@@ -76,21 +76,6 @@ class StartupScripts
     }
 
     /**
-     * listIds
-     * Prints Instance IDs to stdout
-     *
-     *
-     * @return void
-     *
-     */
-    public function listIds()
-    {
-        foreach ($this->ids as $id) {
-            print $id . PHP_EOL;
-        }
-    }
-
-    /**
      * listStartupScripts
      * Lists Startup Scripts
      *

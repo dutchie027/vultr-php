@@ -698,7 +698,7 @@ class API
             if ($e->hasResponse()) {
                 $response = $e->getResponse();
                 $ja = json_decode($response->getBody()->getContents(), true);
-                throw new VultrAPIRequestException('An error occurred while performing the request to ' . $url . ' -> ' . $ja['error']);
+                throw new VultrAPIRequestException('An error occurred while performing the request to ' . $url . ' -> ' . (isset($ja['error']) ? $ja['error'] : json_encode($ja)));
             }
             throw new VultrAPIRequestException(('An unknown error ocurred while performing the request to ' . $url));
         }

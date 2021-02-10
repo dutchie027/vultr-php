@@ -16,6 +16,7 @@
 namespace dutchie027\Vultr;
 
 use dutchie027\Vultr\Exceptions\InvalidParameterException;
+use GuzzleHttp\Psr7\Stream;
 
 class Instances
 {
@@ -78,7 +79,7 @@ class Instances
      *
      * @param $oa array
      *
-     * @return void
+     * @return Stream
      *
      */
     public function createInstance($oa)
@@ -94,24 +95,24 @@ class Instances
         } else {
             $ba['plan'] = $oa['plan'];
         }
-        if (!$hasOS && isset($oa['os_id']) && in_array($oa['os_id'], $this->api->operatingSystems()->ids)) {
+        if (isset($oa['os_id']) && in_array($oa['os_id'], $this->api->operatingSystems()->ids)) {
             $hasOS = true;
             $ba['os_id'] = $oa['os_id'];
         }
-        if (!$hasOS && isset($oa['iso_id']) && in_array($oa['iso_id'], $this->api->iso()->ids)) {
+        if (isset($oa['iso_id']) && in_array($oa['iso_id'], $this->api->iso()->ids)) {
             $hasOS = true;
             $ba['iso_id'] = $oa['iso_id'];
         }
-        if (!$hasOS && isset($oa['snapshot_id']) && in_array($oa['snapshot_id'], $this->api->snapshots()->ids)) {
+        if (isset($oa['snapshot_id']) && in_array($oa['snapshot_id'], $this->api->snapshots()->ids)) {
             $hasOS = true;
             $ba['snapshot_id'] = $oa['snapshot_id'];
         }
-        if (!$hasOS && isset($oa['app_id']) && in_array($oa['app_id'], $this->api->applications()->ids)) {
+        if (isset($oa['app_id']) && in_array($oa['app_id'], $this->api->applications()->ids)) {
             $hasOS = true;
             $ba['app_id'] = $oa['app_id'];
         }
         if (!$hasOS) {
-            throw new InvalidParameterException("A Valid OS (os_id, iso_id, snapshot_id or app_id) is missing");
+            throw new InvalidParameterException("At least one OS parameter (os_id, iso_id, snapshot_id or app_id) is missing");
         }
         (isset($oa['ipxe_chain_url'])) ? $ba['ipxe_chain_url'] = $oa['ipxe_chain_url'] : null;
         (isset($oa['label'])) ? $ba['label'] = $oa['label'] : null;
@@ -210,7 +211,7 @@ class Instances
      *
      * @param $oa array
      *
-     * @return void
+     * @return Stream
      *
      */
     public function updateInstance($oa)
@@ -280,7 +281,7 @@ class Instances
      *
      * @param $oa array
      *
-     * @return void
+     * @return Stream
      *
      */
     public function haltInstances($oa)
@@ -299,7 +300,7 @@ class Instances
      *
      * @param $oa array
      *
-     * @return void
+     * @return Stream
      *
      */
     public function rebootInstances($oa)
@@ -318,7 +319,7 @@ class Instances
      *
      * @param $oa array
      *
-     * @return void
+     * @return Stream
      *
      */
     public function startInstances($oa)
@@ -337,7 +338,7 @@ class Instances
      *
      * @param $inst string
      *
-     * @return void
+     * @return Stream
      *
      */
     public function startInstance($inst)
@@ -352,7 +353,7 @@ class Instances
      *
      * @param $inst string
      *
-     * @return void
+     * @return Stream
      *
      */
     public function rebootInstance($inst)
@@ -367,7 +368,7 @@ class Instances
      *
      * @param $oa array
      *
-     * @return void
+     * @return Stream
      *
      */
     public function reinstallInstance($oa)
@@ -388,7 +389,7 @@ class Instances
      *
      * @param $inst string
      *
-     * @return void
+     * @return Stream
      *
      */
     public function instanceBandwidth($inst)
@@ -403,7 +404,7 @@ class Instances
      *
      * @param $inst string
      *
-     * @return void
+     * @return Stream
      *
      */
     public function getInstanceNeighbors($inst)
@@ -418,7 +419,7 @@ class Instances
      *
      * @param $inst string
      *
-     * @return void
+     * @return Stream
      *
      */
     public function listInstancePrivateNetworks($inst)
@@ -433,7 +434,7 @@ class Instances
      *
      * @param $inst string
      *
-     * @return void
+     * @return Stream
      *
      */
     public function getInstanceISOStatus($inst)
@@ -448,7 +449,7 @@ class Instances
      *
      * @param $oa array
      *
-     * @return void
+     * @return Stream
      *
      */
     public function attachISOToInstance($oa)
@@ -468,7 +469,7 @@ class Instances
      *
      * @param $oa array
      *
-     * @return void
+     * @return Stream
      *
      */
     public function detachISOFromInstance($inst)
@@ -483,7 +484,7 @@ class Instances
      *
      * @param $oa array
      *
-     * @return void
+     * @return Stream
      *
      */
     public function attachPrivateNetworkToInstance($oa)
@@ -504,7 +505,7 @@ class Instances
      *
      * @param $oa array
      *
-     * @return void
+     * @return Stream
      *
      */
     public function detachPrivateNetworkFromInstance($oa)
@@ -525,7 +526,7 @@ class Instances
      *
      * @param $oa array
      *
-     * @return void
+     * @return Stream
      *
      */
     public function setInstanceBackupSchedule($oa)
@@ -579,7 +580,7 @@ class Instances
      *
      * @param $oa array
      *
-     * @return void
+     * @return Stream
      *
      */
     public function getInstanceBackupSchedule($inst)
@@ -594,7 +595,7 @@ class Instances
      *
      * @param $oa array
      *
-     * @return void
+     * @return Stream
      *
      */
     public function restoreInstance($oa)
@@ -622,7 +623,7 @@ class Instances
      *
      * @param $oa array
      *
-     * @return void
+     * @return Stream
      *
      */
     public function listInstanceIPv4Information($inst)
@@ -637,7 +638,7 @@ class Instances
      *
      * @param $oa array
      *
-     * @return void
+     * @return Stream
      *
      */
     public function createIPv4($oa)
@@ -659,7 +660,7 @@ class Instances
      *
      * @param $oa array
      *
-     * @return void
+     * @return Stream
      *
      */
     public function getInstanceIPv6Information($inst)
@@ -674,7 +675,7 @@ class Instances
      *
      * @param $oa array
      *
-     * @return void
+     * @return Stream
      *
      */
     public function createInstanceReverseIPv6($oa)
@@ -698,7 +699,7 @@ class Instances
      *
      * @param $oa array
      *
-     * @return void
+     * @return Stream
      *
      */
     public function listInstanceIPv6Reverse($inst)
@@ -713,7 +714,7 @@ class Instances
      *
      * @param $oa array
      *
-     * @return void
+     * @return Stream
      *
      */
     public function createInstanceReverseIPv4($oa)
@@ -737,7 +738,7 @@ class Instances
      *
      * @param $oa array
      *
-     * @return void
+     * @return Stream
      *
      */
     public function getInstanceUserData($inst)
@@ -753,7 +754,7 @@ class Instances
      *
      * @param $oa array
      *
-     * @return void
+     * @return Stream
      *
      */
     public function haltInstance($inst)
@@ -768,7 +769,7 @@ class Instances
      *
      * @param $oa array
      *
-     * @return void
+     * @return Stream
      *
      */
     public function setDefaultReverseDNSEntry($oa)
@@ -791,7 +792,7 @@ class Instances
      *
      * @param $oa array
      *
-     * @return void
+     * @return Stream
      *
      */
     public function deleteIPv4Address($oa)
@@ -812,7 +813,7 @@ class Instances
      *
      * @param $oa array
      *
-     * @return void
+     * @return Stream
      *
      */
     public function deleteInstanceReverseIPv6($oa)
@@ -833,7 +834,7 @@ class Instances
      *
      * @param $oa array
      *
-     * @return void
+     * @return Stream
      *
      */
     public function getAvailableInstanceUpgrades($inst)

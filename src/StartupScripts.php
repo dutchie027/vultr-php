@@ -132,7 +132,7 @@ class StartupScripts
         foreach ($sa['startup_scripts'] as $startup) {
             $id = $startup['id'];
             $this->ids[] = $id;
-            $this->startupScritps[$id] = $startup;
+            $this->startupScripts[$id] = $startup;
         }
         $this->total_startup_scripts = $sa['meta']['total'];
     }

@@ -188,9 +188,9 @@ class StartupScripts
         if (!isset($oa['script'])) {
             throw new InvalidParameterException("Startup Script Missing");
         } else {
-            $ba['script'] = $oa['script'];
+            $ba['script'] = base64_encode($oa['script']);
         }
         $body = json_encode($ba);
-        return $this->api->makeAPICall('POST', $this->api::SNAPSHOTS_URL, $body);
+        return $this->api->makeAPICall('POST', $this->api::STARTUP_SCRIPTS_URL, $body);
     }
 }

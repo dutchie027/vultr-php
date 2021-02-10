@@ -162,7 +162,7 @@ class Instances
         if (isset($oa['script_id']) && in_array($oa['script_id'], $this->api->startupScripts()->ids)) {
             $ba['script_id'] = $oa['script_id'];
         } elseif (isset($oa['script_id']) && !in_array($oa['script_id'], $this->api->startupScripts()->ids)) {
-            throw new InvalidParameterException("You provided an Startup Script and it's not part of your account");
+            throw new InvalidParameterException("You provided a Startup Script and it's not part of your account");
         }
         if (isset($oa['firewall_group_id']) && in_array($oa['firewall_group_id'], $this->api->firewalls()->ids)) {
             $ba['firewall_group_id'] = $oa['firewall_group_id'];

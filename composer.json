@@ -1,6 +1,6 @@
 {
-    "name": "comp-mc/vultr",
-    "description": "Vultr PHP API Wrapper by dutchie027. Forked.",
+    "name": "dutchie027/vultr",
+    "description": "Vultr PHP API Wrapper",
     "keywords": ["php", "automation", "Vultr", "paas", "headless", "server administration"],
     "type": "library",
     "require": {
@@ -24,4 +24,3 @@
         "name": "Justin Rodino",
         "email": "justin@227volts.com"
     }]
-}

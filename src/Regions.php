@@ -88,6 +88,13 @@ class Regions
     public $ddos_flag = "ddos_protection";
 
     /**
+     * Cached region data.
+     *
+     * @var array
+     */
+    private $region_data = [];
+
+    /**
      * __construct
      * Main Construct - Loads Regions in to arrays and creates reference
      * from main API class
@@ -117,6 +124,23 @@ class Regions
     }
 
     /**
+     * getRegions
+     * Gets the regions with associated data from API
+     *
+     *
+     * @return array
+     *
+     */
+    public function getRegions()
+    {
+        $build_data = array();
+        foreach ($this->region_data['regions'] as $line) {
+            $build_data[$line['id']] = $line;
+        }
+        return $build_data;
+    }
+
+    /**
      * loadRegionArrays
      * Loads arrays with region information
      *
@@ -126,7 +150,7 @@ class Regions
      */
     public function loadRegionArrays()
     {
-        $data = json_decode($this->listRegions(), true);
+        $this->region_data = $data = json_decode($this->listRegions(), true);
         foreach ($data['regions'] as $line) {
             $this->ids[] = $line['id'];
             $this->cities[] = $line['city'];
@@ -135,81 +159,6 @@ class Regions
             (!in_array($line['continent'], $this->continents)) ? $this->continents[] = $line['continent'] : null ;
             (in_array($this->bs_flag, $line['options'])) ? $this->block_ids[] = $line['id'] : null ;
             (in_array($this->ddos_flag, $line['options'])) ? $this->ddos_ids[] = $line['id'] : null ;
-        }
-    }
-
-    /**
-     * listCities
-     * Prints Cities to stdout
-     *
-     *
-     * @return void
-     *
-     */
-    public function listCities()
-    {
-        foreach ($this->cities as $city) {
-            print $city . PHP_EOL;
-        }
-    }
-
-    /**
-     * listIds
-     * Prints Ususble IDs to stdout
-     *
-     *
-     * @return void
-     *
-     */
-    public function listIds()
-    {
-        foreach ($this->ids as $id) {
-            print $id . PHP_EOL;
-        }
-    }
-
-    /**
-     * listCountries
-     * Prints Countries to stdout
-     *
-     *
-     * @return void
-     *
-     */
-    public function listCountries()
-    {
-        foreach ($this->countries as $country) {
-            print $country . PHP_EOL;
-        }
-    }
-
-    /**
-     * listContinents
-     * Prints Continents to stdout
-     *
-     *
-     * @return void
-     *
-     */
-    public function listContinents()
-    {
-        foreach ($this->continents as $continent) {
-            print $continent . PHP_EOL;
-        }
-    }
-
-    /**
-     * listNames
-     * Prints Names to stdout
-     *
-     *
-     * @return void
-     *
-     */
-    public function listNames()
-    {
-        foreach ($this->names as $name) {
-            print $name . PHP_EOL;
         }
     }
 

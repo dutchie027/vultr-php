@@ -15,6 +15,8 @@
 
 namespace dutchie027\Vultr;
 
+use dutchie027\Vultr\Exceptions\InvalidParameterException;
+
 class Snapshots
 {
 
@@ -66,21 +68,6 @@ class Snapshots
     {
         $this->api = $api;
         $this->loadSnapshots();
-    }
-
-    /**
-     * listIds
-     * Prints Instance IDs to stdout
-     *
-     *
-     * @return void
-     *
-     */
-    public function listIds()
-    {
-        foreach ($this->ids as $id) {
-            print $id . PHP_EOL;
-        }
     }
 
     /**
@@ -157,8 +144,7 @@ class Snapshots
         if (in_array($options['snapshot_id'], $this->ids)) {
             $url = $this->api::SNAPSHOTS_URL . "/" . $options['snapshot_id'];
         } else {
-            print "That Snapshot ID isn't associated with your account";
-            exit;
+            throw new InvalidParameterException("That Snapshot ID isn't associated with your account");
         }
         $ba['description'] = $this->d_label;
         (isset($options['description'])) ? $ba['description'] = $options['description'] : null;
@@ -178,8 +164,7 @@ class Snapshots
     public function createSnapshot($oa)
     {
         if (!isset($oa['instance_id']) || !in_array($oa['instance_id'], $this->api->instances()->ids)) {
-            print "Missing An Instance ID that is part of your account";
-            exit;
+            throw new InvalidParameterException("Missing An Instance ID that is part of your account");
         }
         $ba['instance_id'] = $oa['instance_id'];
         $ba['description'] = $this->d_label;

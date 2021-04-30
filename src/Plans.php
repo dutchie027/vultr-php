@@ -58,7 +58,7 @@ class Plans
      *
      * @var array
      */
-    protected $metal_plan = [];
+    public $metal_plan = [];
 
     /**
      * Count of Total Metal Plans
@@ -158,5 +158,13 @@ class Plans
     public function getNumberOfPlans()
     {
         return $this->total_plans;
+    }
+
+    /**
+     * getAllPlans
+     * Returns Bare Metal and normal plans combined together.
+     */
+    public function getAllPlans() {
+        return array_merge($this->plan, $this->metal_plan);
     }
 }

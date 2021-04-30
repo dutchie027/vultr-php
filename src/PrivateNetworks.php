@@ -15,6 +15,8 @@
 
 namespace dutchie027\Vultr;
 
+use dutchie027\Vultr\Exceptions\InvalidParameterException;
+
 class PrivateNetworks
 {
 
@@ -66,21 +68,6 @@ class PrivateNetworks
     {
         $this->api = $api;
         $this->loadPrivateNetworks();
-    }
-
-    /**
-     * listIds
-     * Prints Instance IDs to stdout
-     *
-     *
-     * @return void
-     *
-     */
-    public function listIds()
-    {
-        foreach ($this->ids as $id) {
-            print $id . PHP_EOL;
-        }
     }
 
     /**
@@ -157,8 +144,7 @@ class PrivateNetworks
         if (in_array($oa['id'], $this->ids)) {
             $url = $this->api::PRIVATE_NETWORKS_URL . "/" . $oa['id'];
         } else {
-            print "That Private Network ID isn't associated with your account";
-            exit;
+            throw new InvalidParameterException("That Private Network ID isn't associated with your account");
         }
         $ba['description'] = $this->d_label;
         (isset($oa['description'])) ? $ba['description'] = $oa['description'] : null;
@@ -178,21 +164,19 @@ class PrivateNetworks
     public function createPrivateNetwork($oa)
     {
         if (!isset($oa['region']) || !in_array($oa['region'], $this->api->regions()->ids)) {
-            print "Invalid Region";
-            exit;
+            throw new InvalidParameterException("Invalid Region");
         } else {
             $ba['region'] = $oa['region'];
         }
         if (isset($oa['subnet']) && $this->checkPrivateIP($oa['subnet'])) {
             $ba['v4_subnet'] = $oa['subnet'];
         } else {
-            print "Subnet is invalid. Must be an IP address and must meet RFC Standard for Private Networks.";
-            exit;
+            throw new InvalidParameterException("Subnet is invalid. Must be an IP address and must meet RFC Standard for Private Networks.");
         }
         if (isset($oa['mask']) && $oa['mask'] > 0 && $oa['mask'] < 32) {
             $ba['v4_subnet_mask'] = $oa['mask'];
         } else {
-            print "Subnet mask must be between 1 and 31 (you can't have a /32 private network)";
+            throw new InvalidParameterException("Subnet mask must be between 1 and 31 (you can't have a /32 private network)");
         }
         (isset($oa['description'])) ? $ba['description'] = $oa['description'] : null;
         $body = json_encode($ba);

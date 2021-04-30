@@ -1,12 +1,13 @@
 {
-    "name": "dutchie027/vultr",
-    "description": "Vultr PHP API Wrapper",
+    "name": "comp-mc/vultr",
+    "description": "Vultr PHP API Wrapper by dutchie027. Forked.",
     "keywords": ["php", "automation", "Vultr", "paas", "headless", "server administration"],
     "type": "library",
     "require": {
         "monolog/monolog": "^2.2",
         "guzzlehttp/guzzle": "^7.2",
-        "aws/aws-sdk-php": "^3.171"
+        "aws/aws-sdk-php": "^3.171",
+        "ext-json": "*"
     },
     "autoload": {
         "psr-4": {

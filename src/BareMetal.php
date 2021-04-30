@@ -15,6 +15,8 @@
 
 namespace dutchie027\Vultr;
 
+use dutchie027\Vultr\Exceptions\InvalidParameterException;
+
 class BareMetal
 {
 
@@ -164,14 +166,12 @@ class BareMetal
     {
         $hasOS = false;
         if (!isset($oa['region']) || !in_array($oa['region'], $this->api->regions()->ids)) {
-            print "Invalid Region";
-            exit;
+            throw new InvalidParameterException("Invalid Region");
         } else {
             $ba['region'] = $oa['region'];
         }
         if (!isset($oa['plan']) || !in_array($oa['plan'], $this->api->plans()->metal_ids)) {
-            print "Invalid Plan";
-            exit;
+            throw new InvalidParameterException("Invalid Plan");
         } else {
             $ba['plan'] = $oa['plan'];
         }
@@ -188,8 +188,7 @@ class BareMetal
             $ba['app_id'] = $oa['app_id'];
         }
         if (!$hasOS) {
-            print "A Valid OS (os_id, iso_id, snapshot_id or app_id) is missing";
-            exit;
+            throw new InvalidParameterException("A Valid OS (os_id, iso_id, snapshot_id or app_id) is missing");
         }
         (isset($oa['label'])) ? $ba['label'] = $oa['label'] : null;
         (isset($oa['tag'])) ? $ba['tag'] = $oa['tag'] : null;
@@ -206,20 +205,17 @@ class BareMetal
         if (isset($oa['sshkey_id']) && in_array($oa['sshkey_id'], $this->api->sshKeys()->ids)) {
             $ba['sshkey_id'] = $oa['sshkey_id'];
         } elseif (isset($oa['sshkey_id']) && !in_array($oa['sshkey_id'], $this->api->sshKeys()->ids)) {
-            print "You provided an SSH Key ID and it's not part of your account";
-            exit;
+            throw new InvalidParameterException("You provided an SSH Key ID and it's not part of your account");
         }
         if (isset($oa['script_id']) && in_array($oa['script_id'], $this->api->startupScripts()->ids)) {
             $ba['script_id'] = $oa['script_id'];
         } elseif (isset($oa['script_id']) && !in_array($oa['script_id'], $this->api->startupScripts()->ids)) {
-            print "You provided an Startup Script and it's not part of your account";
-            exit;
+            throw new InvalidParameterException("You provided an Startup Script and it's not part of your account");
         }
         if (isset($oa['reserved_ipv4']) && in_array($oa['reserved_ipv4'], $this->api->reservedIPs()->ids)) {
             $ba['reserved_ipv4'] = $oa['reserved_ipv4'];
         } elseif (isset($oa['reserved_ipv4']) && !in_array($oa['reserved_ipv4'], $this->api->reservedIPs()->ids)) {
-            print "You provided a Reserved IP and it's not part of your account";
-            exit;
+            throw new InvalidParameterException("You provided a Reserved IP and it's not part of your account");
         }
         if (isset($oa['user_data'])) {
             $ba['user_data'] = $oa['user_data'];
@@ -487,21 +483,6 @@ class BareMetal
     }
 
     /**
-     * listIds
-     * Prints Instance IDs to stdout
-     *
-     *
-     * @return void
-     *
-     */
-    public function listIds()
-    {
-        foreach ($this->ids as $id) {
-            print $id . PHP_EOL;
-        }
-    }
-
-    /**
      * checkBareMetalId
      * Checks's if an Metal ID is valid or not
      *
@@ -515,8 +496,7 @@ class BareMetal
         if (in_array($id, $this->ids)) {
             return true;
         } else {
-            print "Instance Not Found";
-            exit;
+            throw new InvalidParameterException("Instance Not Found");
         }
     }
 }

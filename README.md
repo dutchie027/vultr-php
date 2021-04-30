@@ -4,7 +4,7 @@ PHP Library Intended to Interact with [Vultr's v2 API](https://www.vultr.com/api
 
 ## Installation
 ```php
-composer require comp-mc/vultr
+composer require dutchie027/vultr
 ```
 
 ## Usage

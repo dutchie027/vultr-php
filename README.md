@@ -8,11 +8,13 @@
 PHP Library Intended to Interact with [Vultr's v2 API](https://www.vultr.com/api/v2)
 
 ## Installation
+
 ```php
 composer require dutchie027/vultr
 ```
 
 ## Usage
+
 ```php
 // require the composer library
 require_once ('vendor/autoload.php');
@@ -68,10 +70,10 @@ $api = new dutchie027\Vultr\API(VULTR_API_KEY);
 // Instantiate without defaults, this allows you to change things
 // like log location, directory, the tag and possible future settings.
 $settings = [
-	'log_dir' => '/tmp',
-	'log_name' => 'vultri',
-	'log_tag' => 'vultr-api',
-	'log_level' => 'error'
+ 'log_dir' => '/tmp',
+ 'log_name' => 'vultri',
+ 'log_tag' => 'vultr-api',
+ 'log_level' => 'error'
 ];
 
 $api = new dutchie027\Vultr\API(VULTR_API_KEY, $settings);
@@ -79,14 +81,14 @@ $api = new dutchie027\Vultr\API(VULTR_API_KEY, $settings);
 
 #### Settings
 
-The default settings are fine, however you might want to override the defaults or use your own.**NOTE: All settings are optional and you don't need to provide any**. 
+The default settings are fine, however you might want to override the defaults or use your own.**NOTE: All settings are optional and you don't need to provide any**.
 
-Field | Type | Description | Default Value
------ | ---- | ----------- | -------------
-`log_dir` | string | The directory where the log file is stored | [sys_get_temp_dir()](https://www.php.net/manual/en/function.sys-get-temp-dir.php)
-`log_name` | string | The name of the log file that is created in `log_dir`. If you don't put .log at the end, it will append it | 6 random characters + [time()](https://www.php.net/manual/en/function.time.php) + .log 
-`log_tag` | string | If you share this log file with other applications, this is the tag used in the log file | vultr
-`log_level` | string | The level of logging the application will do. This must be either `debug`, `info`, `notice`, `warning`, `critical` or `error`. If it is not one of those values it will fail to the default | `warning`
+| Field       | Type   | Description                                                                                                                                                                                 | Default Value                                                                          |
+| ----------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
+| `log_dir`   | string | The directory where the log file is stored                                                                                                                                                  | [sys_get_temp_dir()](https://www.php.net/manual/en/function.sys-get-temp-dir.php)      |
+| `log_name`  | string | The name of the log file that is created in `log_dir`. If you don't put .log at the end, it will append it                                                                                  | 6 random characters + [time()](https://www.php.net/manual/en/function.time.php) + .log |
+| `log_tag`   | string | If you share this log file with other applications, this is the tag used in the log file                                                                                                    | vultr                                                                                  |
+| `log_level` | string | The level of logging the application will do. This must be either `debug`, `info`, `notice`, `warning`, `critical` or `error`. If it is not one of those values it will fail to the default | `warning`                                                                              |
 
 ### Account
 
@@ -127,17 +129,17 @@ $json_return = $api->blockStorage()->createBlockStorage($config);
 
 If you call this without any `$config` it will still create block storage. It will use the defaults as described below.
 
-Parameter | Type | Description | Default Value
---------- | ---- | ----------- | -------------
-`region` | string | The region where you want the storage created. *NOTE* If you choose a location that does NOT have block storate, it will revert to the default. | ewr
-`size` | integer | The size (in GB) of how much storage you want created. *NOTE* This value must be between 10 and 10000 | 10
-`label` | string | A text label to be associated with the storage | _null_
+| Parameter | Type    | Description                                                                                                                                     | Default Value |
+| --------- | ------- | ----------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| `region`  | string  | The region where you want the storage created. *NOTE* If you choose a location that does NOT have block storate, it will revert to the default. | ewr           |
+| `size`    | integer | The size (in GB) of how much storage you want created. *NOTE* This value must be between 10 and 10000                                           | 10            |
+| `label`   | string  | A text label to be associated with the storage                                                                                                  | _null_        |
 
 ##### Return Value
 
 You will be returned with a JSON payload that includes the newly created Block ID as well as the cost (in dollars) and size (in GB):
 
-```
+```json
 {
   "block": {
     "id": "8692c434-08fa-4efb-a0fb-966a338aee07",
@@ -170,7 +172,7 @@ $config = [
 $api->blockStorage()->updateBlockStorage($config);
 ```
 
-##### Config
+##### Block Storage Config
 
 Block storage can only be updated once every 60 seconds. To update the storage you need a minimum of the `blockid` and either a `size` or new `label`.
 
@@ -212,8 +214,8 @@ require_once ('vendor/autoload.php');
 $api = new dutchie027\Vultr\API(VULTR_API_KEY);
 
 $config = [
-	'block_id' => '98772323-044a-4efb-a0fb-1234338abb07',
-	'instance' => '12345434-08fa-4efb-a0fb-966a338aee07',
+ 'block_id' => '98772323-044a-4efb-a0fb-1234338abb07',
+ 'instance' => '12345434-08fa-4efb-a0fb-966a338aee07',
     'live' => false,
 ];
 
@@ -232,7 +234,7 @@ require_once ('vendor/autoload.php');
 $api = new dutchie027\Vultr\API(VULTR_API_KEY);
 
 $config = [
-	'block_id' => '98772323-044a-4efb-a0fb-1234338abb07',
+ 'block_id' => '98772323-044a-4efb-a0fb-1234338abb07',
     'live' => false,
 ];
 

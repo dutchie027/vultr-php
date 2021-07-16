@@ -1,5 +1,5 @@
 {
-    "name": "comp-mc/vultr",
+    "name": "dutchie027/vultr",
     "description": "Vultr PHP API",
     "keywords": ["php", "automation", "Vultr", "paas", "headless", "server administration"],
     "type": "library",

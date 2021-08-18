@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "aws/aws-sdk-php",
-            "version": "3.190.0",
+            "version": "3.190.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/aws/aws-sdk-php.git",
-                "reference": "4700c27227649ed7e2ea09028cca1c884ab2c41b"
+                "reference": "b66a54a7825ce5a639fe929906746249d903ae5d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/4700c27227649ed7e2ea09028cca1c884ab2c41b",
-                "reference": "4700c27227649ed7e2ea09028cca1c884ab2c41b",
+                "url": "https://api.github.com/repos/aws/aws-sdk-php/zipball/b66a54a7825ce5a639fe929906746249d903ae5d",
+                "reference": "b66a54a7825ce5a639fe929906746249d903ae5d",
                 "shasum": ""
             },
             "require": {
@@ -92,9 +92,9 @@
             "support": {
                 "forum": "https://forums.aws.amazon.com/forum.jspa?forumID=80",
                 "issues": "https://github.com/aws/aws-sdk-php/issues",
-                "source": "https://github.com/aws/aws-sdk-php/tree/3.190.0"
+                "source": "https://github.com/aws/aws-sdk-php/tree/3.190.4"
             },
-            "time": "2021-08-11T18:16:23+00:00"
+            "time": "2021-08-17T18:17:31+00:00"
         },
         {
             "name": "guzzlehttp/guzzle",

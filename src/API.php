@@ -3,24 +3,23 @@
 /**
  * PHP Wrapper to Interact with Vultr 2.0 API
  *
- * @package Vultr
  * @version 2.0
- * @author  https://github.com/dutchie027
+ *
  * @license http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @see     https://github.com/dutche027/vultr-php
  * @see     https://packagist.org/packages/dutchie027/vultr
  * @see     https://www.vultr.com/api/v2
- *
  */
 
 namespace dutchie027\Vultr;
 
 use dutchie027\Vultr\Exceptions\VultrAPIRequestException;
 use GuzzleHttp\Client as Guzzle;
-use GuzzleHttp\Psr7;
 use GuzzleHttp\Exception\RequestException;
-use Monolog\Logger;
+use GuzzleHttp\Psr7;
 use Monolog\Handler\StreamHandler;
+use Monolog\Logger;
 
 class API
 {
@@ -232,7 +231,7 @@ class API
      *
      * @var string
      */
-    protected $p_log_tag = "vultr";
+    protected $p_log_tag = 'vultr';
 
     /**
      * Log Types
@@ -240,12 +239,12 @@ class API
      * @var array
      */
     protected $log_literals = [
-        "debug",
-        "info",
-        "notice",
-        "warning",
-        "critical",
-        "error"
+        'debug',
+        'info',
+        'notice',
+        'warning',
+        'critical',
+        'error',
     ];
 
     /**
@@ -261,6 +260,7 @@ class API
     public function __construct($token, array $attributes = [], Guzzle $guzzle = null)
     {
         $this->p_token = $token;
+
         if (isset($attributes['log_dir']) && is_dir($attributes['log_dir'])) {
             $this->p_log_location = $attributes['log_dir'];
         } else {
@@ -269,30 +269,32 @@ class API
 
         if (isset($attributes['log_name'])) {
             $this->p_log_name = $attributes['log_name'];
+
             if (!preg_match("/\.log$/", $this->p_log_name)) {
-                $this->p_log_name .= ".log";
+                $this->p_log_name .= '.log';
             }
         } else {
-            $this->p_log_name = $this->pGenRandomString() . "." . time() . ".log";
+            $this->p_log_name = $this->pGenRandomString() . '.' . time() . '.log';
         }
+
         if (isset($attributes['log_tag'])) {
             $this->p_log = new Logger($attributes['log_tag']);
         } else {
             $this->p_log = new Logger($this->p_log_tag);
         }
 
-        if (isset($attributes['log_level']) && in_array($attributes['log_level'], $this->log_literals)) {
-            if ($attributes['log_level'] == "debug") {
+        if (isset($attributes['log_level']) && in_array($attributes['log_level'], $this->log_literals, true)) {
+            if ($attributes['log_level'] == 'debug') {
                 $this->p_log->pushHandler(new StreamHandler($this->pGetLogPath(), Logger::DEBUG));
-            } elseif ($attributes['log_level'] == "info") {
+            } elseif ($attributes['log_level'] == 'info') {
                 $this->p_log->pushHandler(new StreamHandler($this->pGetLogPath(), Logger::INFO));
-            } elseif ($attributes['log_level'] == "notice") {
+            } elseif ($attributes['log_level'] == 'notice') {
                 $this->p_log->pushHandler(new StreamHandler($this->pGetLogPath(), Logger::NOTICE));
-            } elseif ($attributes['log_level'] == "warning") {
+            } elseif ($attributes['log_level'] == 'warning') {
                 $this->p_log->pushHandler(new StreamHandler($this->pGetLogPath(), Logger::WARNING));
-            } elseif ($attributes['log_level'] == "error") {
+            } elseif ($attributes['log_level'] == 'error') {
                 $this->p_log->pushHandler(new StreamHandler($this->pGetLogPath(), Logger::ERROR));
-            } elseif ($attributes['log_level'] == "critical") {
+            } elseif ($attributes['log_level'] == 'critical') {
                 $this->p_log->pushHandler(new StreamHandler($this->pGetLogPath(), Logger::CRITICAL));
             } else {
                 $this->p_log->pushHandler(new StreamHandler($this->pGetLogPath(), Logger::WARNING));
@@ -307,9 +309,7 @@ class API
      * getLogLocation
      * Alias to Get Log Path
      *
-     *
      * @return string
-     *
      */
     public function getLogLocation()
     {
@@ -320,9 +320,7 @@ class API
      * getAPIToken
      * Returns the stored API Token
      *
-     *
      * @return string
-     *
      */
     private function getAPIToken()
     {
@@ -333,290 +331,227 @@ class API
      * account
      * Pointer to the \Account class
      *
-     *
      * @return object
-     *
      */
     public function account(): Account
     {
-        $account = new Account($this);
-        return $account;
+        return new Account($this);
     }
 
     /**
      * applications
      * Pointer to the \Applications class
      *
-     *
      * @return object
-     *
      */
     public function applications(): Applications
     {
-        $ap = new Applications($this);
-        return $ap;
+        return new Applications($this);
     }
 
     /**
      * backups
      * Pointer to the \Backups class
      *
-     *
      * @return object
-     *
      */
     public function backups(): Backups
     {
-        $bu = new Backups($this);
-        return $bu;
+        return new Backups($this);
     }
 
     /**
      * bareMetal
      * Pointer to the \BareMetal class
      *
-     *
      * @return object
-     *
      */
     public function bareMetal(): BareMetal
     {
-        $bm = new BareMetal($this);
-        return $bm;
+        return new BareMetal($this);
     }
 
     /**
      * blockStorage
      * Pointer to the \BlockStorage class
      *
-     *
      * @return object
-     *
      */
     public function blockStorage(): BlockStorage
     {
-        $bs = new BlockStorage($this);
-        return $bs;
+        return new BlockStorage($this);
     }
 
     /**
      * dns
      * Pointer to the \DNS class
      *
-     *
      * @return object
-     *
      */
     public function dns(): DNS
     {
-        $dns = new DNS($this);
-        return $dns;
+        return new DNS($this);
     }
 
     /**
      * firewalls
      * Pointer to the \Firewalls class
      *
-     *
      * @return object
-     *
      */
     public function firewalls(): Firewalls
     {
-        $fw = new Firewalls($this);
-        return $fw;
+        return new Firewalls($this);
     }
 
     /**
      * instances
      * Pointer to the \Instances class
      *
-     *
      * @return object
-     *
      */
     public function instances(): Instances
     {
-        $instances = new Instances($this);
-        return $instances;
+        return new Instances($this);
     }
 
     /**
      * iso
      * Pointer to the \ISO class
      *
-     *
      * @return object
-     *
      */
     public function iso(): ISO
     {
-        $iso = new ISO($this);
-        return $iso;
+        return new ISO($this);
     }
 
     /**
      * loadBalancers
      * Pointer to the \LoadBalancers class
      *
-     *
      * @return object
-     *
      */
     public function loadBalancers(): LoadBalancers
     {
-        $lb = new LoadBalancers($this);
-        return $lb;
+        return new LoadBalancers($this);
     }
 
     /**
      * objectStorage
      * Pointer to the \ObjectStorage cass
      *
-     *
      * @return object
-     *
      */
     public function objectStorage(): ObjectStorage
     {
-        $os = new ObjectStorage($this);
-        return $os;
+        return new ObjectStorage($this);
     }
 
     /**
      * operatingSystems
      * Pointer to the \OperatingSystems class
      *
-     *
      * @return object
-     *
      */
     public function operatingSystems(): OperatingSystems
     {
-        $os = new OperatingSystems($this);
-        return $os;
+        return new OperatingSystems($this);
     }
 
     /**
      * plans
      * Pointer to the \Plans class
      *
-     *
      * @return object
-     *
      */
     public function plans(): Plans
     {
-        $plans = new Plans($this);
-        return $plans;
+        return new Plans($this);
     }
 
     /**
      * privateNetworks
      * Pointer to the \PrivateNetworks class
      *
-     *
      * @return object
-     *
      */
     public function privateNetworks(): PrivateNetworks
     {
-        $pn = new PrivateNetworks($this);
-        return $pn;
+        return new PrivateNetworks($this);
     }
 
     /**
      * regions
      * Pointer to the \Regions class
      *
-     *
      * @return object
-     *
      */
     public function regions(): Regions
     {
-        $regions = new Regions($this);
-        return $regions;
+        return new Regions($this);
     }
 
     /**
      * reservedIPs
      * Pointer to the \ReservedIPs class
      *
-     *
      * @return object
-     *
      */
     public function reservedIPs(): ReservedIPs
     {
-        $rip = new ReservedIPs($this);
-        return $rip;
+        return new ReservedIPs($this);
     }
 
     /**
      * snapshots
      * Pointer to the \Snapshots class
      *
-     *
      * @return object
-     *
      */
     public function snapshots(): Snapshots
     {
-        $snap = new Snapshots($this);
-        return $snap;
+        return new Snapshots($this);
     }
 
     /**
      * instances
      * Pointer to the \SSHKeys class
      *
-     *
      * @return object
-     *
      */
     public function sshKeys(): SSHKeys
     {
-        $ssh = new SSHKeys($this);
-        return $ssh;
+        return new SSHKeys($this);
     }
 
     /**
      * startupScripts
      * Pointer to the \StartupScripts class
      *
-     *
      * @return object
-     *
      */
     public function startupScripts(): StartupScripts
     {
-        $ss = new StartupScripts($this);
-        return $ss;
+        return new StartupScripts($this);
     }
 
     /**
      * users
      * Pointer to the \Users class
      *
-     *
      * @return object
-     *
      */
     public function users(): Users
     {
-        $users = new Users($this);
-        return $users;
+        return new Users($this);
     }
-
 
     /**
      * getLogPointer
      * Returns a referencd to the logger
      *
-     *
      * @return object
-     *
      */
     public function getLogPointer()
     {
@@ -627,9 +562,7 @@ class API
      * pGetLogPath
      * Returns full path and name of the log file
      *
-     *
      * @return string
-     *
      */
     protected function pGetLogPath()
     {
@@ -640,18 +573,15 @@ class API
      * setHeaders
      * Sets the headers using the API Token
      *
-     *
      * @return array
-     *
      */
     public function setHeaders()
     {
-        $array = [
+        return [
             'User-Agent' => 'php-api-dutchie027/' . self::LIBRARY_VERSION,
             'Content-Type' => 'application/json',
-            'Authorization' => 'Bearer ' . $this->getAPIToken()
+            'Authorization' => 'Bearer ' . $this->getAPIToken(),
         ];
-        return $array;
     }
 
     /**
@@ -661,19 +591,19 @@ class API
      * @param int $length
      *
      * @return string
-     *
      */
     public function pGenRandomString($length = 6)
     {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
         $randomString = '';
-        for ($i = 0; $i < $length; $i++) {
-            $randomString .= $characters[rand(0, $charactersLength - 1)];
+
+        for ($i = 0; $i < $length; ++$i) {
+            $randomString .= $characters[mt_rand(0, $charactersLength - 1)];
         }
+
         return $randomString;
     }
-
 
     /**
      * makeAPICall
@@ -683,23 +613,27 @@ class API
      * @param $url string endpoint
      * @param $body string - usually passed as JSON
      *
-     * @return Psr7\Stream Object
      * @throws VultrAPIRequestException Exception with details regarding the failed request
      *
+     * @return Psr7\Stream Object
      */
     public function makeAPICall($type, $url, $body = null)
     {
         $data['headers'] = $this->setHeaders();
         $data['body'] = $body;
+
         try {
             $request = $this->guzzle->request($type, $url, $data);
+
             return $request->getBody();
         } catch (RequestException $e) {
             if ($e->hasResponse()) {
                 $response = $e->getResponse();
                 $ja = json_decode($response->getBody()->getContents(), true);
-                throw new VultrAPIRequestException('An error occurred while performing the request to ' . $url . ' -> ' . (isset($ja['error']) ? $ja['error'] : json_encode($ja)));
+
+                throw new VultrAPIRequestException('An error occurred while performing the request to ' . $url . ' -> ' . ($ja['error'] ?? json_encode($ja)));
             }
+
             throw new VultrAPIRequestException(('An unknown error ocurred while performing the request to ' . $url));
         }
     }

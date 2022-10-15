@@ -3,14 +3,13 @@
 /**
  * PHP Wrapper to Interact with Vultr 2.0 API
  *
- * @package Vultr
  * @version 2.0
- * @author  https://github.com/dutchie027
+ *
  * @license http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @see     https://github.com/dutche027/vultr-php
  * @see     https://packagist.org/packages/dutchie027/vultr
  * @see     https://www.vultr.com/api/v2
- *
  */
 
 namespace dutchie027\Vultr;
@@ -19,7 +18,6 @@ use dutchie027\Vultr\Exceptions\InvalidParameterException;
 
 class LoadBalancers
 {
-
     /**
      * Reference to \API object
      *
@@ -54,9 +52,9 @@ class LoadBalancers
      * @var array
      */
     private $frontend_proto = [
-        "HTTP",
-        "HTTPS",
-        "TCP",
+        'HTTP',
+        'HTTPS',
+        'TCP',
     ];
 
     /**
@@ -65,9 +63,9 @@ class LoadBalancers
      * @var array
      */
     private $backend_proto = [
-        "HTTP",
-        "HTTPS",
-        "TCP",
+        'HTTP',
+        'HTTPS',
+        'TCP',
     ];
 
     /**
@@ -77,7 +75,6 @@ class LoadBalancers
      * @param object $api API
      *
      * @return object
-     *
      */
     public function __construct(API $api)
     {
@@ -89,11 +86,9 @@ class LoadBalancers
      * listLoadBalancers
      * List all Reserved IPs in your account.
      *
-     *
      * @return string
      *
      * @see https://www.vultr.com/api/v2/#operation/list-load-balancers
-     *
      */
     public function listLoadBalancers()
     {
@@ -103,14 +98,11 @@ class LoadBalancers
     /**
      * loadReservedIPs
      * Loads Reserved IP Information in to arrays
-     *
-     *
-     * @return void
-     *
      */
     public function loadLoadBalancers()
     {
         $lba = json_decode($this->listLoadBalancers(), true);
+
         foreach ($lba['load_balancers'] as $key) {
             $id = $key['id'];
             $this->ids[] = $id;
@@ -123,46 +115,40 @@ class LoadBalancers
      * getLoadBalancer
      * Get information for a Load Balancer.
      *
-     *
      * @return string
      *
      * @see https://www.vultr.com/api/v2/#operation/get-load-balancer
-     *
      */
     public function getLoadBalancer($id)
     {
-        return $this->api->makeAPICall('GET', $this->api::LOAD_BALANCERS_URL . "/" . $id);
+        return $this->api->makeAPICall('GET', $this->api::LOAD_BALANCERS_URL . '/' . $id);
     }
 
     /**
      * deleteLoadBalancer
      * Delete a Load Balancer.
      *
-     *
      * @return string
      *
      * @see https://www.vultr.com/api/v2/#operation/delete-load-balancer
-     *
      */
     public function deleteLoadBalancer($id)
     {
-        return $this->api->makeAPICall('DELETE', $this->api::LOAD_BALANCERS_URL . "/" . $id);
+        return $this->api->makeAPICall('DELETE', $this->api::LOAD_BALANCERS_URL . '/' . $id);
     }
-
 
     /**
      * listForwardingRules
      * List the fowarding rules for a Load Balancer.
      *
-     *
      * @return string
      *
      * @see https://www.vultr.com/api/v2/#operation/list-load-balancer-forwarding-rules
-     *
      */
     public function listForwardingRules($id)
     {
-        $url = $this->api::LOAD_BALANCERS_URL . "/" . $id . "/forwarding-rules";
+        $url = $this->api::LOAD_BALANCERS_URL . '/' . $id . '/forwarding-rules';
+
         return $this->api->makeAPICall('GET', $url);
     }
 
@@ -170,33 +156,36 @@ class LoadBalancers
      * createForwardingRule
      * List the fowarding rules for a Load Balancer.
      *
-     *
      * @return string
      *
      * @see https://www.vultr.com/api/v2/#operation/create-load-balancer-forwarding-rules
-     *
      */
     public function createForwardingRule($oa)
     {
         $this->checkLoadBalancer($oa['load-balancer-id']);
-        if (!isset($oa['frontend_protocol']) || !in_array($oa['frontend_protocol'], $this->frontend_proto)) {
-            throw new InvalidParameterException("Front End Protocol Missing or Invalid");
+
+        if (!isset($oa['frontend_protocol']) || !in_array($oa['frontend_protocol'], $this->frontend_proto, true)) {
+            throw new InvalidParameterException('Front End Protocol Missing or Invalid');
         }
-        if (!isset($oa['backend_protocol']) || !in_array($oa['backend_protocol'], $this->backend_proto)) {
-            throw new InvalidParameterException("Front End Protocol Missing or Invalid");
+
+        if (!isset($oa['backend_protocol']) || !in_array($oa['backend_protocol'], $this->backend_proto, true)) {
+            throw new InvalidParameterException('Front End Protocol Missing or Invalid');
         }
+
         if (!isset($oa['frontend_port']) || $oa['frontend_port'] > 65535 || $oa['frontend_port'] < 1) {
-            throw new InvalidParameterException("Frontend port invalid");
+            throw new InvalidParameterException('Frontend port invalid');
         }
+
         if (!isset($oa['backend_port']) || $oa['backend_port'] > 65535 || $oa['backend_port'] < 1) {
-            throw new InvalidParameterException("Backend port invalid");
+            throw new InvalidParameterException('Backend port invalid');
         }
         $ba['frontend_protocol'] = $oa['frontend_protocol'];
         $ba['backend_protocol'] = $oa['backend_protocol'];
         $ba['frontend_port'] = $oa['frontend_port'];
         $ba['backend_port'] = $oa['backend_port'];
         $body = json_encode($ba);
-        $url = $this->api::LOAD_BALANCERS_URL . "/" . $oa['load-balancer-id'] . "/forwarding-rules";
+        $url = $this->api::LOAD_BALANCERS_URL . '/' . $oa['load-balancer-id'] . '/forwarding-rules';
+
         return $this->api->makeAPICall('POST', $url, $body);
     }
 
@@ -205,11 +194,9 @@ class LoadBalancers
      * getForwardingRule
      * List the fowarding rules for a Load Balancer.
      *
-     *
      * @return string
      *
      * @see https://www.vultr.com/api/v2/#operation/get-load-balancer-forwarding-rule
-     *
      */
     public function getForwardingRule($oa)
     {
@@ -217,7 +204,8 @@ class LoadBalancers
         // TODO: Check to ensure the rule here is right
         $lbid = $oa['load-balancer-id'];
         $rid = $oa['forwarding-rule-id'];
-        $url = $this->api::LOAD_BALANCERS_URL . "/" . $lbid . "/forwarding-rules/" . $rid;
+        $url = $this->api::LOAD_BALANCERS_URL . '/' . $lbid . '/forwarding-rules/' . $rid;
+
         return $this->api->makeAPICall('GET', $url);
     }
 
@@ -226,11 +214,9 @@ class LoadBalancers
      * deleteForwardingRule
      * List the fowarding rules for a Load Balancer.
      *
-     *
      * @return string
      *
      * @see https://www.vultr.com/api/v2/#operation/delete-load-balancer-forwarding-rule
-     *
      */
     public function deleteForwardingRule($oa)
     {
@@ -238,7 +224,8 @@ class LoadBalancers
         // TODO: Check to ensure the rule here is right
         $lbid = $oa['load-balancer-id'];
         $rid = $oa['forwarding-rule-id'];
-        $url = $this->api::LOAD_BALANCERS_URL . "/" . $lbid . "/forwarding-rules/" . $rid;
+        $url = $this->api::LOAD_BALANCERS_URL . '/' . $lbid . '/forwarding-rules/' . $rid;
+
         return $this->api->makeAPICall('DELETE', $url);
     }
 
@@ -246,18 +233,17 @@ class LoadBalancers
      * checkLoadBalancer
      * Checks's if a Load Balancer ID is valid or not
      *
-     * @var string $id
+     * @var string
      *
      * @return bool
-     *
      */
     public function checkLoadBalancer($id)
     {
-        if (in_array($id, $this->ids)) {
+        if (in_array($id, $this->ids, true)) {
             return true;
-        } else {
-            throw new InvalidParameterException("Load Balancer ID Not Found");
         }
+
+        throw new InvalidParameterException('Load Balancer ID Not Found');
     }
 
     // TODO: Stubbed Out but Not finished
@@ -265,12 +251,11 @@ class LoadBalancers
      * createLoadBalancer
      * Create a new Load Balancer in a particular region.
      *
-     * @var string $id
+     * @var string
      *
      * @return bool
-     * 
-     * @see https://www.vultr.com/api/v2/#operation/create-load-balancer
      *
+     * @see https://www.vultr.com/api/v2/#operation/create-load-balancer
      */
     public function createLoadBalancer($oa)
     {
@@ -281,12 +266,11 @@ class LoadBalancers
      * updateLoadBalancer
      * Create a new Load Balancer in a particular region.
      *
-     * @var string $id
+     * @var string
      *
      * @return bool
-     * 
-     * @see https://www.vultr.com/api/v2/#operation/update-load-balancer
      *
+     * @see https://www.vultr.com/api/v2/#operation/update-load-balancer
      */
     public function updateLoadBalancer($oa)
     {

@@ -3,21 +3,19 @@
 /**
  * PHP Wrapper to Interact with Vultr 2.0 API
  *
- * @package Vultr
  * @version 2.0
- * @author  https://github.com/dutchie027
+ *
  * @license http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @see     https://github.com/dutche027/vultr-php
  * @see     https://packagist.org/packages/dutchie027/vultr
  * @see     https://www.vultr.com/api/v2
- *
  */
 
 namespace dutchie027\Vultr;
 
 class Plans
 {
-
     /**
      * Reference to \API object
      *
@@ -74,7 +72,6 @@ class Plans
      * @param object $api API
      *
      * @return object
-     *
      */
     public function __construct(API $api)
     {
@@ -87,9 +84,7 @@ class Plans
      * listPlans
      * List All Plans
      *
-     *
      * @return string
-     *
      */
     public function listPlans()
     {
@@ -100,9 +95,7 @@ class Plans
      * listMetalPlans
      * List Bare Metal Plans
      *
-     *
      * @return string
-     *
      */
     public function listMetalPlans()
     {
@@ -112,14 +105,11 @@ class Plans
     /**
      * loadPlans
      * Loads Plan Information in to arrays
-     *
-     *
-     * @return void
-     *
      */
     public function loadPlans()
     {
         $pa = json_decode($this->listPlans(), true);
+
         foreach ($pa['plans'] as $plan) {
             $id = $plan['id'];
             $this->ids[] = $id;
@@ -131,14 +121,11 @@ class Plans
     /**
      * loadMetalPlans
      * Loads Metal Plan Information in to arrays
-     *
-     *
-     * @return void
-     *
      */
     public function loadMetalPlans()
     {
         $pa = json_decode($this->listMetalPlans(), true);
+
         foreach ($pa['plans_metal'] as $plan) {
             $id = $plan['id'];
             $this->metal_ids[] = $id;
@@ -151,9 +138,7 @@ class Plans
      * getNumberOfPlans
      * Returns total number of Plans
      *
-     *
      * @return int
-     *
      */
     public function getNumberOfPlans()
     {
@@ -164,7 +149,8 @@ class Plans
      * getAllPlans
      * Returns Bare Metal and normal plans combined together.
      */
-    public function getAllPlans() {
+    public function getAllPlans()
+    {
         return array_merge($this->plan, $this->metal_plan);
     }
 }

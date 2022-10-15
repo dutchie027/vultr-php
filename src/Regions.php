@@ -3,14 +3,13 @@
 /**
  * PHP Wrapper to Interact with Vultr 2.0 API
  *
- * @package Vultr
  * @version 2.0
- * @author  https://github.com/dutchie027
+ *
  * @license http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @see     https://github.com/dutche027/vultr-php
  * @see     https://packagist.org/packages/dutchie027/vultr
  * @see     https://www.vultr.com/api/v2
- *
  */
 
 namespace dutchie027\Vultr;
@@ -78,14 +77,14 @@ class Regions
      *
      * @var string
      */
-    public $bs_flag = "block_storage";
+    public $bs_flag = 'block_storage';
 
     /**
      * Key to look for when looking for DDOS Protection
      *
      * @var string
      */
-    public $ddos_flag = "ddos_protection";
+    public $ddos_flag = 'ddos_protection';
 
     /**
      * Cached region data.
@@ -98,11 +97,6 @@ class Regions
      * __construct
      * Main Construct - Loads Regions in to arrays and creates reference
      * from main API class
-     *
-     * @param $api
-     *
-     * @return void
-     *
      */
     public function __construct(API $api)
     {
@@ -114,9 +108,7 @@ class Regions
      * listRegions
      * Returns a list of Regions in the default JSON Array Format
      *
-     *
      * @return string JSON body
-     *
      */
     public function listRegions()
     {
@@ -127,38 +119,35 @@ class Regions
      * getRegions
      * Gets the regions with associated data from API
      *
-     *
      * @return array
-     *
      */
     public function getRegions()
     {
-        $build_data = array();
+        $build_data = [];
+
         foreach ($this->region_data['regions'] as $line) {
             $build_data[$line['id']] = $line;
         }
+
         return $build_data;
     }
 
     /**
      * loadRegionArrays
      * Loads arrays with region information
-     *
-     *
-     * @return void
-     *
      */
     public function loadRegionArrays()
     {
         $this->region_data = $data = json_decode($this->listRegions(), true);
+
         foreach ($data['regions'] as $line) {
             $this->ids[] = $line['id'];
             $this->cities[] = $line['city'];
-            $this->names[] = $line['city'] . " (" . $line['id'] . ")";
-            (!in_array($line['country'], $this->countries)) ? $this->countries[] = $line['country'] : null ;
-            (!in_array($line['continent'], $this->continents)) ? $this->continents[] = $line['continent'] : null ;
-            (in_array($this->bs_flag, $line['options'])) ? $this->block_ids[] = $line['id'] : null ;
-            (in_array($this->ddos_flag, $line['options'])) ? $this->ddos_ids[] = $line['id'] : null ;
+            $this->names[] = $line['city'] . ' (' . $line['id'] . ')';
+            (!in_array($line['country'], $this->countries, true)) ? $this->countries[] = $line['country'] : null ;
+            (!in_array($line['continent'], $this->continents, true)) ? $this->continents[] = $line['continent'] : null ;
+            (in_array($this->bs_flag, $line['options'], true)) ? $this->block_ids[] = $line['id'] : null ;
+            (in_array($this->ddos_flag, $line['options'], true)) ? $this->ddos_ids[] = $line['id'] : null ;
         }
     }
 
@@ -166,9 +155,7 @@ class Regions
      * getIds
      * Returns the array of ususble IDs
      *
-     *
      * @return array
-     *
      */
     public function getIds()
     {
@@ -179,9 +166,7 @@ class Regions
      * getDDOSIds
      * Returns array of IDs that allow DDOS
      *
-     *
      * @return array
-     *
      */
     public function getDDOSIds()
     {
@@ -192,9 +177,7 @@ class Regions
      * getBlockIds
      * Returns array of IDs that allow block storage
      *
-     *
      * @return array
-     *
      */
     public function getBlockIds()
     {

@@ -3,14 +3,13 @@
 /**
  * PHP Wrapper to Interact with Vultr 2.0 API
  *
- * @package Vultr
  * @version 2.0
- * @author  https://github.com/dutchie027
+ *
  * @license http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @see     https://github.com/dutche027/vultr-php
  * @see     https://packagist.org/packages/dutchie027/vultr
  * @see     https://www.vultr.com/api/v2
- *
  */
 
 namespace dutchie027\Vultr;
@@ -38,7 +37,7 @@ class BlockStorage
      *
      * @var string
      */
-    private $d_region = "ewr";
+    private $d_region = 'ewr';
 
     /**
      * Default size (in GB)
@@ -52,7 +51,7 @@ class BlockStorage
      *
      * @var string
      */
-    private $d_label = "";
+    private $d_label = '';
 
     /**
      * Array containing block IDs
@@ -65,11 +64,6 @@ class BlockStorage
      * __construct
      * Main Construct - Loads Regions in to arrays and creates reference
      * from main API class
-     *
-     * @param $api
-     *
-     * @return void
-     *
      */
     public function __construct(API $api)
     {
@@ -81,9 +75,7 @@ class BlockStorage
      * listBlockStorage
      * Lists All Block Storage
      *
-     *
      * @return string
-     *
      */
     public function listBlockStorage()
     {
@@ -93,14 +85,11 @@ class BlockStorage
     /**
      * loadBlocks
      * Loads Blocks Used in to Array
-     *
-     *
-     * @return void
-     *
      */
     public function loadBlocks()
     {
         $ba = json_decode($this->listBlockStorage(), true);
+
         foreach ($ba['blocks'] as $bsa) {
             $this->block_array[] = $bsa['id'];
         }
@@ -114,7 +103,6 @@ class BlockStorage
      * @param array $sa
      *
      * @return string
-     *
      */
     public function createBlockStorage($sa = [])
     {
@@ -124,7 +112,8 @@ class BlockStorage
         $ba['size_gb'] = $this->d_size;
         $ba['label'] = $this->d_label;
 
-        (isset($sa['region']) && in_array($sa['region'], $block_ids)) ? $ba['region'] = $sa['region'] : null;
+        (isset($sa['region']) && in_array($sa['region'], $block_ids, true)) ? $ba['region'] = $sa['region'] : null;
+
         if (isset($sa['size']) && is_numeric($sa['size'])) {
             if ($sa['size'] > 9 && $sa['size'] < 10001) {
                 $ba['size_gb'] = $sa['size'];
@@ -132,6 +121,7 @@ class BlockStorage
         }
         (isset($sa['label'])) ? $ba['label'] = $sa['label'] : null;
         $body = json_encode($ba);
+
         return $this->api->makeAPICall('POST', $this->api::BLOCK_STORAGE_URL, $body);
     }
 
@@ -142,15 +132,14 @@ class BlockStorage
      * @param string $blockid
      *
      * @return string
-     *
      */
     public function getBlockStorage($blockid)
     {
-        if (in_array($blockid, $this->block_array)) {
-            return $this->api->makeAPICall('GET', $this->api::BLOCK_STORAGE_URL . "/" . $blockid);
-        } else {
-            throw new InvalidParameterException("That Block ID isn't associated with your account");
+        if (in_array($blockid, $this->block_array, true)) {
+            return $this->api->makeAPICall('GET', $this->api::BLOCK_STORAGE_URL . '/' . $blockid);
         }
+
+        throw new InvalidParameterException("That Block ID isn't associated with your account");
     }
 
     /**
@@ -160,15 +149,14 @@ class BlockStorage
      * @param string $blockid
      *
      * @return string
-     *
      */
     public function deleteBlockStorage($blockid)
     {
-        if (in_array($blockid, $this->block_array)) {
-            return $this->api->makeAPICall('DELETE', $this->api::BLOCK_STORAGE_URL . "/" . $blockid);
-        } else {
-            throw new InvalidParameterException("That Block ID isn't associated with your account");
+        if (in_array($blockid, $this->block_array, true)) {
+            return $this->api->makeAPICall('DELETE', $this->api::BLOCK_STORAGE_URL . '/' . $blockid);
         }
+
+        throw new InvalidParameterException("That Block ID isn't associated with your account");
     }
 
     /**
@@ -178,27 +166,31 @@ class BlockStorage
      * @param array $options
      *
      * @return string
-     *
      */
     public function updateBlockStorage($options)
     {
-        if (in_array($options['blockid'], $this->block_array)) {
+        if (in_array($options['blockid'], $this->block_array, true)) {
             if (!isset($options['size'])) {
-                throw new InvalidParameterException("You must set the size");
-            } elseif (!is_numeric($options['size'])) {
-                throw new InvalidParameterException("Size must be numeric");
-            } elseif ($options['size'] < 10 || $options['size'] > 10000) {
-                throw new InvalidParameterException("Size must be a number between 10 and 10000");
-            } else {
-                $ba['size_gb'] = $options['size'];
+                throw new InvalidParameterException('You must set the size');
             }
+
+            if (!is_numeric($options['size'])) {
+                throw new InvalidParameterException('Size must be numeric');
+            }
+
+            if ($options['size'] < 10 || $options['size'] > 10000) {
+                throw new InvalidParameterException('Size must be a number between 10 and 10000');
+            }
+            $ba['size_gb'] = $options['size'];
+
             (isset($sa['label'])) ? $ba['label'] = $sa['label'] : null;
 
             $body = json_encode($ba);
-            return $this->api->makeAPICall('PATCH', $this->api::BLOCK_STORAGE_URL . "/" . $options['block_id'], $body);
-        } else {
-            throw new InvalidParameterException("That block ID doesn't exist in your account");
+
+            return $this->api->makeAPICall('PATCH', $this->api::BLOCK_STORAGE_URL . '/' . $options['block_id'], $body);
         }
+
+        throw new InvalidParameterException("That block ID doesn't exist in your account");
     }
 
     /**
@@ -208,29 +200,34 @@ class BlockStorage
      * @param array $options
      *
      * @return string
-     *
      */
     public function attachBlockStorage($options)
     {
         $instance_ids = $this->api->instances()->getIds();
-        if (in_array($options['instance'], $instance_ids)) {
-            if (!in_array($options['blockid'], $this->block_array)) {
+
+        if (in_array($options['instance'], $instance_ids, true)) {
+            if (!in_array($options['blockid'], $this->block_array, true)) {
                 throw new InvalidParameterException("That block ID doesn't exist in your account");
-            } elseif (!isset($options['live'])) {
-                throw new InvalidParameterException("You must set the live variable");
-            } elseif (!is_bool($options['live'])) {
-                throw new InvalidParameterException("The live setting must be either true or false only.");
+            }
+
+            if (!isset($options['live'])) {
+                throw new InvalidParameterException('You must set the live variable');
+            }
+
+            if (!is_bool($options['live'])) {
+                throw new InvalidParameterException('The live setting must be either true or false only.');
             }
             $ba['instance_id'] = $options['instance'];
             $ba['live'] = $options['live'];
 
-            $url = $this->api::BLOCK_STORAGE_URL . "/" . $options['block_id'] . "/attach";
+            $url = $this->api::BLOCK_STORAGE_URL . '/' . $options['block_id'] . '/attach';
 
             $body = json_encode($ba);
+
             return $this->api->makeAPICall('POST', $url, $body);
-        } else {
-            throw new InvalidParameterException("That block ID doesn't exist in your account");
         }
+
+        throw new InvalidParameterException("That block ID doesn't exist in your account");
     }
 
     /**
@@ -240,35 +237,34 @@ class BlockStorage
      * @param array $options
      *
      * @return string
-     *
      */
     public function detatchBlockStorage($options)
     {
-        if (in_array($options['blockid'], $this->block_array)) {
+        if (in_array($options['blockid'], $this->block_array, true)) {
             if (!isset($options['live'])) {
-                throw new InvalidParameterException("You must set the live variable");
-            } elseif (!is_bool($options['live'])) {
-                throw new InvalidParameterException("The live setting must be either true or false only.");
-            } else {
-                $ba['live'] = $options['live'];
+                throw new InvalidParameterException('You must set the live variable');
             }
 
-            $url = $this->api::BLOCK_STORAGE_URL . "/" . $options['block_id'] . "/detatch";
+            if (!is_bool($options['live'])) {
+                throw new InvalidParameterException('The live setting must be either true or false only.');
+            }
+            $ba['live'] = $options['live'];
+
+            $url = $this->api::BLOCK_STORAGE_URL . '/' . $options['block_id'] . '/detatch';
 
             $body = json_encode($ba);
+
             return $this->api->makeAPICall('POST', $url, $body);
-        } else {
-            throw new InvalidParameterException("That block ID doesn't exist in your account");
         }
+
+        throw new InvalidParameterException("That block ID doesn't exist in your account");
     }
 
     /**
      * getNumberOfBlocks
      * Returns total number of blocks
      *
-     *
      * @return int
-     *
      */
     public function getNumberOfBlocks()
     {

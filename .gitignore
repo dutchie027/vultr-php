@@ -1,3 +1,7 @@
-composer.phar
-/vendor/
 tests.php
+test.php
+/vendor/
+/build/
+/resources/
+/.build/
+.php-cs-fixer.cache

@@ -3,14 +3,13 @@
 /**
  * PHP Wrapper to Interact with Vultr 2.0 API
  *
- * @package Vultr
  * @version 2.0
- * @author  https://github.com/dutchie027
+ *
  * @license http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @see     https://github.com/dutche027/vultr-php
  * @see     https://packagist.org/packages/dutchie027/vultr
  * @see     https://www.vultr.com/api/v2
- *
  */
 
 namespace dutchie027\Vultr;
@@ -19,7 +18,6 @@ use dutchie027\Vultr\Exceptions\InvalidParameterException;
 
 class Snapshots
 {
-
     /**
      * Reference to \API object
      *
@@ -39,7 +37,7 @@ class Snapshots
      *
      * @var string
      */
-    protected $d_label = "";
+    protected $d_label = '';
 
     /**
      * Array of Snapshot Information
@@ -62,7 +60,6 @@ class Snapshots
      * @param object $api API
      *
      * @return object
-     *
      */
     public function __construct(API $api)
     {
@@ -74,9 +71,7 @@ class Snapshots
      * listSnapshots
      * Lists Snapshots
      *
-     *
      * @return string
-     *
      */
     public function listSnapshots()
     {
@@ -87,41 +82,36 @@ class Snapshots
      * deleteSnapshot
      * Deletes Snapshot
      *
-     * @var string $id
+     * @var string
      *
      * @return string
-     *
      */
     public function deleteSnapshot($id)
     {
-        return $this->api->makeAPICall('DELETE', $this->api::SNAPSHOTS_URL . "/" . $id);
+        return $this->api->makeAPICall('DELETE', $this->api::SNAPSHOTS_URL . '/' . $id);
     }
 
     /**
      * getSnapshot
      * Get Snapshot Information
      *
-     * @var string $id
+     * @var string
      *
      * @return string
-     *
      */
     public function getSnapshot($id)
     {
-        return $this->api->makeAPICall('GET', $this->api::SNAPSHOTS_URL . "/" . $id);
+        return $this->api->makeAPICall('GET', $this->api::SNAPSHOTS_URL . '/' . $id);
     }
 
     /**
      * loadSnapshots
      * Loads Snapshot Information in to arrays
-     *
-     *
-     * @return void
-     *
      */
     public function loadSnapshots()
     {
         $sa = json_decode($this->listSnapshots(), true);
+
         foreach ($sa['snapshots'] as $snap) {
             $id = $snap['id'];
             $this->ids[] = $id;
@@ -137,18 +127,18 @@ class Snapshots
      * @param array $options
      *
      * @return string
-     *
      */
     public function updateSnapshot($options)
     {
-        if (in_array($options['snapshot_id'], $this->ids)) {
-            $url = $this->api::SNAPSHOTS_URL . "/" . $options['snapshot_id'];
+        if (in_array($options['snapshot_id'], $this->ids, true)) {
+            $url = $this->api::SNAPSHOTS_URL . '/' . $options['snapshot_id'];
         } else {
             throw new InvalidParameterException("That Snapshot ID isn't associated with your account");
         }
         $ba['description'] = $this->d_label;
         (isset($options['description'])) ? $ba['description'] = $options['description'] : null;
         $body = json_encode($ba);
+
         return $this->api->makeAPICall('PUT', $url, $body);
     }
 
@@ -156,20 +146,18 @@ class Snapshots
      * createSnapshot
      * Creates a Snapshot
      *
-     * @param array $options
-     *
      * @return string
-     *
      */
     public function createSnapshot($oa)
     {
-        if (!isset($oa['instance_id']) || !in_array($oa['instance_id'], $this->api->instances()->ids)) {
-            throw new InvalidParameterException("Missing An Instance ID that is part of your account");
+        if (!isset($oa['instance_id']) || !in_array($oa['instance_id'], $this->api->instances()->ids, true)) {
+            throw new InvalidParameterException('Missing An Instance ID that is part of your account');
         }
         $ba['instance_id'] = $oa['instance_id'];
         $ba['description'] = $this->d_label;
         (isset($oa['description'])) ? $ba['description'] = $oa['description'] : null;
         $body = json_encode($ba);
+
         return $this->api->makeAPICall('POST', $this->api::SNAPSHOTS_URL, $body);
     }
 
@@ -177,15 +165,13 @@ class Snapshots
      * createSnapshotfromURL
      * Creates a Snapshot
      *
-     * @param array $options
-     *
      * @return string
-     *
      */
     public function createSnapshotFromURL($url)
     {
         $ba['url'] = $url;
         $body = json_encode($ba);
-        return $this->api->makeAPICall('POST', $this->api::SNAPSHOTS_URL . "/create-from-url", $body);
+
+        return $this->api->makeAPICall('POST', $this->api::SNAPSHOTS_URL . '/create-from-url', $body);
     }
 }

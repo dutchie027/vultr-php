@@ -1,8 +1,6 @@
 <?php
 
-
 namespace dutchie027\Vultr\Exceptions;
-
 
 class VultrAPIRequestException extends VultrAPIException
 {

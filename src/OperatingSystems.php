@@ -3,21 +3,19 @@
 /**
  * PHP Wrapper to Interact with Vultr 2.0 API
  *
- * @package Vultr
  * @version 2.0
- * @author  https://github.com/dutchie027
+ *
  * @license http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @see     https://github.com/dutche027/vultr-php
  * @see     https://packagist.org/packages/dutchie027/vultr
  * @see     https://www.vultr.com/api/v2
- *
  */
 
 namespace dutchie027\Vultr;
 
 class OperatingSystems
 {
-
     /**
      * Reference to \API object
      *
@@ -53,7 +51,6 @@ class OperatingSystems
      * @param object $api API
      *
      * @return object
-     *
      */
     public function __construct(API $api)
     {
@@ -65,9 +62,7 @@ class OperatingSystems
      * listOS
      * Lists All Operating systems
      *
-     *
      * @return string
-     *
      */
     public function listOS()
     {
@@ -77,14 +72,11 @@ class OperatingSystems
     /**
      * loadOSArray
      * Loads OS'es in to Array
-     *
-     *
-     * @return void
-     *
      */
     public function loadOSArray()
     {
         $osa = json_decode($this->listOS(), true);
+
         foreach ($osa['os'] as $os) {
             $id = $os['id'];
             $this->ids[] = $id;

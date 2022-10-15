@@ -1,13 +1,28 @@
 {
     "name": "dutchie027/vultr",
     "description": "Vultr PHP API",
-    "keywords": ["php", "automation", "Vultr", "paas", "headless", "server administration"],
+    "keywords": [
+        "Vulrt",
+        "Server Administration",
+        "PAAS",
+        "Automation",
+        "PHP",
+        "Composer",
+        "System Administration"
+    ],
     "type": "library",
     "require": {
-        "monolog/monolog": "^2.2",
-        "guzzlehttp/guzzle": "^7.2",
+        "php": ">=8.0",
+        "monolog/monolog": "^3.0",
+        "guzzlehttp/guzzle": "^7.5",
         "aws/aws-sdk-php": "^3.171",
         "ext-json": "*"
+    },
+    "require-dev": {
+        "friendsofphp/php-cs-fixer": "^3.10",
+        "phpstan/phpstan": "^1.8",
+        "phpunit/phpunit": "^9",
+        "psalm/phar": "^4.27"
     },
     "autoload": {
         "psr-4": {
@@ -20,8 +35,27 @@
         "source": "https://github.com/dutchie027/vultr-php/tree/main"
     },
     "license": "MIT",
-    "authors": [{
-        "name": "Justin Rodino",
-        "email": "justin@227volts.com"
-    }]
+    "authors": [
+        {
+            "name": "Justin Rodino",
+            "email": "justin@227volts.com"
+        }
+    ],
+    "scripts": {
+        "fix": "./vendor/bin/php-cs-fixer fix",
+        "test": "./vendor/bin/phpunit",
+        "stan": "./vendor/bin/phpstan --no-progress",
+        "psalm": "./vendor/bin/psalm.phar --show-info=true",
+        "runall": [
+            "@fix",
+            "@test",
+            "@stan"
+        ]
+    },
+    "scripts-descriptions": {
+        "test": "Runs phpunit tests",
+        "fix": "Runs PHP-CS Fixer",
+        "stan": "Runs phpstan to check standards",
+        "runall": "Runs all tests (fixer, phpunit, phpstan)"
+    }
 }

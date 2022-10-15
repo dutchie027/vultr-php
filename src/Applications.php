@@ -3,14 +3,13 @@
 /**
  * PHP Wrapper to Interact with Vultr 2.0 API
  *
- * @package Vultr
  * @version 2.0
- * @author  https://github.com/dutchie027
+ *
  * @license http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @see     https://github.com/dutche027/vultr-php
  * @see     https://packagist.org/packages/dutchie027/vultr
  * @see     https://www.vultr.com/api/v2
- *
  */
 
 namespace dutchie027\Vultr;
@@ -66,7 +65,6 @@ class Applications
      * @param object $api API
      *
      * @return object
-     *
      */
     public function __construct(API $api)
     {
@@ -78,9 +76,7 @@ class Applications
      * List Applicaitons
      * Lists available applicaitons
      *
-     *
      * @return string
-     *
      */
     public function listApplications()
     {
@@ -90,14 +86,11 @@ class Applications
     /**
      * Load Applicaitons
      * Loads Applications in to arrays
-     *
-     *
-     * @return void
-     *
      */
     public function loadApplications()
     {
         $apps = json_decode($this->listApplications(), true);
+
         foreach ($apps['applications'] as $ap) {
             $this->ids[] = $ap['id'];
             $this->names[] = $ap['name'];
@@ -111,9 +104,7 @@ class Applications
      * getNumberOfApplications
      * Returns total number of applications
      *
-     *
      * @return int
-     *
      */
     public function getNumberOfApplications()
     {

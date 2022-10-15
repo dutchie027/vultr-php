@@ -3,14 +3,13 @@
 /**
  * PHP Wrapper to Interact with Vultr 2.0 API
  *
- * @package Vultr
  * @version 2.0
- * @author  https://github.com/dutchie027
+ *
  * @license http://www.opensource.org/licenses/mit-license.php MIT
+ *
  * @see     https://github.com/dutche027/vultr-php
  * @see     https://packagist.org/packages/dutchie027/vultr
  * @see     https://www.vultr.com/api/v2
- *
  */
 
 namespace dutchie027\Vultr;
@@ -66,17 +65,12 @@ class ObjectStorage
      *
      * @var string
      */
-    protected $d_label = "";
+    protected $d_label = '';
 
     /**
      * __construct
      * Main Construct - Loads Clusters and Objects in to arrays
      * and creates reference to main API
-     *
-     * @param $api
-     *
-     * @return void
-     *
      */
     public function __construct(API $api)
     {
@@ -89,9 +83,7 @@ class ObjectStorage
      * listObjectStorage
      * Lists Object Storage
      *
-     *
      * @return string
-     *
      */
     public function listObjectStorage()
     {
@@ -102,9 +94,7 @@ class ObjectStorage
      * listObjectClusters
      * Lists object Clusters
      *
-     *
      * @return string
-     *
      */
     public function listObjectClusters()
     {
@@ -114,14 +104,11 @@ class ObjectStorage
     /**
      * loadClustersArrays
      * Loads Clusters in to an Array
-     *
-     *
-     * @return void
-     *
      */
     public function loadClustersArrays()
     {
         $data = json_decode($this->listObjectClusters(), true);
+
         foreach ($data['clusters'] as $line) {
             $region = $line['region'];
             $this->ids[] = $line['id'];
@@ -133,14 +120,11 @@ class ObjectStorage
     /**
      * loadObjectArrays
      * Load Object Stores in to array
-     *
-     *
-     * @return void
-     *
      */
     public function loadObjectArrays()
     {
         $data = json_decode($this->listObjectStorage(), true);
+
         foreach ($data['object_storages'] as $line) {
             $this->storage_ids[] = $line['id'];
         }
@@ -153,7 +137,6 @@ class ObjectStorage
      * @param array $options
      *
      * @return string
-     *
      */
     public function createObjectStorage($options)
     {
@@ -161,21 +144,22 @@ class ObjectStorage
         $ba['label'] = $this->d_label;
 
         if (isset($options['cluster_id'])) {
-            if (in_array($options['cluster_id'], $this->ids)) {
+            if (in_array($options['cluster_id'], $this->ids, true)) {
                 $ba['cluster_id'] = $options['cluster_id'];
             } else {
-                throw new InvalidParameterException("Bad Cluster ID");
+                throw new InvalidParameterException('Bad Cluster ID');
             }
         } elseif (isset($options['region'])) {
-            if (in_array($options['region'], $this->regions)) {
+            if (in_array($options['region'], $this->regions, true)) {
                 $ba['cluster_id'] = $this->region_map[$options['region']];
             } else {
-                throw new InvalidParameterException("Bad Region");
+                throw new InvalidParameterException('Bad Region');
             }
         }
 
         (isset($options['label'])) ? $ba['label'] = $options['label'] : null;
         $body = json_encode($ba);
+
         return $this->api->makeAPICall('POST', $this->api::OBJECT_STORAGE_URL, $body);
     }
 
@@ -186,15 +170,14 @@ class ObjectStorage
      * @param string $oid
      *
      * @return string
-     *
      */
     public function getObjectStorage($oid)
     {
-        if (in_array($oid, $this->storage_ids)) {
-            return $this->api->makeAPICall('GET', $this->api::OBJECT_STORAGE_URL . "/" . $oid);
-        } else {
-            throw new InvalidParameterException("That Storage ID isn't associated with your account");
+        if (in_array($oid, $this->storage_ids, true)) {
+            return $this->api->makeAPICall('GET', $this->api::OBJECT_STORAGE_URL . '/' . $oid);
         }
+
+        throw new InvalidParameterException("That Storage ID isn't associated with your account");
     }
 
     /**
@@ -204,15 +187,14 @@ class ObjectStorage
      * @param string $oid
      *
      * @return string
-     *
      */
     public function deleteObjectStorage($oid)
     {
-        if (in_array($oid, $this->storage_ids)) {
-            return $this->api->makeAPICall('DELETE', $this->api::OBJECT_STORAGE_URL . "/" . $oid);
-        } else {
-            throw new InvalidParameterException("That Storage ID isn't associated with your account");
+        if (in_array($oid, $this->storage_ids, true)) {
+            return $this->api->makeAPICall('DELETE', $this->api::OBJECT_STORAGE_URL . '/' . $oid);
         }
+
+        throw new InvalidParameterException("That Storage ID isn't associated with your account");
     }
 
     /**
@@ -222,15 +204,15 @@ class ObjectStorage
      * @param string $oid
      *
      * @return string
-     *
      */
     public function regenerateKeys($oid)
     {
-        if (in_array($oid, $this->storage_ids)) {
-            $url = $this->api::OBJECT_STORAGE_URL . "/" . $oid . "/regenerate-keys";
+        if (in_array($oid, $this->storage_ids, true)) {
+            $url = $this->api::OBJECT_STORAGE_URL . '/' . $oid . '/regenerate-keys';
         } else {
             throw new InvalidParameterException("That Storage ID isn't associated with your account");
         }
+
         return $this->api->makeAPICall('POST', $url);
     }
 
@@ -241,18 +223,18 @@ class ObjectStorage
      * @param array $options
      *
      * @return string
-     *
      */
     public function updateObjectStorage($options)
     {
-        if (in_array($options['object_id'], $this->storage_ids)) {
-            $url = $this->api::OBJECT_STORAGE_URL . "/" . $options['object_id'];
+        if (in_array($options['object_id'], $this->storage_ids, true)) {
+            $url = $this->api::OBJECT_STORAGE_URL . '/' . $options['object_id'];
         } else {
             throw new InvalidParameterException("That Storage ID isn't associated with your account");
         }
         $ba['label'] = $this->d_label;
         (isset($options['label'])) ? $ba['label'] = $options['label'] : null;
         $body = json_encode($ba);
+
         return $this->api->makeAPICall('PUT', $url, $body);
     }
 }

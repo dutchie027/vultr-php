@@ -74,10 +74,8 @@ class BlockStorage
     /**
      * listBlockStorage
      * Lists All Block Storage
-     *
-     * @return string
      */
-    public function listBlockStorage()
+    public function listBlockStorage(): string
     {
         return $this->api->makeAPICall('GET', $this->api::BLOCK_STORAGE_URL);
     }
@@ -86,7 +84,7 @@ class BlockStorage
      * loadBlocks
      * Loads Blocks Used in to Array
      */
-    public function loadBlocks()
+    public function loadBlocks(): void
     {
         $ba = json_decode($this->listBlockStorage(), true);
 
@@ -99,12 +97,8 @@ class BlockStorage
     /**
      * createBlockStorage
      * Creates Block Storage
-     *
-     * @param array $sa
-     *
-     * @return string
      */
-    public function createBlockStorage($sa = [])
+    public function createBlockStorage(array $sa = []): string
     {
         $block_ids = $this->api->regions()->getBlockIds();
 
@@ -128,12 +122,8 @@ class BlockStorage
     /**
      * getBlockStorage
      * Gets information on block storage
-     *
-     * @param string $blockid
-     *
-     * @return string
      */
-    public function getBlockStorage($blockid)
+    public function getBlockStorage(string $blockid): string
     {
         if (in_array($blockid, $this->block_array, true)) {
             return $this->api->makeAPICall('GET', $this->api::BLOCK_STORAGE_URL . '/' . $blockid);
@@ -145,12 +135,8 @@ class BlockStorage
     /**
      * deleteBlockStorage
      * Deletes Block Storage
-     *
-     * @param string $blockid
-     *
-     * @return string
      */
-    public function deleteBlockStorage($blockid)
+    public function deleteBlockStorage(string $blockid)
     {
         if (in_array($blockid, $this->block_array, true)) {
             return $this->api->makeAPICall('DELETE', $this->api::BLOCK_STORAGE_URL . '/' . $blockid);
@@ -162,12 +148,8 @@ class BlockStorage
     /**
      * updateBlockStorage
      * Updates Block Storage Size and Label
-     *
-     * @param array $options
-     *
-     * @return string
      */
-    public function updateBlockStorage($options)
+    public function updateBlockStorage(array $options): string
     {
         if (in_array($options['blockid'], $this->block_array, true)) {
             if (!isset($options['size'])) {
@@ -196,12 +178,8 @@ class BlockStorage
     /**
      * attachBlockStorage
      * Attaches Block Storage to an Instance
-     *
-     * @param array $options
-     *
-     * @return string
      */
-    public function attachBlockStorage($options)
+    public function attachBlockStorage(array $options): string
     {
         $instance_ids = $this->api->instances()->getIds();
 
@@ -233,12 +211,8 @@ class BlockStorage
     /**
      * detatchBlockStorage
      * Detatches Block Storage from Instance
-     *
-     * @param array $options
-     *
-     * @return string
      */
-    public function detatchBlockStorage($options)
+    public function detatchBlockStorage(array $options): string
     {
         if (in_array($options['blockid'], $this->block_array, true)) {
             if (!isset($options['live'])) {
@@ -263,10 +237,8 @@ class BlockStorage
     /**
      * getNumberOfBlocks
      * Returns total number of blocks
-     *
-     * @return int
      */
-    public function getNumberOfBlocks()
+    public function getNumberOfBlocks(): int
     {
         return $this->total_blocks;
     }

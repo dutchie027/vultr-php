@@ -61,10 +61,6 @@ class Applications
     /**
      * __construct
      * Takes reference from \API
-     *
-     * @param object $api API
-     *
-     * @return object
      */
     public function __construct(API $api)
     {
@@ -75,10 +71,8 @@ class Applications
     /**
      * List Applicaitons
      * Lists available applicaitons
-     *
-     * @return string
      */
-    public function listApplications()
+    public function listApplications(): Psr7\Stream
     {
         return $this->api->makeAPICall('GET', $this->api::APPLICATIONS_URL);
     }
@@ -87,7 +81,7 @@ class Applications
      * Load Applicaitons
      * Loads Applications in to arrays
      */
-    public function loadApplications()
+    public function loadApplications(): void
     {
         $apps = json_decode($this->listApplications(), true);
 
@@ -103,10 +97,8 @@ class Applications
     /**
      * getNumberOfApplications
      * Returns total number of applications
-     *
-     * @return int
      */
-    public function getNumberOfApplications()
+    public function getNumberOfApplications(): int
     {
         return $this->app_count;
     }

@@ -49,10 +49,6 @@ class BareMetal
     /**
      * __construct
      * Takes reference from \API
-     *
-     * @param object $api API
-     *
-     * @return object
      */
     public function __construct(API $api)
     {
@@ -64,11 +60,9 @@ class BareMetal
      * listBareMetalInstances
      * List all Bare Metal instances in your account.
      *
-     * @return string
-     *
      * @see https://www.vultr.com/api/v2/#operation/list-baremetals
      */
-    public function listBareMetalInstances()
+    public function listBareMetalInstances(): string
     {
         return $this->api->makeAPICall('GET', $this->api::BARE_METAL_URL);
     }
@@ -77,7 +71,7 @@ class BareMetal
      * loadBareMetal
      * Loads Bare Metal in to arrays
      */
-    public function loadBareMetal()
+    public function loadBareMetal(): void
     {
         $bma = json_decode($this->listBareMetalInstances(), true);
 
@@ -93,13 +87,9 @@ class BareMetal
      * getBareMetal
      * Get Instance Information
      *
-     * @var string
-     *
-     * @return string
-     *
      * @see https://www.vultr.com/api/v2/#operation/get-baremetal
      */
-    public function getIngetBareMetalstance($id)
+    public function getIngetBareMetalstance($id): string
     {
         $this->checkBareMetalId($id);
 
@@ -112,11 +102,9 @@ class BareMetal
      * All attributes are optional.
      * If not set, the attributes will retain their original values.
      *
-     * @param $oa array
-     *
      * @see https://www.vultr.com/api/v2/#operation/update-baremetal
      */
-    public function updateBareMetal($oa)
+    public function updateBareMetal(array $oa): string
     {
         $this->checkBareMetalId($oa['id']);
         $hasOS = false;
@@ -149,11 +137,9 @@ class BareMetal
      * createBareMetal
      * Create a new Bare Metal instance in a region with the desired plan.
      *
-     * @param $oa array
-     *
      * @see https://www.vultr.com/api/v2/#operation/create-baremetal
      */
-    public function createBareMetal($oa)
+    public function createBareMetal(array $oa): string
     {
         $hasOS = false;
 
@@ -236,13 +222,9 @@ class BareMetal
      * deleteBareMetal
      * Delete a Bare Metal instance.
      *
-     * @var string
-     *
-     * @return string
-     *
      * @see https://www.vultr.com/api/v2/#operation/delete-baremetal
      */
-    public function deleteBareMetal($id)
+    public function deleteBareMetal(string $id): string
     {
         $this->checkBareMetalId($id);
 
@@ -253,13 +235,9 @@ class BareMetal
      * bareMetalIPv4Addresses
      * Get the IPv4 information for the Bare Metal instance.
      *
-     * @var string
-     *
-     * @return string
-     *
      * @see https://www.vultr.com/api/v2/#operation/get-ipv6-baremetal
      */
-    public function bareMetalIPv4Addresses($id)
+    public function bareMetalIPv4Addresses(string $id): string
     {
         $this->checkBareMetalId($id);
 
@@ -270,13 +248,9 @@ class BareMetal
      * bareMetalIPv6Addresses
      * Get the IPv6 information for the Bare Metal instance.
      *
-     * @var string
-     *
-     * @return string
-     *
      * @see https://www.vultr.com/api/v2/#operation/get-ipv6-baremetal
      */
-    public function bareMetalIPv6Addresses($id)
+    public function bareMetalIPv6Addresses(string $id): string
     {
         $this->checkBareMetalId($id);
 
@@ -287,13 +261,9 @@ class BareMetal
      * startBareMetal
      * Start the Bare Metal instance.
      *
-     * @var string
-     *
-     * @return string
-     *
      * @see https://www.vultr.com/api/v2/#operation/start-baremetal
      */
-    public function startBareMetal($id)
+    public function startBareMetal(string $id): string
     {
         $this->checkBareMetalId($id);
 
@@ -304,13 +274,9 @@ class BareMetal
      * rebootBareMetal
      * Reboot the Bare Metal instance.
      *
-     * @var string
-     *
-     * @return string
-     *
      * @see https://www.vultr.com/api/v2/#operation/reboot-baremetal
      */
-    public function rebootBareMetal($id)
+    public function rebootBareMetal(string $id): string
     {
         $this->checkBareMetalId($id);
 
@@ -321,13 +287,9 @@ class BareMetal
      * reinstallBareMetal
      * Reinstall the Bare Metal instance.
      *
-     * @var string
-     *
-     * @return string
-     *
      * @see https://www.vultr.com/api/v2/#operation/reinstall-baremetal
      */
-    public function reinstallBareMetal($id)
+    public function reinstallBareMetal(string $id): string
     {
         $this->checkBareMetalId($id);
 
@@ -338,13 +300,9 @@ class BareMetal
      * haltBareMetal
      * Halt the Bare Metal instance.
      *
-     * @var string
-     *
-     * @return string
-     *
      * @see https://www.vultr.com/api/v2/#operation/halt-baremetal
      */
-    public function haltBareMetal($id)
+    public function haltBareMetal(string $id): string
     {
         $this->checkBareMetalId($id);
 
@@ -355,13 +313,9 @@ class BareMetal
      * bareMetalBandwidth
      * Get bandwidth information for the Bare Metal instance.
      *
-     * @var string
-     *
-     * @return string
-     *
      * @see https://www.vultr.com/api/v2/#operation/get-bandwidth-baremetal
      */
-    public function bareMetalBandwidth($id)
+    public function bareMetalBandwidth(string $id): string
     {
         $this->checkBareMetalId($id);
 
@@ -372,11 +326,9 @@ class BareMetal
      * haltBareMetals
      * Halt Bare Metals.
      *
-     * @param $oa array
-     *
      * @see https://www.vultr.com/api/v2/#operation/halt-baremetals
      */
-    public function haltBareMetals($oa)
+    public function haltBareMetals(string $oa): string
     {
         foreach ($oa as $inst) {
             $this->checkBareMetalId($inst);
@@ -391,11 +343,9 @@ class BareMetal
      * rebootBareMetals
      * Reboot Bare Metals.
      *
-     * @param $oa array
-     *
      * @see https://www.vultr.com/api/v2/#operation/reboot-bare-metals
      */
-    public function rebootBareMetals($oa)
+    public function rebootBareMetals(string $oa): string
     {
         foreach ($oa as $inst) {
             $this->checkBareMetalId($inst);
@@ -410,11 +360,9 @@ class BareMetal
      * startBareMetals
      * Start Bare Metals.
      *
-     * @param $oa array
-     *
      * @see https://www.vultr.com/api/v2/#operation/start-bare-metals
      */
-    public function startBareMetals($oa)
+    public function startBareMetals(string $oa): string
     {
         foreach ($oa as $inst) {
             $this->checkBareMetalId($inst);
@@ -429,11 +377,9 @@ class BareMetal
      * getBareMetalUserData
      * Get the user-supplied, base64 encoded user data for a Bare Metal.
      *
-     * @param $id string
-     *
      * @see https://www.vultr.com/api/v2/#operation/get-bare-metal-userdata
      */
-    public function getBareMetalUserData($id)
+    public function getBareMetalUserData(string $id): string
     {
         $this->checkBareMetalId($id);
 
@@ -444,11 +390,9 @@ class BareMetal
      * getAvailableBareMetalUpgrades
      * Get available upgrades for a Bare Metal
      *
-     * @param $id string
-     *
      * @see https://www.vultr.com/api/v2/#operation/get-bare-metals-upgrades
      */
-    public function getAvailableBareMetalUpgrades($id)
+    public function getAvailableBareMetalUpgrades(string $id): string
     {
         $this->checkBareMetalId($id);
 
@@ -459,11 +403,9 @@ class BareMetal
      * getVNCURLForABareMetal
      * Get the VNC URL for a Bare Metal
      *
-     * @param $id string
-     *
      * @see https://www.vultr.com/api/v2/#operation/get-bare-metal-vnc
      */
-    public function getVNCURLForABareMetal($id)
+    public function getVNCURLForABareMetal(string $id): string
     {
         $this->checkBareMetalId($id);
 
@@ -473,12 +415,8 @@ class BareMetal
     /**
      * checkBareMetalId
      * Checks's if an Metal ID is valid or not
-     *
-     * @var string
-     *
-     * @return bool
      */
-    public function checkBareMetalId($id)
+    public function checkBareMetalId(string $id): bool
     {
         if (in_array($id, $this->ids, true)) {
             return true;

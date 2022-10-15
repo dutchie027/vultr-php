@@ -56,10 +56,6 @@ class PrivateNetworks
     /**
      * __construct
      * Takes reference from \API
-     *
-     * @param object $api API
-     *
-     * @return object
      */
     public function __construct(API $api)
     {
@@ -70,10 +66,8 @@ class PrivateNetworks
     /**
      * listPrivateNetworks
      * Lists Private Networks
-     *
-     * @return string
      */
-    public function listPrivateNetworks()
+    public function listPrivateNetworks(): string
     {
         return $this->api->makeAPICall('GET', $this->api::PRIVATE_NETWORKS_URL);
     }
@@ -81,12 +75,8 @@ class PrivateNetworks
     /**
      * deletePrivateNetwork
      * Deletes Private Network
-     *
-     * @var string
-     *
-     * @return string
      */
-    public function deletePrivateNetwork($id)
+    public function deletePrivateNetwork(string $id): string
     {
         return $this->api->makeAPICall('DELETE', $this->api::PRIVATE_NETWORKS_URL . '/' . $id);
     }
@@ -94,12 +84,8 @@ class PrivateNetworks
     /**
      * getPrivateNetwork
      * Get Private Network Information
-     *
-     * @var string
-     *
-     * @return string
      */
-    public function getPrivateNetwork($id)
+    public function getPrivateNetwork(string $id)
     {
         return $this->api->makeAPICall('GET', $this->api::PRIVATE_NETWORKS_URL . '/' . $id);
     }
@@ -108,7 +94,7 @@ class PrivateNetworks
      * loadPrivateNetworks
      * Loads Startup Script Information in to arrays
      */
-    public function loadPrivateNetworks()
+    public function loadPrivateNetworks(): void
     {
         $pna = json_decode($this->listPrivateNetworks(), true);
 
@@ -123,10 +109,8 @@ class PrivateNetworks
     /**
      * updatePrivateNetwork
      * Updates description of Private Network
-     *
-     * @return string
      */
-    public function updatePrivateNetwork($oa)
+    public function updatePrivateNetwork(array $oa): string
     {
         if (in_array($oa['id'], $this->ids, true)) {
             $url = $this->api::PRIVATE_NETWORKS_URL . '/' . $oa['id'];
@@ -143,10 +127,8 @@ class PrivateNetworks
     /**
      * createPrivateNetwork
      * Creates a Private Network
-     *
-     * @return string
      */
-    public function createPrivateNetwork($oa)
+    public function createPrivateNetwork(array $oa): string
     {
         if (!isset($oa['region']) || !in_array($oa['region'], $this->api->regions()->ids, true)) {
             throw new InvalidParameterException('Invalid Region');
@@ -170,7 +152,7 @@ class PrivateNetworks
         return $this->api->makeAPICall('POST', $this->api::PRIVATE_NETWORKS_URL, $body);
     }
 
-    private function checkPrivateIP($ip)
+    private function checkPrivateIP($ip): bool
     {
         $pri_addrs = [
             '10.0.0.0|10.255.255.255', // single class A network

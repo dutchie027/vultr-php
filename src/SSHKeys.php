@@ -56,10 +56,6 @@ class SSHKeys
     /**
      * __construct
      * Takes reference from \API
-     *
-     * @param object $api API
-     *
-     * @return object
      */
     public function __construct(API $api)
     {
@@ -70,10 +66,8 @@ class SSHKeys
     /**
      * listSSHKeys
      * Lists SSH Keys
-     *
-     * @return string
      */
-    public function listSSHKeys()
+    public function listSSHKeys(): string
     {
         return $this->api->makeAPICall('GET', $this->api::SSH_KEYS_URL);
     }
@@ -81,12 +75,8 @@ class SSHKeys
     /**
      * deleteSSHKey
      * Deletes SSH Key
-     *
-     * @var string
-     *
-     * @return string
      */
-    public function deleteSSHKey($id)
+    public function deleteSSHKey(string $id): string
     {
         return $this->api->makeAPICall('DELETE', $this->api::SSH_KEYS_URL . '/' . $id);
     }
@@ -94,12 +84,8 @@ class SSHKeys
     /**
      * getSSHKey
      * Get Snapshot Information
-     *
-     * @var string
-     *
-     * @return string
      */
-    public function getSSHKey($id)
+    public function getSSHKey(string $id): string
     {
         return $this->api->makeAPICall('GET', $this->api::SSH_KEYS_URL . '/' . $id);
     }
@@ -108,7 +94,7 @@ class SSHKeys
      * loadSSHKeys
      * Loads Snapshot Information in to arrays
      */
-    public function loadSSHKeys()
+    public function loadSSHKeys(): void
     {
         $ka = json_decode($this->listSSHKeys(), true);
 
@@ -123,12 +109,8 @@ class SSHKeys
     /**
      * updateSSHKey
      * Updates SSH Key
-     *
-     * @param array $oa
-     *
-     * @return string
      */
-    public function updateSSHKey($oa)
+    public function updateSSHKey(array $oa): string
     {
         if (in_array($oa['id'], $this->ids, true)) {
             $url = $this->api::SSH_KEYS_URL . '/' . $oa['id'];
@@ -149,10 +131,8 @@ class SSHKeys
     /**
      * createSSHKey
      * Creates a SSH Key
-     *
-     * @return string
      */
-    public function createSSHKey($oa)
+    public function createSSHKey(array $oa): string
     {
         if (!isset($oa['name'])) {
             throw new InvalidParameterException('Missing a name for your SSH Key');
@@ -172,7 +152,7 @@ class SSHKeys
         return $this->api->makeAPICall('POST', $this->api::SSH_KEYS_URL, $body);
     }
 
-    private function validateKey($value)
+    private function validateKey($value): bool
     {
         $key_parts = explode(' ', $value, 3);
 

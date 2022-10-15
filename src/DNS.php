@@ -92,10 +92,8 @@ class DNS
     /**
      * listDomains
      * Lists All Domains
-     *
-     * @return string
      */
-    public function listDomains()
+    public function listDomains(): string
     {
         return $this->api->makeAPICall('GET', $this->api::DNS_URL);
     }
@@ -103,12 +101,8 @@ class DNS
     /**
      * getDomain
      * Get Info On A Domain
-     *
-     * @param string $domain
-     *
-     * @return string
      */
-    public function getDomain($domain)
+    public function getDomain(string $domain): string
     {
         $this->validateDomain($domain);
 
@@ -118,12 +112,8 @@ class DNS
     /**
      * getSOA
      * Get SOA For A Domain
-     *
-     * @param string $domain
-     *
-     * @return string
      */
-    public function getSOA($domain)
+    public function getSOA(string $domain): string
     {
         $this->validateDomain($domain);
 
@@ -133,12 +123,8 @@ class DNS
     /**
      * getDNSSec
      * Get DNS Sec Settings
-     *
-     * @param string $domain
-     *
-     * @return string
      */
-    public function getDNSSec($domain)
+    public function getDNSSec(string $domain): string
     {
         $this->validateDomain($domain);
 
@@ -148,12 +134,8 @@ class DNS
     /**
      * deleteDomain
      * Delete A Domain
-     *
-     * @param string $domain
-     *
-     * @return string
      */
-    public function deleteDomain($domain)
+    public function deleteDomain(string $domain): string
     {
         $this->validateDomain($domain);
 
@@ -163,12 +145,8 @@ class DNS
     /**
      * listRecords
      * List DNS Records of a specific domain
-     *
-     * @param string $domain
-     *
-     * @return string
      */
-    public function listRecords($domain)
+    public function listRecords(string $domain): string
     {
         $this->validateDomain($domain);
 
@@ -178,12 +156,8 @@ class DNS
     /**
      * getRecord
      * Get a Specific DNS Record
-     *
-     * @param array $oa
-     *
-     * @return string
      */
-    public function getRecord($oa)
+    public function getRecord(array $oa): string
     {
         if (!isset($oa['domain'])) {
             throw new InvalidParameterException('Domain Not Set');
@@ -201,12 +175,8 @@ class DNS
     /**
      * deleteRecord
      * Delete a Specific DNS Record
-     *
-     * @param array $oa
-     *
-     * @return string
      */
-    public function deleteRecord($oa)
+    public function deleteRecord(arrahy $oa): string
     {
         if (!isset($oa['domain'])) {
             throw new InvalidParameterException('Domain Not Set');
@@ -224,12 +194,8 @@ class DNS
     /**
      * updateDomain
      * Update A Domain
-     *
-     * @param array $oa
-     *
-     * @return string
      */
-    public function updateDomain($oa)
+    public function updateDomain(array $oa): string
     {
         if (!isset($oa['domain'])) {
             throw new InvalidParameterException('Domain Not Set');
@@ -252,12 +218,8 @@ class DNS
     /**
      * updateSOA
      * Update An SOA
-     *
-     * @param array $oa
-     *
-     * @return string
      */
-    public function updateSOA($oa)
+    public function updateSOA(array $oa): string
     {
         $execute = false;
 
@@ -293,12 +255,8 @@ class DNS
     /**
      * createDomain
      * Create New DNS Domain
-     *
-     * @param array $oa
-     *
-     * @return string
      */
-    public function createDomain($oa)
+    public function createDomain(array $oa): string
     {
         $ba['dns_sec'] = $this->d_dns_sec;
 
@@ -331,12 +289,8 @@ class DNS
     /**
      * createRecord
      * Create New DNS Record
-     *
-     * @param array $oa
-     *
-     * @return string
      */
-    public function createRecord($oa)
+    public function createRecord(array $oa): string
     {
         $ba['ttl'] = $this->d_ttl;
 
@@ -390,12 +344,8 @@ class DNS
     /**
      * updateRecord
      * Update A DNS Record
-     *
-     * @param array $oa
-     *
-     * @return string
      */
-    public function updateRecord($oa)
+    public function updateRecord(array $oa): string
     {
         $exe = false;
 
@@ -442,7 +392,7 @@ class DNS
         }
     }
 
-    private function validateDomain($domain)
+    private function validateDomain($domain): bool
     {
         if (!preg_match("/([0-9a-z-]+\.)?[0-9a-z-]+\.[a-z]{2,7}/", $domain)) {
             throw new InvalidParameterException('Domain is not valid');

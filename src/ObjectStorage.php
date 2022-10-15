@@ -82,10 +82,8 @@ class ObjectStorage
     /**
      * listObjectStorage
      * Lists Object Storage
-     *
-     * @return string
      */
-    public function listObjectStorage()
+    public function listObjectStorage(): string
     {
         return $this->api->makeAPICall('GET', $this->api::OBJECT_STORAGE_URL);
     }
@@ -93,10 +91,8 @@ class ObjectStorage
     /**
      * listObjectClusters
      * Lists object Clusters
-     *
-     * @return string
      */
-    public function listObjectClusters()
+    public function listObjectClusters(): string
     {
         return $this->api->makeAPICall('GET', $this->api::OBJECT_CLUSTERS_URL);
     }
@@ -121,7 +117,7 @@ class ObjectStorage
      * loadObjectArrays
      * Load Object Stores in to array
      */
-    public function loadObjectArrays()
+    public function loadObjectArrays(): void
     {
         $data = json_decode($this->listObjectStorage(), true);
 
@@ -133,12 +129,8 @@ class ObjectStorage
     /**
      * createObjectStorage
      * Creates Object Storage
-     *
-     * @param array $options
-     *
-     * @return string
      */
-    public function createObjectStorage($options)
+    public function createObjectStorage(array $options): string
     {
         $ba['cluster_id'] = $this->d_cluster_id;
         $ba['label'] = $this->d_label;
@@ -166,12 +158,8 @@ class ObjectStorage
     /**
      * getObjectStorage
      * Gets Object Storage
-     *
-     * @param string $oid
-     *
-     * @return string
      */
-    public function getObjectStorage($oid)
+    public function getObjectStorage(string $oid): string
     {
         if (in_array($oid, $this->storage_ids, true)) {
             return $this->api->makeAPICall('GET', $this->api::OBJECT_STORAGE_URL . '/' . $oid);
@@ -183,12 +171,8 @@ class ObjectStorage
     /**
      * deleteObjectStorage
      * Deletes Object Storage
-     *
-     * @param string $oid
-     *
-     * @return string
      */
-    public function deleteObjectStorage($oid)
+    public function deleteObjectStorage(string $oid): string
     {
         if (in_array($oid, $this->storage_ids, true)) {
             return $this->api->makeAPICall('DELETE', $this->api::OBJECT_STORAGE_URL . '/' . $oid);
@@ -200,12 +184,8 @@ class ObjectStorage
     /**
      * regenerateKeys
      * Regenerates Object Storage Keys
-     *
-     * @param string $oid
-     *
-     * @return string
      */
-    public function regenerateKeys($oid)
+    public function regenerateKeys(string $oid): string
     {
         if (in_array($oid, $this->storage_ids, true)) {
             $url = $this->api::OBJECT_STORAGE_URL . '/' . $oid . '/regenerate-keys';
@@ -219,12 +199,8 @@ class ObjectStorage
     /**
      * updateObjectStorage
      * Updates label of Object Storage
-     *
-     * @param array $options
-     *
-     * @return string
      */
-    public function updateObjectStorage($options)
+    public function updateObjectStorage(array $options): string
     {
         if (in_array($options['object_id'], $this->storage_ids, true)) {
             $url = $this->api::OBJECT_STORAGE_URL . '/' . $options['object_id'];

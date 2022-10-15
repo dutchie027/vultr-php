@@ -56,10 +56,6 @@ class Snapshots
     /**
      * __construct
      * Takes reference from \API
-     *
-     * @param object $api API
-     *
-     * @return object
      */
     public function __construct(API $api)
     {
@@ -70,10 +66,8 @@ class Snapshots
     /**
      * listSnapshots
      * Lists Snapshots
-     *
-     * @return string
      */
-    public function listSnapshots()
+    public function listSnapshots(): string
     {
         return $this->api->makeAPICall('GET', $this->api::SNAPSHOTS_URL);
     }
@@ -81,12 +75,8 @@ class Snapshots
     /**
      * deleteSnapshot
      * Deletes Snapshot
-     *
-     * @var string
-     *
-     * @return string
      */
-    public function deleteSnapshot($id)
+    public function deleteSnapshot(string $id): string
     {
         return $this->api->makeAPICall('DELETE', $this->api::SNAPSHOTS_URL . '/' . $id);
     }
@@ -94,12 +84,8 @@ class Snapshots
     /**
      * getSnapshot
      * Get Snapshot Information
-     *
-     * @var string
-     *
-     * @return string
      */
-    public function getSnapshot($id)
+    public function getSnapshot(string $id): string
     {
         return $this->api->makeAPICall('GET', $this->api::SNAPSHOTS_URL . '/' . $id);
     }
@@ -108,7 +94,7 @@ class Snapshots
      * loadSnapshots
      * Loads Snapshot Information in to arrays
      */
-    public function loadSnapshots()
+    public function loadSnapshots(): void
     {
         $sa = json_decode($this->listSnapshots(), true);
 
@@ -123,12 +109,8 @@ class Snapshots
     /**
      * updateSnapshot
      * Updates description of Snapshot
-     *
-     * @param array $options
-     *
-     * @return string
      */
-    public function updateSnapshot($options)
+    public function updateSnapshot(array $options): string
     {
         if (in_array($options['snapshot_id'], $this->ids, true)) {
             $url = $this->api::SNAPSHOTS_URL . '/' . $options['snapshot_id'];
@@ -145,10 +127,8 @@ class Snapshots
     /**
      * createSnapshot
      * Creates a Snapshot
-     *
-     * @return string
      */
-    public function createSnapshot($oa)
+    public function createSnapshot(array $oa): string
     {
         if (!isset($oa['instance_id']) || !in_array($oa['instance_id'], $this->api->instances()->ids, true)) {
             throw new InvalidParameterException('Missing An Instance ID that is part of your account');
@@ -164,10 +144,8 @@ class Snapshots
     /**
      * createSnapshotfromURL
      * Creates a Snapshot
-     *
-     * @return string
      */
-    public function createSnapshotFromURL($url)
+    public function createSnapshotFromURL(string $url): string
     {
         $ba['url'] = $url;
         $body = json_encode($ba);

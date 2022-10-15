@@ -107,10 +107,8 @@ class Regions
     /**
      * listRegions
      * Returns a list of Regions in the default JSON Array Format
-     *
-     * @return string JSON body
      */
-    public function listRegions()
+    public function listRegions(): string
     {
         return $this->api->makeAPICall('GET', $this->api::REGIONS_URL);
     }
@@ -118,10 +116,8 @@ class Regions
     /**
      * getRegions
      * Gets the regions with associated data from API
-     *
-     * @return array
      */
-    public function getRegions()
+    public function getRegions(): array
     {
         $build_data = [];
 
@@ -136,7 +132,7 @@ class Regions
      * loadRegionArrays
      * Loads arrays with region information
      */
-    public function loadRegionArrays()
+    public function loadRegionArrays(): void
     {
         $this->region_data = $data = json_decode($this->listRegions(), true);
 
@@ -144,20 +140,18 @@ class Regions
             $this->ids[] = $line['id'];
             $this->cities[] = $line['city'];
             $this->names[] = $line['city'] . ' (' . $line['id'] . ')';
-            (!in_array($line['country'], $this->countries, true)) ? $this->countries[] = $line['country'] : null ;
-            (!in_array($line['continent'], $this->continents, true)) ? $this->continents[] = $line['continent'] : null ;
-            (in_array($this->bs_flag, $line['options'], true)) ? $this->block_ids[] = $line['id'] : null ;
-            (in_array($this->ddos_flag, $line['options'], true)) ? $this->ddos_ids[] = $line['id'] : null ;
+            (!in_array($line['country'], $this->countries, true)) ? $this->countries[] = $line['country'] : null;
+            (!in_array($line['continent'], $this->continents, true)) ? $this->continents[] = $line['continent'] : null;
+            (in_array($this->bs_flag, $line['options'], true)) ? $this->block_ids[] = $line['id'] : null;
+            (in_array($this->ddos_flag, $line['options'], true)) ? $this->ddos_ids[] = $line['id'] : null;
         }
     }
 
     /**
      * getIds
      * Returns the array of ususble IDs
-     *
-     * @return array
      */
-    public function getIds()
+    public function getIds(): array
     {
         return $this->ids;
     }
@@ -165,10 +159,8 @@ class Regions
     /**
      * getDDOSIds
      * Returns array of IDs that allow DDOS
-     *
-     * @return array
      */
-    public function getDDOSIds()
+    public function getDDOSIds(): array
     {
         return $this->ddos_ids;
     }
@@ -176,10 +168,8 @@ class Regions
     /**
      * getBlockIds
      * Returns array of IDs that allow block storage
-     *
-     * @return array
      */
-    public function getBlockIds()
+    public function getBlockIds(): array
     {
         return $this->block_ids;
     }

@@ -82,10 +82,6 @@ class Users
     /**
      * __construct
      * Takes reference from \API
-     *
-     * @param object $api API
-     *
-     * @return object
      */
     public function __construct(API $api)
     {
@@ -96,12 +92,8 @@ class Users
     /**
      * getUser
      * Gets information on a specific user based on their ID
-     *
-     * @param string $id
-     *
-     * @return string
      */
-    public function getUser($id)
+    public function getUser(string $id): string
     {
         if (in_array($id, $this->ids, true)) {
             return $this->api->makeAPICall('GET', $this->api::USERS_URL . '/' . $id);
@@ -113,10 +105,8 @@ class Users
     /**
      * getUsers
      * Gets All users
-     *
-     * @return string
      */
-    public function getUsers()
+    public function getUsers(): string
     {
         return $this->api->makeAPICall('GET', $this->api::USERS_URL);
     }
@@ -125,7 +115,7 @@ class Users
      * loadUsers
      * Loads User Information in to arrays
      */
-    public function loadUsers()
+    public function loadUsers(): void
     {
         $ua = json_decode($this->getUsers(), true);
 
@@ -140,12 +130,8 @@ class Users
     /**
      * updateuser
      * Updates A User
-     *
-     * @param array $oa
-     *
-     * @return string
      */
-    public function updateUser($oa)
+    public function updateUser(array $oa): string
     {
         if (in_array($oa['id'], $this->ids, true)) {
             $url = $this->api::USERS_URL . '/' . $oa['id'];
@@ -217,12 +203,8 @@ class Users
     /**
      * createUser
      * Creates a User
-     *
-     * @param array $oa
-     *
-     * @return string
      */
-    public function createUser($oa)
+    public function createUser(array $oa): string
     {
         $ba['api_enabled'] = $this->d_api_enabled;
         $ba['acls'] = $this->d_acl;
@@ -264,12 +246,8 @@ class Users
     /**
      * deleteUser
      * Deletes User
-     *
-     * @param string $id
-     *
-     * @return string
      */
-    public function deleteUser($id)
+    public function deleteUser(string $id): string
     {
         if (in_array($id, $this->ids, true)) {
             return $this->api->makeAPICall('DELETE', $this->api::USERS_URL . '/' . $id);
@@ -281,10 +259,8 @@ class Users
     /**
      * getNumberOfUsers
      * Returns total number of users
-     *
-     * @return int
      */
-    public function getNumberOfUsers()
+    public function getNumberOfUsers(): int
     {
         return $this->total_users;
     }

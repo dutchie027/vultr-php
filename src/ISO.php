@@ -61,10 +61,8 @@ class ISO
     /**
      * listPublicISOs
      * Lists Public ISOs
-     *
-     * @return string
      */
-    public function listPublicISOs()
+    public function listPublicISOs(): string
     {
         return $this->api->makeAPICall('GET', $this->api::ISO_PUBLIC_URL);
     }
@@ -72,10 +70,8 @@ class ISO
     /**
      * listISOs
      * Lists ISO Files
-     *
-     * @return string
      */
-    public function listISOs()
+    public function listISOs(): string
     {
         return $this->api->makeAPICall('GET', $this->api::ISO_URL);
     }
@@ -83,12 +79,8 @@ class ISO
     /**
      * deleteISO
      * Lists ISO Files
-     *
-     * @var string
-     *
-     * @return string
      */
-    public function deleteISO($id)
+    public function deleteISO(string $id): string
     {
         return $this->api->makeAPICall('DELETE', $this->api::ISO_URL . '/' . $id);
     }
@@ -96,12 +88,8 @@ class ISO
     /**
      * getISO
      * Get ISO Information
-     *
-     * @var string
-     *
-     * @return string
      */
-    public function getISO($id)
+    public function getISO(string $id): string
     {
         return $this->api->makeAPICall('GET', $this->api::ISO_URL . '/' . $id);
     }
@@ -109,12 +97,8 @@ class ISO
     /**
      * createISO
      * Create ISO
-     *
-     * @var string
-     *
-     * @return string
      */
-    public function createISO($url)
+    public function createISO(string $url): string
     {
         $ba['url'] = $url;
         $body = json_encode($ba);
@@ -126,7 +110,7 @@ class ISO
      * loadISOs
      * Loads ISO Information in to arrays
      */
-    public function loadISOs()
+    public function loadISOs(): void
     {
         $ia = json_decode($this->listISOs(), true);
 

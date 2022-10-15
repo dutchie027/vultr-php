@@ -44,8 +44,6 @@ class Backups
      * Takes reference from \API
      *
      * @param object $api API
-     *
-     * @return object
      */
     public function __construct(API $api)
     {
@@ -56,10 +54,8 @@ class Backups
     /**
      * listBackups
      * Lists Backups
-     *
-     * @return string
      */
-    public function listBackups()
+    public function listBackups(): string
     {
         return $this->api->makeAPICall('GET', $this->api::BACKUPS_URL);
     }
@@ -68,7 +64,7 @@ class Backups
      * loadBackups
      * Loads Backups in to an array
      */
-    public function loadBackups()
+    public function loadBackups(): void
     {
         $backups = json_decode($this->listBackups(), true);
 
@@ -81,12 +77,8 @@ class Backups
     /**
      * getBackup
      * Gets information on a backup
-     *
-     * @param string $id
-     *
-     * @return string
      */
-    public function getBackup($id)
+    public function getBackup($id): string
     {
         if (in_array($id, $this->ids, true)) {
             return $this->api->makeAPICall('GET', $this->api::BACKUPS_URL . '/' . $id);
@@ -98,10 +90,8 @@ class Backups
     /**
      * getNumberOfBackups
      * Returns total number of backups
-     *
-     * @return int
      */
-    public function getNumberOfBackups()
+    public function getNumberOfBackups(): int
     {
         return $this->backup_count;
     }

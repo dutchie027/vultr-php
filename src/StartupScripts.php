@@ -63,10 +63,6 @@ class StartupScripts
     /**
      * __construct
      * Takes reference from \API
-     *
-     * @param object $api API
-     *
-     * @return object
      */
     public function __construct(API $api)
     {
@@ -77,10 +73,8 @@ class StartupScripts
     /**
      * listStartupScripts
      * Lists Startup Scripts
-     *
-     * @return string
      */
-    public function listStartupScripts()
+    public function listStartupScripts(): string
     {
         return $this->api->makeAPICall('GET', $this->api::STARTUP_SCRIPTS_URL);
     }
@@ -88,12 +82,8 @@ class StartupScripts
     /**
      * deleteStartupScript
      * Deletes Startup Script
-     *
-     * @var string
-     *
-     * @return string
      */
-    public function deleteStartupScript($id)
+    public function deleteStartupScript(string $id): string
     {
         return $this->api->makeAPICall('DELETE', $this->api::STARTUP_SCRIPTS_URL . '/' . $id);
     }
@@ -101,12 +91,8 @@ class StartupScripts
     /**
      * getStartupScript
      * Get Startup Script Information
-     *
-     * @var string
-     *
-     * @return string
      */
-    public function getStartupScript($id)
+    public function getStartupScript(string $id): string
     {
         return $this->api->makeAPICall('GET', $this->api::STARTUP_SCRIPTS_URL . '/' . $id);
     }
@@ -115,7 +101,7 @@ class StartupScripts
      * loadStartupScripts
      * Loads Startup Script Information in to arrays
      */
-    public function loadStartupScripts()
+    public function loadStartupScripts(): void
     {
         $sa = json_decode($this->listStartupScripts(), true);
 
@@ -130,10 +116,8 @@ class StartupScripts
     /**
      * updateStartupScript
      * Updates description of Snapshot
-     *
-     * @return string
      */
-    public function updateStartupScript($oa)
+    public function updateStartupScript(array $oa): string
     {
         if (in_array($oa['id'], $this->ids, true)) {
             $url = $this->api::STARTUP_SCRIPTS_URL . '/' . $oa['id'];
@@ -151,10 +135,8 @@ class StartupScripts
     /**
      * createStartupScript
      * Creates a Startup Script
-     *
-     * @return string
      */
-    public function createStartupScript($oa)
+    public function createStartupScript(array $oa): string
     {
         if (!isset($oa['type'])) {
             $ba['type'] = $this->d_startup_type;

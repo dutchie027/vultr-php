@@ -84,13 +84,11 @@ class LoadBalancers
 
     /**
      * listLoadBalancers
-     * List all Reserved IPs in your account.
-     *
-     * @return string
+     * List all Reserved IPs in your account
      *
      * @see https://www.vultr.com/api/v2/#operation/list-load-balancers
      */
-    public function listLoadBalancers()
+    public function listLoadBalancers(): string
     {
         return $this->api->makeAPICall('GET', $this->api::LOAD_BALANCERS_URL);
     }
@@ -99,7 +97,7 @@ class LoadBalancers
      * loadReservedIPs
      * Loads Reserved IP Information in to arrays
      */
-    public function loadLoadBalancers()
+    public function loadLoadBalancers(): void
     {
         $lba = json_decode($this->listLoadBalancers(), true);
 
@@ -115,11 +113,9 @@ class LoadBalancers
      * getLoadBalancer
      * Get information for a Load Balancer.
      *
-     * @return string
-     *
      * @see https://www.vultr.com/api/v2/#operation/get-load-balancer
      */
-    public function getLoadBalancer($id)
+    public function getLoadBalancer(string $id): string
     {
         return $this->api->makeAPICall('GET', $this->api::LOAD_BALANCERS_URL . '/' . $id);
     }
@@ -128,11 +124,9 @@ class LoadBalancers
      * deleteLoadBalancer
      * Delete a Load Balancer.
      *
-     * @return string
-     *
      * @see https://www.vultr.com/api/v2/#operation/delete-load-balancer
      */
-    public function deleteLoadBalancer($id)
+    public function deleteLoadBalancer(string $id): string
     {
         return $this->api->makeAPICall('DELETE', $this->api::LOAD_BALANCERS_URL . '/' . $id);
     }
@@ -141,11 +135,9 @@ class LoadBalancers
      * listForwardingRules
      * List the fowarding rules for a Load Balancer.
      *
-     * @return string
-     *
      * @see https://www.vultr.com/api/v2/#operation/list-load-balancer-forwarding-rules
      */
-    public function listForwardingRules($id)
+    public function listForwardingRules(string $id): string
     {
         $url = $this->api::LOAD_BALANCERS_URL . '/' . $id . '/forwarding-rules';
 
@@ -156,11 +148,9 @@ class LoadBalancers
      * createForwardingRule
      * List the fowarding rules for a Load Balancer.
      *
-     * @return string
-     *
      * @see https://www.vultr.com/api/v2/#operation/create-load-balancer-forwarding-rules
      */
-    public function createForwardingRule($oa)
+    public function createForwardingRule(array $oa): string
     {
         $this->checkLoadBalancer($oa['load-balancer-id']);
 
@@ -194,11 +184,9 @@ class LoadBalancers
      * getForwardingRule
      * List the fowarding rules for a Load Balancer.
      *
-     * @return string
-     *
      * @see https://www.vultr.com/api/v2/#operation/get-load-balancer-forwarding-rule
      */
-    public function getForwardingRule($oa)
+    public function getForwardingRule(array $oa): string
     {
         $this->checkLoadBalancer($oa['load-balancer-id']);
         // TODO: Check to ensure the rule here is right
@@ -214,11 +202,9 @@ class LoadBalancers
      * deleteForwardingRule
      * List the fowarding rules for a Load Balancer.
      *
-     * @return string
-     *
      * @see https://www.vultr.com/api/v2/#operation/delete-load-balancer-forwarding-rule
      */
-    public function deleteForwardingRule($oa)
+    public function deleteForwardingRule(array $oa): string
     {
         $this->checkLoadBalancer($oa['load-balancer-id']);
         // TODO: Check to ensure the rule here is right
@@ -232,12 +218,8 @@ class LoadBalancers
     /**
      * checkLoadBalancer
      * Checks's if a Load Balancer ID is valid or not
-     *
-     * @var string
-     *
-     * @return bool
      */
-    public function checkLoadBalancer($id)
+    public function checkLoadBalancer(string $id): bool
     {
         if (in_array($id, $this->ids, true)) {
             return true;
@@ -251,13 +233,9 @@ class LoadBalancers
      * createLoadBalancer
      * Create a new Load Balancer in a particular region.
      *
-     * @var string
-     *
-     * @return bool
-     *
      * @see https://www.vultr.com/api/v2/#operation/create-load-balancer
      */
-    public function createLoadBalancer($oa)
+    public function createLoadBalancer(array $oa): string
     {
     }
 
@@ -272,7 +250,7 @@ class LoadBalancers
      *
      * @see https://www.vultr.com/api/v2/#operation/update-load-balancer
      */
-    public function updateLoadBalancer($oa)
+    public function updateLoadBalancer(array $oa): string
     {
     }
 }

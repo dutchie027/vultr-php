@@ -26,10 +26,6 @@ class Account
     /**
      * __construct
      * Takes reference from \API
-     *
-     * @param object $api API
-     *
-     * @return object
      */
     public function __construct(API $api)
     {
@@ -39,10 +35,8 @@ class Account
     /**
      * getAccountInfo
      * Gets account info
-     *
-     * @return string
      */
-    public function getAccountInfo()
+    public function getAccountInfo(): Psr7\Stream
     {
         return $this->api->makeAPICall('GET', $this->api::ACCOUNT_URL);
     }

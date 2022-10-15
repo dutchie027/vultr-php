@@ -103,15 +103,13 @@ class Firewalls
     /**
      * listFirewallGroups
      * Gets account info
-     *
-     * @return string
      */
-    public function listFirewallGroups()
+    public function listFirewallGroups(): string
     {
         return $this->api->makeAPICall('GET', $this->api::FIREWALLS_URL);
     }
 
-    public function loadFirewallArrays()
+    public function loadFirewallArrays(): void
     {
         $fw = json_decode($this->listFirewallGroups(), true);
 
@@ -126,12 +124,8 @@ class Firewalls
     /**
      * getFirewallGroup
      * Gets information on a Firewall Group
-     *
-     * @param string $id
-     *
-     * @return string
      */
-    public function getFirewallGroup($id)
+    public function getFirewallGroup(string $id): string
     {
         if (in_array($id, $this->ids, true)) {
             return $this->api->makeAPICall('GET', $this->api::FIREWALLS_URL . '/' . $id);
@@ -143,12 +137,8 @@ class Firewalls
     /**
      * listFirewallRules
      * Lists Firewall Rules
-     *
-     * @param string $id
-     *
-     * @return string
      */
-    public function listFirewallRules($id)
+    public function listFirewallRules(string $id): string
     {
         if (in_array($id, $this->ids, true)) {
             return $this->api->makeAPICall('GET', $this->api::FIREWALLS_URL . '/' . $id . '/rules');
@@ -160,12 +150,8 @@ class Firewalls
     /**
      * createFirewallGroup
      * Creates a New Firewall Group
-     *
-     * @param string $name
-     *
-     * @return string
      */
-    public function createFirewallGroup($name)
+    public function createFirewallGroup(string $name): string
     {
         if (strlen($name) < 4) {
             throw new InvalidParameterException('Name needs to be a minimum of 4 characters');
@@ -180,12 +166,8 @@ class Firewalls
     /**
      * createFirewallRule
      * Creates a New Rule
-     *
-     * @param array $fa
-     *
-     * @return string
      */
-    public function createFirewallRule($fa)
+    public function createFirewallRule(array $fa): string
     {
         $ba['notes'] = $this->d_note;
 
@@ -277,10 +259,8 @@ class Firewalls
     /**
      * getNumberOfFirewallRules
      * Returns total number of Firewall Rule Groups
-     *
-     * @return int
      */
-    public function getNumberOfFirewallRules()
+    public function getNumberOfFirewallRules(): int
     {
         return $this->total_rule_groups;
     }
@@ -289,12 +269,8 @@ class Firewalls
      * getNumberOfRules
      * Returns total number of Rules associated with a specific
      * Firewall Group ID
-     *
-     * @param string $id
-     *
-     * @return int
      */
-    public function getNumberOfRules($id)
+    public function getNumberOfRules(string $id): int
     {
         if (in_array($id, $this->ids, true)) {
             return $this->fwrga[$id]['rule_count'];
@@ -307,12 +283,8 @@ class Firewalls
      * getRuleName
      * Returns Rule Name as assocaited with a
      * Firewall Group ID
-     *
-     * @param string $id
-     *
-     * @return int
      */
-    public function getRuleName($id)
+    public function getRuleName(string $id): int
     {
         if (in_array($id, $this->ids, true)) {
             return $this->fwrga[$id]['desc'];
@@ -325,12 +297,8 @@ class Firewalls
      * getInstanceCount
      * Returns Count of instances associated with given
      * Firewall Group ID
-     *
-     * @param string $id
-     *
-     * @return int
      */
-    public function getInstanceCount($id)
+    public function getInstanceCount(string $id): int
     {
         if (in_array($id, $this->ids, true)) {
             return $this->fwrga[$id]['instance_count'];
@@ -342,12 +310,8 @@ class Firewalls
     /**
      * updateFirewallGroup
      * Updates label of Firewall Group
-     *
-     * @param array $options
-     *
-     * @return string
      */
-    public function updateFirewallGroup($options)
+    public function updateFirewallGroup(array $options): string
     {
         if (in_array($options['group_id'], $this->ids, true)) {
             $url = $this->api::FIREWALLS_URL . '/' . $options['group_id'];
@@ -364,10 +328,8 @@ class Firewalls
     /**
      * deleteFirewallGroup
      * Deletes a Firewall Group
-     *
-     * @return string
      */
-    public function deleteFirewallGroup($id)
+    public function deleteFirewallGroup(string $id): string
     {
         if (in_array($id, $this->ids, true)) {
             $url = $this->api::FIREWALLS_URL . '/' . $id;

@@ -17,7 +17,6 @@ namespace dutchie027\Vultr;
 use dutchie027\Vultr\Exceptions\VultrAPIRequestException;
 use GuzzleHttp\Client as Guzzle;
 use GuzzleHttp\Exception\RequestException;
-use GuzzleHttp\Psr7;
 use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 
@@ -257,7 +256,7 @@ class API
     /**
      * Default constructor
      */
-    public function __construct($token, array $attributes = [], Guzzle $guzzle = null)
+    public function __construct(string $token, array $attributes = [], Guzzle $guzzle = null)
     {
         $this->p_token = $token;
 
@@ -285,22 +284,22 @@ class API
 
         if (isset($attributes['log_level']) && in_array($attributes['log_level'], $this->log_literals, true)) {
             if ($attributes['log_level'] == 'debug') {
-                $this->p_log->pushHandler(new StreamHandler($this->pGetLogPath(), Logger::DEBUG));
+                $this->p_log->pushHandler(new StreamHandler($this->pGetLogPath(), \Monolog\Level::Debug));
             } elseif ($attributes['log_level'] == 'info') {
-                $this->p_log->pushHandler(new StreamHandler($this->pGetLogPath(), Logger::INFO));
+                $this->p_log->pushHandler(new StreamHandler($this->pGetLogPath(), \Monolog\Level::Info));
             } elseif ($attributes['log_level'] == 'notice') {
-                $this->p_log->pushHandler(new StreamHandler($this->pGetLogPath(), Logger::NOTICE));
+                $this->p_log->pushHandler(new StreamHandler($this->pGetLogPath(), \Monolog\Level::Notice));
             } elseif ($attributes['log_level'] == 'warning') {
-                $this->p_log->pushHandler(new StreamHandler($this->pGetLogPath(), Logger::WARNING));
+                $this->p_log->pushHandler(new StreamHandler($this->pGetLogPath(), \Monolog\Level::Warning));
             } elseif ($attributes['log_level'] == 'error') {
-                $this->p_log->pushHandler(new StreamHandler($this->pGetLogPath(), Logger::ERROR));
+                $this->p_log->pushHandler(new StreamHandler($this->pGetLogPath(), \Monolog\Level::Error));
             } elseif ($attributes['log_level'] == 'critical') {
-                $this->p_log->pushHandler(new StreamHandler($this->pGetLogPath(), Logger::CRITICAL));
+                $this->p_log->pushHandler(new StreamHandler($this->pGetLogPath(), \Monolog\Level::Critical));
             } else {
-                $this->p_log->pushHandler(new StreamHandler($this->pGetLogPath(), Logger::WARNING));
+                $this->p_log->pushHandler(new StreamHandler($this->pGetLogPath(), \Monolog\Level::Warning));
             }
         } else {
-            $this->p_log->pushHandler(new StreamHandler($this->pGetLogPath(), Logger::INFO));
+            $this->p_log->pushHandler(new StreamHandler($this->pGetLogPath(), \Monolog\Level::Info));
         }
         $this->guzzle = $guzzle ?: new Guzzle();
     }
@@ -308,8 +307,6 @@ class API
     /**
      * getLogLocation
      * Alias to Get Log Path
-     *
-     * @return string
      */
     public function getLogLocation()
     {
@@ -319,8 +316,6 @@ class API
     /**
      * getAPIToken
      * Returns the stored API Token
-     *
-     * @return string
      */
     private function getAPIToken()
     {
@@ -330,8 +325,6 @@ class API
     /**
      * account
      * Pointer to the \Account class
-     *
-     * @return object
      */
     public function account(): Account
     {
@@ -341,8 +334,6 @@ class API
     /**
      * applications
      * Pointer to the \Applications class
-     *
-     * @return object
      */
     public function applications(): Applications
     {
@@ -352,8 +343,6 @@ class API
     /**
      * backups
      * Pointer to the \Backups class
-     *
-     * @return object
      */
     public function backups(): Backups
     {
@@ -363,8 +352,6 @@ class API
     /**
      * bareMetal
      * Pointer to the \BareMetal class
-     *
-     * @return object
      */
     public function bareMetal(): BareMetal
     {
@@ -374,8 +361,6 @@ class API
     /**
      * blockStorage
      * Pointer to the \BlockStorage class
-     *
-     * @return object
      */
     public function blockStorage(): BlockStorage
     {
@@ -385,8 +370,6 @@ class API
     /**
      * dns
      * Pointer to the \DNS class
-     *
-     * @return object
      */
     public function dns(): DNS
     {
@@ -396,8 +379,6 @@ class API
     /**
      * firewalls
      * Pointer to the \Firewalls class
-     *
-     * @return object
      */
     public function firewalls(): Firewalls
     {
@@ -407,8 +388,6 @@ class API
     /**
      * instances
      * Pointer to the \Instances class
-     *
-     * @return object
      */
     public function instances(): Instances
     {
@@ -418,8 +397,6 @@ class API
     /**
      * iso
      * Pointer to the \ISO class
-     *
-     * @return object
      */
     public function iso(): ISO
     {
@@ -429,8 +406,6 @@ class API
     /**
      * loadBalancers
      * Pointer to the \LoadBalancers class
-     *
-     * @return object
      */
     public function loadBalancers(): LoadBalancers
     {
@@ -440,8 +415,6 @@ class API
     /**
      * objectStorage
      * Pointer to the \ObjectStorage cass
-     *
-     * @return object
      */
     public function objectStorage(): ObjectStorage
     {
@@ -451,8 +424,6 @@ class API
     /**
      * operatingSystems
      * Pointer to the \OperatingSystems class
-     *
-     * @return object
      */
     public function operatingSystems(): OperatingSystems
     {
@@ -462,8 +433,6 @@ class API
     /**
      * plans
      * Pointer to the \Plans class
-     *
-     * @return object
      */
     public function plans(): Plans
     {
@@ -473,8 +442,6 @@ class API
     /**
      * privateNetworks
      * Pointer to the \PrivateNetworks class
-     *
-     * @return object
      */
     public function privateNetworks(): PrivateNetworks
     {
@@ -484,8 +451,6 @@ class API
     /**
      * regions
      * Pointer to the \Regions class
-     *
-     * @return object
      */
     public function regions(): Regions
     {
@@ -495,8 +460,6 @@ class API
     /**
      * reservedIPs
      * Pointer to the \ReservedIPs class
-     *
-     * @return object
      */
     public function reservedIPs(): ReservedIPs
     {
@@ -506,8 +469,6 @@ class API
     /**
      * snapshots
      * Pointer to the \Snapshots class
-     *
-     * @return object
      */
     public function snapshots(): Snapshots
     {
@@ -517,8 +478,6 @@ class API
     /**
      * instances
      * Pointer to the \SSHKeys class
-     *
-     * @return object
      */
     public function sshKeys(): SSHKeys
     {
@@ -528,8 +487,6 @@ class API
     /**
      * startupScripts
      * Pointer to the \StartupScripts class
-     *
-     * @return object
      */
     public function startupScripts(): StartupScripts
     {
@@ -539,8 +496,6 @@ class API
     /**
      * users
      * Pointer to the \Users class
-     *
-     * @return object
      */
     public function users(): Users
     {
@@ -550,8 +505,6 @@ class API
     /**
      * getLogPointer
      * Returns a referencd to the logger
-     *
-     * @return object
      */
     public function getLogPointer()
     {
@@ -561,10 +514,8 @@ class API
     /**
      * pGetLogPath
      * Returns full path and name of the log file
-     *
-     * @return string
      */
-    protected function pGetLogPath()
+    protected function pGetLogPath(): string
     {
         return $this->p_log_location . '/' . $this->p_log_name;
     }
@@ -572,10 +523,8 @@ class API
     /**
      * setHeaders
      * Sets the headers using the API Token
-     *
-     * @return array
      */
-    public function setHeaders()
+    public function setHeaders(): array
     {
         return [
             'User-Agent' => 'php-api-dutchie027/' . self::LIBRARY_VERSION,
@@ -587,12 +536,8 @@ class API
     /**
      * pGenRandomString
      * Generates a random string of $length
-     *
-     * @param int $length
-     *
-     * @return string
      */
-    public function pGenRandomString($length = 6)
+    public function pGenRandomString($length = 6): string
     {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
@@ -608,16 +553,8 @@ class API
     /**
      * makeAPICall
      * Makes the API Call
-     *
-     * @param $type string GET|POST|DELETE|PATCH
-     * @param $url string endpoint
-     * @param $body string - usually passed as JSON
-     *
-     * @throws VultrAPIRequestException Exception with details regarding the failed request
-     *
-     * @return Psr7\Stream Object
      */
-    public function makeAPICall($type, $url, $body = null)
+    public function makeAPICall(string $type, string $url, string $body = null): string
     {
         $data['headers'] = $this->setHeaders();
         $data['body'] = $body;

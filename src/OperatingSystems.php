@@ -47,10 +47,6 @@ class OperatingSystems
     /**
      * __construct
      * Takes reference from \API
-     *
-     * @param object $api API
-     *
-     * @return object
      */
     public function __construct(API $api)
     {
@@ -61,10 +57,8 @@ class OperatingSystems
     /**
      * listOS
      * Lists All Operating systems
-     *
-     * @return string
      */
-    public function listOS()
+    public function listOS(): string
     {
         return $this->api->makeAPICall('GET', $this->api::OS_URL);
     }
@@ -73,7 +67,7 @@ class OperatingSystems
      * loadOSArray
      * Loads OS'es in to Array
      */
-    public function loadOSArray()
+    public function loadOSArray(): void
     {
         $osa = json_decode($this->listOS(), true);
 

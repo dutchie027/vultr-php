@@ -68,10 +68,6 @@ class Plans
     /**
      * __construct
      * Takes reference from \API
-     *
-     * @param object $api API
-     *
-     * @return object
      */
     public function __construct(API $api)
     {
@@ -83,10 +79,8 @@ class Plans
     /**
      * listPlans
      * List All Plans
-     *
-     * @return string
      */
-    public function listPlans()
+    public function listPlans(): string
     {
         return $this->api->makeAPICall('GET', $this->api::PLANS_URL);
     }
@@ -94,10 +88,8 @@ class Plans
     /**
      * listMetalPlans
      * List Bare Metal Plans
-     *
-     * @return string
      */
-    public function listMetalPlans()
+    public function listMetalPlans(): string
     {
         return $this->api->makeAPICall('GET', $this->api::METAL_PLANS_URL);
     }
@@ -106,7 +98,7 @@ class Plans
      * loadPlans
      * Loads Plan Information in to arrays
      */
-    public function loadPlans()
+    public function loadPlans(): void
     {
         $pa = json_decode($this->listPlans(), true);
 
@@ -122,7 +114,7 @@ class Plans
      * loadMetalPlans
      * Loads Metal Plan Information in to arrays
      */
-    public function loadMetalPlans()
+    public function loadMetalPlans(): void
     {
         $pa = json_decode($this->listMetalPlans(), true);
 
@@ -137,10 +129,8 @@ class Plans
     /**
      * getNumberOfPlans
      * Returns total number of Plans
-     *
-     * @return int
      */
-    public function getNumberOfPlans()
+    public function getNumberOfPlans(): int
     {
         return $this->total_plans;
     }
@@ -149,7 +139,7 @@ class Plans
      * getAllPlans
      * Returns Bare Metal and normal plans combined together.
      */
-    public function getAllPlans()
+    public function getAllPlans(): array
     {
         return array_merge($this->plan, $this->metal_plan);
     }

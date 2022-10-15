@@ -49,10 +49,6 @@ class ReservedIPs
     /**
      * __construct
      * Takes reference from \API
-     *
-     * @param object $api API
-     *
-     * @return object
      */
     public function __construct(API $api)
     {
@@ -64,11 +60,9 @@ class ReservedIPs
      * listReservedIPs
      * List all Reserved IPs in your account.
      *
-     * @return string
-     *
      * @see https://www.vultr.com/api/v2/#operation/list-reserved-ips
      */
-    public function listReservedIPs()
+    public function listReservedIPs(): string
     {
         return $this->api->makeAPICall('GET', $this->api::RESERVED_IPS_URL);
     }
@@ -77,7 +71,7 @@ class ReservedIPs
      * loadReservedIPs
      * Loads Reserved IP Information in to arrays
      */
-    public function loadReservedIPs()
+    public function loadReservedIPs(): void
     {
         $ipa = json_decode($this->listReservedIPs(), true);
 
@@ -93,13 +87,9 @@ class ReservedIPs
      * deleteReservedIP
      * Delete a Reserved IP.
      *
-     * @var string
-     *
-     * @return string
-     *
      * @see https://www.vultr.com/api/v2/#operation/delete-reserved-ip
      */
-    public function deleteReservedIP($id)
+    public function deleteReservedIP(string $id): string
     {
         return $this->api->makeAPICall('DELETE', $this->api::RESERVED_IPS_URL . '/' . $id);
     }
@@ -108,13 +98,9 @@ class ReservedIPs
      * getReservedIP
      * Get information about a Reserved IP.
      *
-     * @var string
-     *
-     * @return string
-     *
      * @see https://www.vultr.com/api/v2/#operation/get-reserved-ip
      */
-    public function getReservedIP($id)
+    public function getReservedIP(string $id): string
     {
         return $this->api->makeAPICall('GET', $this->api::RESERVED_IPS_URL . '/' . $id);
     }
@@ -124,11 +110,9 @@ class ReservedIPs
      * Create a new Reserved IP.
      * The region and ip_type attributes are required.
      *
-     * @return string
-     *
      * @see https://www.vultr.com/api/v2/#operation/create-reserved-ip
      */
-    public function createReservedIP($oa)
+    public function createReservedIP(array $oa): string
     {
         if (!isset($oa['region']) || !in_array($oa['region'], $this->api->regions()->ids, true)) {
             throw new InvalidParameterException('Invalid Region');
@@ -150,11 +134,9 @@ class ReservedIPs
      * attachReservedIP
      * Attach a Reserved IP to an instance_id.
      *
-     * @return string
-     *
      * @see https://www.vultr.com/api/v2/#operation/attach-reserved-ip
      */
-    public function attachReservedIP($oa)
+    public function attachReservedIP(array $oa): string
     {
         if (!isset($oa['instance_id']) || !$this->api->instances()->checkInstanceId($oa['instance_id'])) {
             throw new InvalidParameterException('Invalid or Missing Instance ID');
@@ -175,13 +157,9 @@ class ReservedIPs
      * detachReservedIP
      * Attach a Reserved IP to an instance_id.
      *
-     * @param string $ip
-     *
-     * @return string
-     *
      * @see https://www.vultr.com/api/v2/#operation/detach-reserved-ip
      */
-    public function detachReservedIP($ip)
+    public function detachReservedIP(string $ip): string
     {
         $this->checkReservedIP($ip);
 
@@ -192,13 +170,9 @@ class ReservedIPs
      * convertInstanceIPToReservedIP
      * Convert ip_address on instance_id into a Reserved IP.
      *
-     * @param array $oa
-     *
-     * @return string
-     *
      * @see https://www.vultr.com/api/v2/#operation/convert-reserved-ip
      */
-    public function convertInstanceIPToReservedIP($oa)
+    public function convertInstanceIPToReservedIP(array $oa): string
     {
         if (!isset($oa['ip_address']) || !$this->checkReservedIP($oa['ip_address'])) {
             throw new InvalidParameterException('Invalid or Missing IP');
@@ -214,12 +188,8 @@ class ReservedIPs
     /**
      * checkReservedIP
      * Checks's if an IP ID is valid or not
-     *
-     * @var string
-     *
-     * @return bool
      */
-    public function checkReservedIP($id)
+    public function checkReservedIP($id): bool
     {
         if (in_array($id, $this->ids, true)) {
             return true;

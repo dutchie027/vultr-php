@@ -15,7 +15,6 @@
 namespace dutchie027\Vultr;
 
 use dutchie027\Vultr\Exceptions\InvalidParameterException;
-use GuzzleHttp\Psr7\Stream;
 
 class Instances
 {
@@ -56,10 +55,8 @@ class Instances
     /**
      * listInstances
      * Lists All Instances
-     *
-     * @return string
      */
-    public function listInstances()
+    public function listInstances(): string
     {
         return $this->api->makeAPICall('GET', $this->api::INSTANCES_URL);
     }
@@ -67,12 +64,8 @@ class Instances
     /**
      * createInstance
      * Creates an Instance
-     *
-     * @param $oa array
-     *
-     * @return Stream
      */
-    public function createInstance($oa)
+    public function createInstance(array $oa): string
     {
         $hasOS = false;
 
@@ -198,7 +191,7 @@ class Instances
      * loadInstances
      * Loads Instances in to Array
      */
-    public function loadInstances()
+    public function loadInstances(): void
     {
         $ia = json_decode($this->listInstances(), true);
 
@@ -213,12 +206,8 @@ class Instances
     /**
      * updateInstance
      * Updates an Instance
-     *
-     * @param $oa array
-     *
-     * @return Stream
      */
-    public function updateInstance($oa)
+    public function updateInstance(array $oa): string
     {
         $this->checkInstanceId($oa['id']);
         $hasOS = false;
@@ -294,12 +283,8 @@ class Instances
     /**
      * haltInstances
      * Halts an array of instances
-     *
-     * @param $oa array
-     *
-     * @return Stream
      */
-    public function haltInstances($oa)
+    public function haltInstances(array $oa): string
     {
         foreach ($oa as $inst) {
             $this->checkInstanceId($inst);
@@ -313,12 +298,8 @@ class Instances
     /**
      * rebootInstances
      * Reboots an array of instances
-     *
-     * @param $oa array
-     *
-     * @return Stream
      */
-    public function rebootInstances($oa)
+    public function rebootInstances(array $oa): string
     {
         foreach ($oa as $inst) {
             $this->checkInstanceId($inst);
@@ -332,12 +313,8 @@ class Instances
     /**
      * startInstances
      * Starts an array of instances
-     *
-     * @param $oa array
-     *
-     * @return Stream
      */
-    public function startInstances($oa)
+    public function startInstances(array $oa): string
     {
         foreach ($oa as $inst) {
             $this->checkInstanceId($inst);
@@ -351,12 +328,8 @@ class Instances
     /**
      * startInstance
      * Starts a single Instance ID
-     *
-     * @param $inst string
-     *
-     * @return Stream
      */
-    public function startInstance($inst)
+    public function startInstance(string $inst): string
     {
         $this->checkInstanceId($inst);
 
@@ -366,12 +339,8 @@ class Instances
     /**
      * rebootInstance
      * Reboots a Single instance ID
-     *
-     * @param $inst string
-     *
-     * @return Stream
      */
-    public function rebootInstance($inst)
+    public function rebootInstance(string $inst): string
     {
         $this->checkInstanceId($inst);
 
@@ -381,12 +350,8 @@ class Instances
     /**
      * reinstallInstance
      * Reinstalls a Single Instance
-     *
-     * @param $oa array
-     *
-     * @return Stream
      */
-    public function reinstallInstance($oa)
+    public function reinstallInstance(array $oa): string
     {
         $this->checkInstanceId($oa['id']);
 
@@ -403,12 +368,8 @@ class Instances
     /**
      * instanceBandwidth
      * Returns bandwidth used by an instance
-     *
-     * @param $inst string
-     *
-     * @return Stream
      */
-    public function instanceBandwidth($inst)
+    public function instanceBandwidth(string $inst): string
     {
         $this->checkInstanceId($inst);
 
@@ -418,12 +379,8 @@ class Instances
     /**
      * getInstanceNeighbors
      * Returns an Instance IDs Neighbors
-     *
-     * @param $inst string
-     *
-     * @return Stream
      */
-    public function getInstanceNeighbors($inst)
+    public function getInstanceNeighbors(string $inst): string
     {
         $this->checkInstanceId($inst);
 
@@ -433,12 +390,8 @@ class Instances
     /**
      * listInstancePrivateNetworks
      * Lists the Private Networks of an Instance
-     *
-     * @param $inst string
-     *
-     * @return Stream
      */
-    public function listInstancePrivateNetworks($inst)
+    public function listInstancePrivateNetworks(string $inst): string
     {
         $this->checkInstanceId($inst);
 
@@ -448,12 +401,8 @@ class Instances
     /**
      * getInstanceISOStatus
      * Gets the ISO Status from An Insnace
-     *
-     * @param $inst string
-     *
-     * @return Stream
      */
-    public function getInstanceISOStatus($inst)
+    public function getInstanceISOStatus(string $inst): string
     {
         $this->checkInstanceId($inst);
 
@@ -463,12 +412,8 @@ class Instances
     /**
      * attachISOToInstance
      * Attaches an ISO to an Instance
-     *
-     * @param $oa array
-     *
-     * @return Stream
      */
-    public function attachISOToInstance($oa)
+    public function attachISOToInstance(array $oa): string
     {
         $this->checkInstanceId($oa['id']);
 
@@ -484,10 +429,8 @@ class Instances
     /**
      * detachISOFromInstance
      * Detaches an ISO from an instance
-     *
-     * @return Stream
      */
-    public function detachISOFromInstance($inst)
+    public function detachISOFromInstance(string $inst): string
     {
         $this->checkInstanceId($inst);
 
@@ -497,12 +440,8 @@ class Instances
     /**
      * attachPrivateNetworkToInstance
      * Attaches a private network to an instance
-     *
-     * @param $oa array
-     *
-     * @return Stream
      */
-    public function attachPrivateNetworkToInstance($oa)
+    public function attachPrivateNetworkToInstance(array $oa): string
     {
         $this->checkInstanceId($oa['id']);
 
@@ -519,12 +458,8 @@ class Instances
     /**
      * detachPrivateNetworkFromInstance
      * Detaches a private network from an instance
-     *
-     * @param $oa array
-     *
-     * @return Stream
      */
-    public function detachPrivateNetworkFromInstance($oa)
+    public function detachPrivateNetworkFromInstance(array $oa): string
     {
         $this->checkInstanceId($oa['id']);
 
@@ -541,12 +476,8 @@ class Instances
     /**
      * setInstanceBackupSchedule
      * Sets an Instance's Backup Schedule
-     *
-     * @param $oa array
-     *
-     * @return Stream
      */
-    public function setInstanceBackupSchedule($oa)
+    public function setInstanceBackupSchedule(array $oa): string
     {
         $this->checkInstanceId($oa['id']);
 
@@ -599,10 +530,8 @@ class Instances
     /**
      * getInstanceBackupSchedule
      * Gets Instance Backup Schedule
-     *
-     * @return Stream
      */
-    public function getInstanceBackupSchedule($inst)
+    public function getInstanceBackupSchedule(string $inst): string
     {
         $this->checkInstanceId($inst);
 
@@ -612,12 +541,8 @@ class Instances
     /**
      * restoreInstance
      * Restores an Instance
-     *
-     * @param $oa array
-     *
-     * @return Stream
      */
-    public function restoreInstance($oa)
+    public function restoreInstance(array $oa): string
     {
         $hasOS = false;
         $this->checkInstanceId($oa['id']);
@@ -643,10 +568,8 @@ class Instances
     /**
      * listInstanceIPv4Information
      * Lists IPv4 Information
-     *
-     * @return Stream
      */
-    public function listInstanceIPv4Information($inst)
+    public function listInstanceIPv4Information(string $inst): string
     {
         $this->checkInstanceId($inst);
 
@@ -656,12 +579,8 @@ class Instances
     /**
      * createIPv4
      * Creates IPv4 Address
-     *
-     * @param $oa array
-     *
-     * @return Stream
      */
-    public function createIPv4($oa)
+    public function createIPv4(array $oa): string
     {
         $hasOS = false;
         $this->checkInstanceId($oa['id']);
@@ -679,10 +598,8 @@ class Instances
     /**
      * getInstanceIPv6Information
      * Gets Information about the IPv6 data from the instance
-     *
-     * @return Stream
      */
-    public function getInstanceIPv6Information($inst)
+    public function getInstanceIPv6Information(string $inst): string
     {
         $this->checkInstanceId($inst);
 
@@ -692,12 +609,8 @@ class Instances
     /**
      * createInstanceReverseIPv6
      * Creates a reverse IPv6 record
-     *
-     * @param $oa array
-     *
-     * @return Stream
      */
-    public function createInstanceReverseIPv6($oa)
+    public function createInstanceReverseIPv6(array $oa): string
     {
         $this->checkInstanceId($oa['id']);
 
@@ -718,10 +631,8 @@ class Instances
     /**
      * listInstanceIPv6Reverse
      * Lists Reverse IPv6 Record
-     *
-     * @return Stream
      */
-    public function listInstanceIPv6Reverse($inst)
+    public function listInstanceIPv6Reverse(string $inst): string
     {
         $this->checkInstanceId($inst);
 
@@ -731,12 +642,8 @@ class Instances
     /**
      * createInstanceReverseIPv4
      * Creates a Reverse IPv4 Record
-     *
-     * @param $oa array
-     *
-     * @return Stream
      */
-    public function createInstanceReverseIPv4($oa)
+    public function createInstanceReverseIPv4(array $oa): string
     {
         $this->checkInstanceId($oa['id']);
 
@@ -757,10 +664,8 @@ class Instances
     /**
      * getInstanceUserData
      * Lists Instance User Data
-     *
-     * @return Stream
      */
-    public function getInstanceUserData($inst)
+    public function getInstanceUserData(string $inst): string
     {
         $this->checkInstanceId($inst);
 
@@ -770,10 +675,8 @@ class Instances
     /**
      * haltInstance
      * Halts an Instance
-     *
-     * @return Stream
      */
-    public function haltInstance($inst)
+    public function haltInstance(string $inst): string
     {
         $this->checkInstanceId($inst);
 
@@ -783,12 +686,8 @@ class Instances
     /**
      * setDefaultReverseDNSEntry
      * Sets Default Reverse DNS Entry
-     *
-     * @param $oa array
-     *
-     * @return Stream
      */
-    public function setDefaultReverseDNSEntry($oa)
+    public function setDefaultReverseDNSEntry(array $oa): string
     {
         if (!in_array($oa['id'], $this->ids, true)) {
             throw new InvalidParameterException('Instance ID Not Found');
@@ -807,12 +706,8 @@ class Instances
     /**
      * deleteIPv4Address
      * Deletes IPv4 Address
-     *
-     * @param $oa array
-     *
-     * @return Stream
      */
-    public function deleteIPv4Address($oa)
+    public function deleteIPv4Address(array $oa): string
     {
         if (!in_array($oa['id'], $this->ids, true)) {
             throw new InvalidParameterException('Instance ID Not Found');
@@ -829,12 +724,8 @@ class Instances
     /**
      * deleteInstanceReverseIPv6
      * Deletes Instance Reverse IPv6 Information
-     *
-     * @param $oa array
-     *
-     * @return Stream
      */
-    public function deleteInstanceReverseIPv6($oa)
+    public function deleteInstanceReverseIPv6(array $oa): string
     {
         if (!in_array($oa['id'], $this->ids, true)) {
             throw new InvalidParameterException('Instance ID Not Found');
@@ -851,10 +742,8 @@ class Instances
     /**
      * getAvailableInstanceUpgrades
      * Gets Upgrade Information about an Instance
-     *
-     * @return Stream
      */
-    public function getAvailableInstanceUpgrades($inst)
+    public function getAvailableInstanceUpgrades(string $inst): string
     {
         $this->checkInstanceId($inst);
 
@@ -864,10 +753,8 @@ class Instances
     /**
      * getIds
      * Returns Instance IDs as an array
-     *
-     * @return array
      */
-    public function getIds()
+    public function getIds(): array
     {
         return $this->ids;
     }
@@ -875,25 +762,17 @@ class Instances
     /**
      * getInstance
      * Get Instance Information
-     *
-     * @var string
-     *
-     * @return string
      */
-    public function getInstance($id)
+    public function getInstance(string $id): string
     {
         return $this->api->makeAPICall('GET', $this->api::INSTANCES_URL . '/' . $id);
     }
 
     /**
      * deleteInstance
-     * Delete's an Instance
-     *
-     * @var string
-     *
-     * @return string
+     * Deletes an Instance
      */
-    public function deleteInstance($id)
+    public function deleteInstance(string $id): string
     {
         return $this->api->makeAPICall('DELETE', $this->api::INSTANCES_URL . '/' . $id);
     }
@@ -901,12 +780,8 @@ class Instances
     /**
      * checkInstanceId
      * Checks's if an Instance ID is valid or not
-     *
-     * @var string
-     *
-     * @return bool
      */
-    public function checkInstanceId($id)
+    public function checkInstanceId(string $id): bool
     {
         if (in_array($id, $this->ids, true)) {
             return true;

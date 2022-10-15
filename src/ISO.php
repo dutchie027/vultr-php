@@ -19,17 +19,13 @@ class ISO
     /**
      * Reference to \API object
      *
-     * @var object
+     * @var API
      */
     protected $api;
 
     /**
      * __construct
      * Takes reference from \API
-     *
-     * @param object $api API
-     *
-     * @return object
      */
     public function __construct(API $api)
     {
@@ -40,14 +36,14 @@ class ISO
     /**
      * Array of All Plan IDs
      *
-     * @var array
+     * @var array<int>
      */
     public $ids = [];
 
     /**
      * Array of ISO Information
      *
-     * @var array
+     * @var array<string>
      */
     public $isos = [];
 
@@ -101,7 +97,7 @@ class ISO
     public function createISO(string $url): string
     {
         $ba['url'] = $url;
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('POST', $this->api::ISO_URL, $body);
     }

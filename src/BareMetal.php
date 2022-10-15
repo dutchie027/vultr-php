@@ -21,21 +21,21 @@ class BareMetal
     /**
      * Reference to \API object
      *
-     * @var object
+     * @var API
      */
     protected $api;
 
     /**
      * Array of Bare Metal IDs
      *
-     * @var array
+     * @var array<int>
      */
     public $ids = [];
 
     /**
      * Array of Bare Metals
      *
-     * @var array
+     * @var array<string>
      */
     public $metals = [];
 
@@ -89,7 +89,7 @@ class BareMetal
      *
      * @see https://www.vultr.com/api/v2/#operation/get-baremetal
      */
-    public function getIngetBareMetalstance($id): string
+    public function getIngetBareMetalstance(string $id): string
     {
         $this->checkBareMetalId($id);
 
@@ -102,14 +102,17 @@ class BareMetal
      * All attributes are optional.
      * If not set, the attributes will retain their original values.
      *
+     * @param array<mixed> $oa
+     *
      * @see https://www.vultr.com/api/v2/#operation/update-baremetal
      */
     public function updateBareMetal(array $oa): string
     {
         $this->checkBareMetalId($oa['id']);
         $hasOS = false;
+        $ba = [];
 
-        if (!$hasOS && isset($oa['os_id']) && in_array($oa['os_id'], $this->api->operatingSystems()->ids, true)) {
+        if (isset($oa['os_id']) && in_array($oa['os_id'], $this->api->operatingSystems()->ids, true)) {
             $hasOS = true;
             $ba['os_id'] = $oa['os_id'];
         }
@@ -128,7 +131,7 @@ class BareMetal
         }
         (isset($oa['tag'])) ? $ba['tag'] = $oa['tag'] : null;
         (isset($oa['label'])) ? $ba['label'] = $oa['label'] : null;
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('PATCH', $this->api::BARE_METAL_URL . '/' . $oa['id'], $body);
     }
@@ -136,6 +139,8 @@ class BareMetal
     /**
      * createBareMetal
      * Create a new Bare Metal instance in a region with the desired plan.
+     *
+     * @param array<mixed> $oa
      *
      * @see https://www.vultr.com/api/v2/#operation/create-baremetal
      */
@@ -153,7 +158,7 @@ class BareMetal
         }
         $ba['plan'] = $oa['plan'];
 
-        if (!$hasOS && isset($oa['os_id']) && in_array($oa['os_id'], $this->api->operatingSystems()->ids, true)) {
+        if (isset($oa['os_id']) && in_array($oa['os_id'], $this->api->operatingSystems()->ids, true)) {
             $hasOS = true;
             $ba['os_id'] = $oa['os_id'];
         }
@@ -213,7 +218,7 @@ class BareMetal
         } else {
             $ba['hostname'] = strtolower($this->api->pGenRandomString(10));
         }
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('POST', $this->api::BARE_METAL_URL, $body);
     }
@@ -326,15 +331,17 @@ class BareMetal
      * haltBareMetals
      * Halt Bare Metals.
      *
+     * @param array<string,string> $oa
+     *
      * @see https://www.vultr.com/api/v2/#operation/halt-baremetals
      */
-    public function haltBareMetals(string $oa): string
+    public function haltBareMetals(array $oa): string
     {
         foreach ($oa as $inst) {
             $this->checkBareMetalId($inst);
         }
         $ba['baremetal_ids'] = $oa;
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('POST', $this->api::BARE_METAL_URL . '/halt', $body);
     }
@@ -343,15 +350,17 @@ class BareMetal
      * rebootBareMetals
      * Reboot Bare Metals.
      *
+     * @param array<string,string> $oa
+     *
      * @see https://www.vultr.com/api/v2/#operation/reboot-bare-metals
      */
-    public function rebootBareMetals(string $oa): string
+    public function rebootBareMetals(array $oa): string
     {
         foreach ($oa as $inst) {
             $this->checkBareMetalId($inst);
         }
         $ba['baremetal_ids'] = $oa;
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('POST', $this->api::BARE_METAL_URL . '/reboot', $body);
     }
@@ -360,15 +369,17 @@ class BareMetal
      * startBareMetals
      * Start Bare Metals.
      *
+     * @param array<string,string> $oa
+     *
      * @see https://www.vultr.com/api/v2/#operation/start-bare-metals
      */
-    public function startBareMetals(string $oa): string
+    public function startBareMetals(array $oa): string
     {
         foreach ($oa as $inst) {
             $this->checkBareMetalId($inst);
         }
         $ba['baremetal_ids'] = $oa;
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('POST', $this->api::BARE_METAL_URL . '/start', $body);
     }

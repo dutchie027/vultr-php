@@ -21,17 +21,22 @@ class Instances
     /**
      * Reference to \API object
      *
-     * @var object
+     * @var API
      */
     protected $api;
 
     /**
      * Array containing Instance IDs
      *
-     * @var array
+     * @var array<int>
      */
     public $ids = [];
 
+    /**
+     * Array containing Instance IDs
+     *
+     * @var array<string>
+     */
     public $instance = [];
 
     /**
@@ -64,6 +69,7 @@ class Instances
     /**
      * createInstance
      * Creates an Instance
+     * @param array<mixed> $oa
      */
     public function createInstance(array $oa): string
     {
@@ -182,7 +188,7 @@ class Instances
         } else {
             $ba['hostname'] = strtolower($this->api->pGenRandomString(10));
         }
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('POST', $this->api::INSTANCES_URL, $body);
     }
@@ -206,13 +212,15 @@ class Instances
     /**
      * updateInstance
      * Updates an Instance
+     * @param array<string,string> $oa
      */
     public function updateInstance(array $oa): string
     {
         $this->checkInstanceId($oa['id']);
         $hasOS = false;
+        $ba = [];
 
-        if (!$hasOS && isset($oa['os_id']) && in_array($oa['os_id'], $this->api->operatingSystems()->ids, true)) {
+        if (isset($oa['os_id']) && in_array($oa['os_id'], $this->api->operatingSystems()->ids, true)) {
             $hasOS = true;
             $ba['os_id'] = $oa['os_id'];
         }
@@ -275,7 +283,7 @@ class Instances
         } elseif (isset($oa['detach_private_network']) && !is_array($oa['detach_private_network'])) {
             throw new InvalidParameterException('Detatch Networks Is Not Valid');
         }
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('PATCH', $this->api::INSTANCES_URL . '/' . $oa['id'], $body);
     }
@@ -283,6 +291,7 @@ class Instances
     /**
      * haltInstances
      * Halts an array of instances
+     * @param array<string,string> $oa
      */
     public function haltInstances(array $oa): string
     {
@@ -290,7 +299,7 @@ class Instances
             $this->checkInstanceId($inst);
         }
         $ba['instance_ids'] = $oa;
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('POST', $this->api::INSTANCES_URL . '/halt', $body);
     }
@@ -298,6 +307,7 @@ class Instances
     /**
      * rebootInstances
      * Reboots an array of instances
+     * @param array<string,string> $oa
      */
     public function rebootInstances(array $oa): string
     {
@@ -305,7 +315,7 @@ class Instances
             $this->checkInstanceId($inst);
         }
         $ba['instance_ids'] = $oa;
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('POST', $this->api::INSTANCES_URL . '/reboot', $body);
     }
@@ -313,6 +323,7 @@ class Instances
     /**
      * startInstances
      * Starts an array of instances
+     * @param array<string,string> $oa
      */
     public function startInstances(array $oa): string
     {
@@ -320,7 +331,7 @@ class Instances
             $this->checkInstanceId($inst);
         }
         $ba['instance_ids'] = $oa;
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('POST', $this->api::INSTANCES_URL . '/start', $body);
     }
@@ -350,6 +361,7 @@ class Instances
     /**
      * reinstallInstance
      * Reinstalls a Single Instance
+     * @param array<string,string> $oa
      */
     public function reinstallInstance(array $oa): string
     {
@@ -360,7 +372,7 @@ class Instances
         } else {
             $ba['hostname'] = strtolower($this->api->pGenRandomString(10));
         }
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('POST', $this->api::INSTANCES_URL . '/' . $oa['id'] . '/reinstall', $body);
     }
@@ -412,6 +424,7 @@ class Instances
     /**
      * attachISOToInstance
      * Attaches an ISO to an Instance
+     * @param array<string,string> $oa
      */
     public function attachISOToInstance(array $oa): string
     {
@@ -421,7 +434,7 @@ class Instances
             throw new InvalidParameterException('ISO Not Found');
         }
         $ba['iso_id'] = $oa['iso_id'];
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('POST', $this->api::INSTANCES_URL . '/' . $oa['id'] . '/iso/attach', $body);
     }
@@ -440,6 +453,7 @@ class Instances
     /**
      * attachPrivateNetworkToInstance
      * Attaches a private network to an instance
+     * @param array<string,string> $oa
      */
     public function attachPrivateNetworkToInstance(array $oa): string
     {
@@ -450,7 +464,7 @@ class Instances
         }
         $url = $this->api::INSTANCES_URL . '/' . $oa['id'] . '/private-networks/attach';
         $ba['network_id'] = $oa['network_id'];
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('POST', $url, $body);
     }
@@ -458,6 +472,7 @@ class Instances
     /**
      * detachPrivateNetworkFromInstance
      * Detaches a private network from an instance
+     * @param array<string,string> $oa
      */
     public function detachPrivateNetworkFromInstance(array $oa): string
     {
@@ -468,7 +483,7 @@ class Instances
         }
         $url = $this->api::INSTANCES_URL . '/' . $oa['id'] . '/private-networks/detach';
         $ba['network_id'] = $oa['network_id'];
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('POST', $url, $body);
     }
@@ -476,6 +491,7 @@ class Instances
     /**
      * setInstanceBackupSchedule
      * Sets an Instance's Backup Schedule
+     * @param array<string,string> $oa
      */
     public function setInstanceBackupSchedule(array $oa): string
     {
@@ -522,7 +538,7 @@ class Instances
         } else {
             throw new InvalidParameterException('Type is invalid');
         }
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('POST', $this->api::INSTANCES_URL . '/' . $oa['id'] . '/backup-schedule', $body);
     }
@@ -541,18 +557,20 @@ class Instances
     /**
      * restoreInstance
      * Restores an Instance
+     * @param array<string,string> $oa
      */
     public function restoreInstance(array $oa): string
     {
         $hasOS = false;
+        $ba = [];
         $this->checkInstanceId($oa['id']);
 
-        if (!$hasOS && isset($oa['snapshot_id']) && in_array($oa['snapshot_id'], $this->api->snapshots()->ids, true)) {
+        if (isset($oa['snapshot_id']) && in_array($oa['snapshot_id'], $this->api->snapshots()->ids, true)) {
             $hasOS = true;
             $ba['snapshot_id'] = $oa['snapshot_id'];
         }
 
-        if (!$hasOS && isset($oa['backup_id']) && in_array($oa['backup_id'], $this->api->backup()->ids, true)) {
+        if (!$hasOS && isset($oa['backup_id']) && in_array($oa['backup_id'], $this->api->backups()->ids, true)) {
             $hasOS = true;
             $ba['backup_id'] = $oa['backup_id'];
         }
@@ -560,7 +578,7 @@ class Instances
         if (!$hasOS) {
             throw new InvalidParameterException('A Valid OS (snapshot_id or backup_id) is missing');
         }
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('POST', $this->api::INSTANCES_URL . '/' . $oa['id'] . '/restore', $body);
     }
@@ -579,6 +597,7 @@ class Instances
     /**
      * createIPv4
      * Creates IPv4 Address
+     * @param array<string,string> $oa
      */
     public function createIPv4(array $oa): string
     {
@@ -590,7 +609,7 @@ class Instances
         } else {
             $ba['reboot'] = false;
         }
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('POST', $this->api::INSTANCES_URL . '/' . $oa['id'] . '/ipv4', $body);
     }
@@ -609,6 +628,7 @@ class Instances
     /**
      * createInstanceReverseIPv6
      * Creates a reverse IPv6 record
+     * @param array<string,string> $oa
      */
     public function createInstanceReverseIPv6(array $oa): string
     {
@@ -623,7 +643,7 @@ class Instances
         }
         $ba['ip'] = $oa['ip'];
         $ba['reverse'] = $oa['reverse'];
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('POST', $this->api::INSTANCES_URL . '/' . $oa['id'] . '/ipv6/reverse', $body);
     }
@@ -642,6 +662,7 @@ class Instances
     /**
      * createInstanceReverseIPv4
      * Creates a Reverse IPv4 Record
+     * @param array<string,string> $oa
      */
     public function createInstanceReverseIPv4(array $oa): string
     {
@@ -656,7 +677,7 @@ class Instances
         }
         $ba['ip'] = $oa['ip'];
         $ba['reverse'] = $oa['reverse'];
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('POST', $this->api::INSTANCES_URL . '/' . $oa['id'] . '/ipv4/reverse', $body);
     }
@@ -686,6 +707,7 @@ class Instances
     /**
      * setDefaultReverseDNSEntry
      * Sets Default Reverse DNS Entry
+     * @param array<string,string> $oa
      */
     public function setDefaultReverseDNSEntry(array $oa): string
     {
@@ -698,7 +720,7 @@ class Instances
         }
         $ba['ip'] = $oa['ip'];
         $url = $this->api::INSTANCES_URL . '/' . $oa['id'] . '/ipv4/reverse/default';
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('POST', $url, $body);
     }
@@ -706,6 +728,7 @@ class Instances
     /**
      * deleteIPv4Address
      * Deletes IPv4 Address
+     * @param array<string,string> $oa
      */
     public function deleteIPv4Address(array $oa): string
     {
@@ -724,6 +747,7 @@ class Instances
     /**
      * deleteInstanceReverseIPv6
      * Deletes Instance Reverse IPv6 Information
+     * @param array<string,string> $oa
      */
     public function deleteInstanceReverseIPv6(array $oa): string
     {
@@ -753,6 +777,7 @@ class Instances
     /**
      * getIds
      * Returns Instance IDs as an array
+     * @return array<int>
      */
     public function getIds(): array
     {

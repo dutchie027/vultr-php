@@ -21,7 +21,7 @@ class BlockStorage
     /**
      * Reference to \API object
      *
-     * @var object
+     * @var API
      */
     protected $api;
 
@@ -56,7 +56,7 @@ class BlockStorage
     /**
      * Array containing block IDs
      *
-     * @var array
+     * @var array<int>
      */
     public $block_array = [];
 
@@ -97,6 +97,7 @@ class BlockStorage
     /**
      * createBlockStorage
      * Creates Block Storage
+     * @param array<string,string> $sa
      */
     public function createBlockStorage(array $sa = []): string
     {
@@ -114,7 +115,7 @@ class BlockStorage
             }
         }
         (isset($sa['label'])) ? $ba['label'] = $sa['label'] : null;
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('POST', $this->api::BLOCK_STORAGE_URL, $body);
     }
@@ -136,7 +137,7 @@ class BlockStorage
      * deleteBlockStorage
      * Deletes Block Storage
      */
-    public function deleteBlockStorage(string $blockid)
+    public function deleteBlockStorage(string $blockid): string
     {
         if (in_array($blockid, $this->block_array, true)) {
             return $this->api->makeAPICall('DELETE', $this->api::BLOCK_STORAGE_URL . '/' . $blockid);
@@ -148,6 +149,7 @@ class BlockStorage
     /**
      * updateBlockStorage
      * Updates Block Storage Size and Label
+     * @param array<string,string> $options
      */
     public function updateBlockStorage(array $options): string
     {
@@ -165,9 +167,9 @@ class BlockStorage
             }
             $ba['size_gb'] = $options['size'];
 
-            (isset($sa['label'])) ? $ba['label'] = $sa['label'] : null;
+            (isset($options['label'])) ? $ba['label'] = $options['label'] : null;
 
-            $body = json_encode($ba);
+            $body = $this->api->returnJSONBody($ba);
 
             return $this->api->makeAPICall('PATCH', $this->api::BLOCK_STORAGE_URL . '/' . $options['block_id'], $body);
         }
@@ -178,6 +180,7 @@ class BlockStorage
     /**
      * attachBlockStorage
      * Attaches Block Storage to an Instance
+     * @param array<string,mixed> $options
      */
     public function attachBlockStorage(array $options): string
     {
@@ -200,7 +203,7 @@ class BlockStorage
 
             $url = $this->api::BLOCK_STORAGE_URL . '/' . $options['block_id'] . '/attach';
 
-            $body = json_encode($ba);
+            $body = $this->api->returnJSONBody($ba);
 
             return $this->api->makeAPICall('POST', $url, $body);
         }
@@ -211,6 +214,7 @@ class BlockStorage
     /**
      * detatchBlockStorage
      * Detatches Block Storage from Instance
+     * @param array<string,string> $options
      */
     public function detatchBlockStorage(array $options): string
     {
@@ -226,7 +230,7 @@ class BlockStorage
 
             $url = $this->api::BLOCK_STORAGE_URL . '/' . $options['block_id'] . '/detatch';
 
-            $body = json_encode($ba);
+            $body = $this->api->returnJSONBody($ba);
 
             return $this->api->makeAPICall('POST', $url, $body);
         }

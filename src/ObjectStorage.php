@@ -21,35 +21,35 @@ class ObjectStorage
     /**
      * Reference to \API object
      *
-     * @var object
+     * @var API
      */
     protected $api;
 
     /**
      * Array containing block IDs
      *
-     * @var array
+     * @var array<int>
      */
     protected $ids = [];
 
     /**
      * Array containing Regions
      *
-     * @var array
+     * @var array<string>
      */
     protected $regions = [];
 
     /**
      * Array Mapping Region Names to IDs
      *
-     * @var array
+     * @var array<string>
      */
     protected $region_map = [];
 
     /**
      * Array containing Storage IDs
      *
-     * @var array
+     * @var array<int>
      */
     protected $storage_ids = [];
 
@@ -101,7 +101,7 @@ class ObjectStorage
      * loadClustersArrays
      * Loads Clusters in to an Array
      */
-    public function loadClustersArrays()
+    public function loadClustersArrays(): void
     {
         $data = json_decode($this->listObjectClusters(), true);
 
@@ -129,6 +129,7 @@ class ObjectStorage
     /**
      * createObjectStorage
      * Creates Object Storage
+     * @param array<string,string> $options
      */
     public function createObjectStorage(array $options): string
     {
@@ -150,7 +151,7 @@ class ObjectStorage
         }
 
         (isset($options['label'])) ? $ba['label'] = $options['label'] : null;
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('POST', $this->api::OBJECT_STORAGE_URL, $body);
     }
@@ -199,6 +200,7 @@ class ObjectStorage
     /**
      * updateObjectStorage
      * Updates label of Object Storage
+     * @param array<string,string> $options
      */
     public function updateObjectStorage(array $options): string
     {
@@ -209,7 +211,7 @@ class ObjectStorage
         }
         $ba['label'] = $this->d_label;
         (isset($options['label'])) ? $ba['label'] = $options['label'] : null;
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('PUT', $url, $body);
     }

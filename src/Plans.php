@@ -19,21 +19,21 @@ class Plans
     /**
      * Reference to \API object
      *
-     * @var object
+     * @var API
      */
     protected $api;
 
     /**
      * Array of All Plan IDs
      *
-     * @var array
+     * @var array<int>
      */
     public $ids = [];
 
     /**
      * Array of Plan Information
      *
-     * @var array
+     * @var array<string>
      */
     public $plan = [];
 
@@ -47,14 +47,14 @@ class Plans
     /**
      * Array of All Metal Plan IDs
      *
-     * @var array
+     * @var array<int>
      */
-    protected $metal_ids = [];
+    public $metal_ids = [];
 
     /**
      * Array of Metal Plan Information
      *
-     * @var array
+     * @var array<string>
      */
     public $metal_plan = [];
 
@@ -138,6 +138,7 @@ class Plans
     /**
      * getAllPlans
      * Returns Bare Metal and normal plans combined together.
+     * @return array<string>
      */
     public function getAllPlans(): array
     {

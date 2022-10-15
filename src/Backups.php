@@ -21,14 +21,14 @@ class Backups
     /**
      * Reference to \API object
      *
-     * @var object
+     * @var API
      */
     protected $api;
 
     /**
      * Array of Backup IDs
      *
-     * @var array
+     * @var array<int>
      */
     public $ids = [];
 
@@ -42,8 +42,6 @@ class Backups
     /**
      * __construct
      * Takes reference from \API
-     *
-     * @param object $api API
      */
     public function __construct(API $api)
     {
@@ -78,7 +76,7 @@ class Backups
      * getBackup
      * Gets information on a backup
      */
-    public function getBackup($id): string
+    public function getBackup(string $id): string
     {
         if (in_array($id, $this->ids, true)) {
             return $this->api->makeAPICall('GET', $this->api::BACKUPS_URL . '/' . $id);

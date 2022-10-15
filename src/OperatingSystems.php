@@ -19,14 +19,14 @@ class OperatingSystems
     /**
      * Reference to \API object
      *
-     * @var object
+     * @var API
      */
     protected $api;
 
     /**
      * Array of All OS IDs
      *
-     * @var array
+     * @var array<int>
      */
     public $ids = [];
 
@@ -40,7 +40,7 @@ class OperatingSystems
     /**
      * Array of OS Information
      *
-     * @var array
+     * @var array<string>
      */
     protected $os = [];
 

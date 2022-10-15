@@ -15,34 +15,42 @@
 namespace dutchie027\Vultr;
 
 use dutchie027\Vultr\Exceptions\InvalidParameterException;
+use dutchie027\Vultr\Exceptions\VultrAPIException;
 
 class Users
 {
     /**
      * Reference to \API object
      *
-     * @var object
+     * @var API
      */
     protected $api;
 
     /**
      * Array containing user data
      *
-     * @var array
+     * @var array<string>
      */
     protected $users = [];
 
     /**
      * Array containing User IDs
      *
-     * @var array
+     * @var array<int>
      */
     protected $ids = [];
 
     /**
+     * Total Number of Users
+     *
+     * @var int
+     */
+    protected $total_users = 0;
+
+    /**
      * Default ACL for creaging a user
      *
-     * @var array
+     * @var array<mixed>
      */
     protected $d_acl = [
         'acls' => [
@@ -54,14 +62,14 @@ class Users
      * Default Value for API Enabled when Creating
      * A User
      *
-     * @var string
+     * @var bool
      */
     protected $d_api_enabled = false;
 
     /**
      * Array containing valid ACLs when creating a user
      *
-     * @var array
+     * @var array<string>
      */
     private $valid_acls = [
         'abuse',
@@ -124,12 +132,13 @@ class Users
             $this->ids[] = $id;
             $this->users[$id] = $usr;
         }
-        $this->total_blocks = $ua['meta']['total'];
+        $this->total_users = $ua['meta']['total'];
     }
 
     /**
      * updateuser
      * Updates A User
+     * @param array<string,string> $oa
      */
     public function updateUser(array $oa): string
     {
@@ -139,6 +148,7 @@ class Users
             throw new InvalidParameterException("That User ID doesn't exist");
         }
         $cr = false;
+        $ba = [];
 
         if (isset($oa['email'])) {
             if (filter_var($oa['email'], FILTER_VALIDATE_EMAIL)) {
@@ -194,15 +204,18 @@ class Users
         }
 
         if ($cr) {
-            $body = json_encode($ba);
+            $body = $this->api->returnJSONBody($ba);
 
             return $this->api->makeAPICall('PATCH', $url, $body);
         }
+
+        throw new VultrAPIException('Nothing to PATCH on line ' . __LINE__);
     }
 
     /**
      * createUser
      * Creates a User
+     * @param array<string,string> $oa
      */
     public function createUser(array $oa): string
     {
@@ -238,7 +251,8 @@ class Users
             }
             $ba['acls'] = $oa['acls'];
         }
-        $body = json_encode($ba);
+
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('POST', $this->api::USERS_URL, $body);
     }

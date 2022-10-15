@@ -21,14 +21,14 @@ class PrivateNetworks
     /**
      * Reference to \API object
      *
-     * @var object
+     * @var API
      */
     protected $api;
 
     /**
      * Array of All Private Network IDs
      *
-     * @var array
+     * @var array<int>
      */
     public $ids = [];
 
@@ -42,7 +42,7 @@ class PrivateNetworks
     /**
      * Array of Private Network Information
      *
-     * @var array
+     * @var array<string>
      */
     public $privateNetwork = [];
 
@@ -85,7 +85,7 @@ class PrivateNetworks
      * getPrivateNetwork
      * Get Private Network Information
      */
-    public function getPrivateNetwork(string $id)
+    public function getPrivateNetwork(string $id): string
     {
         return $this->api->makeAPICall('GET', $this->api::PRIVATE_NETWORKS_URL . '/' . $id);
     }
@@ -109,6 +109,7 @@ class PrivateNetworks
     /**
      * updatePrivateNetwork
      * Updates description of Private Network
+     * @param array<string,string> $oa
      */
     public function updatePrivateNetwork(array $oa): string
     {
@@ -119,7 +120,7 @@ class PrivateNetworks
         }
         $ba['description'] = $this->d_label;
         (isset($oa['description'])) ? $ba['description'] = $oa['description'] : null;
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('PUT', $url, $body);
     }
@@ -127,6 +128,7 @@ class PrivateNetworks
     /**
      * createPrivateNetwork
      * Creates a Private Network
+     * @param array<string,string> $oa
      */
     public function createPrivateNetwork(array $oa): string
     {
@@ -147,12 +149,12 @@ class PrivateNetworks
             throw new InvalidParameterException("Subnet mask must be between 1 and 31 (you can't have a /32 private network)");
         }
         (isset($oa['description'])) ? $ba['description'] = $oa['description'] : null;
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('POST', $this->api::PRIVATE_NETWORKS_URL, $body);
     }
 
-    private function checkPrivateIP($ip): bool
+    private function checkPrivateIP(string $ip): bool
     {
         $pri_addrs = [
             '10.0.0.0|10.255.255.255', // single class A network

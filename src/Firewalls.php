@@ -21,7 +21,7 @@ class Firewalls
     /**
      * Reference to \API object
      *
-     * @var object
+     * @var API
      */
     protected $api;
 
@@ -29,7 +29,7 @@ class Firewalls
      * Array of Valid IP Types When Creating A
      * New Firewall Rule
      *
-     * @var array
+     * @var array<string>
      */
     private $valid_ip_types = [
         'v4',
@@ -40,7 +40,7 @@ class Firewalls
      * Array of Valid Protocols When Creating A
      * New Firewall Rule
      *
-     * @var array
+     * @var array<string>
      */
     private $valid_protos = [
         'ICMP',
@@ -61,9 +61,9 @@ class Firewalls
     /**
      * Array of Firewall Group IDs
      *
-     * @var array
+     * @var array<int>
      */
-    protected $ids = [];
+    public $ids = [];
 
     /**
      * Default Firewall Group Description
@@ -82,17 +82,13 @@ class Firewalls
     /**
      * Firewall Rule Group Array
      *
-     * @var array
+     * @var array<int|string,mixed>
      */
     protected $fwrga;
 
     /**
      * __construct
      * Takes reference from \API
-     *
-     * @param object $api API
-     *
-     * @return object
      */
     public function __construct(API $api)
     {
@@ -158,7 +154,7 @@ class Firewalls
         }
         $ba['description'] = $name;
 
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('POST', $this->api::FIREWALLS_URL, $body);
     }
@@ -166,6 +162,7 @@ class Firewalls
     /**
      * createFirewallRule
      * Creates a New Rule
+     * @param array<string,string> $fa
      */
     public function createFirewallRule(array $fa): string
     {
@@ -186,7 +183,7 @@ class Firewalls
         if (isset($fa['protocol']) && in_array(strtoupper($fa['protocol']), $this->valid_protos, true)) {
             $ba['protocol'] = strtoupper($fa['protocol']);
         } else {
-            throw new InvalidParameterException('Invalid protocol. Must be one of these: ' . $this->valid_protos);
+            throw new InvalidParameterException('Invalid protocol. Must be one of these: ' . implode(', ', $this->valid_protos));
         }
 
         if (isset($fa['subnet']) && filter_var($fa['subnet'], FILTER_VALIDATE_IP)) {
@@ -251,7 +248,7 @@ class Firewalls
             throw new InvalidParameterException('Subnet size is not set or is not numeric');
         }
         (isset($fa['notes'])) ? $ba['notes'] = $fa['notes'] : null;
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('POST', $url, $body);
     }
@@ -310,6 +307,7 @@ class Firewalls
     /**
      * updateFirewallGroup
      * Updates label of Firewall Group
+     * @param array<string,string> $options
      */
     public function updateFirewallGroup(array $options): string
     {
@@ -320,7 +318,7 @@ class Firewalls
         }
         $ba['description'] = $this->d_description;
         (isset($options['description'])) ? $ba['description'] = $options['description'] : null;
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('PUT', $url, $body);
     }

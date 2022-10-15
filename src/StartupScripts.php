@@ -21,22 +21,32 @@ class StartupScripts
     /**
      * Reference to \API object
      *
-     * @var object
+     * @var API
      */
     protected $api;
 
     /**
      * Array of All Script IDs
      *
-     * @var array
+     * @var array<int>
      */
     public $ids = [];
 
+    /**
+     * Array of All Script IDs
+     *
+     * @var array<string>
+     */
     private $validStartupTypes = [
         'pxe',
         'boot',
     ];
 
+    /**
+     * Startup Type
+     *
+     * @var string
+     */
     private $d_startup_type = 'boot';
 
     /**
@@ -49,7 +59,7 @@ class StartupScripts
     /**
      * Array of Startup Script Information
      *
-     * @var array
+     * @var array<string>
      */
     public $startupScripts = [];
 
@@ -116,9 +126,12 @@ class StartupScripts
     /**
      * updateStartupScript
      * Updates description of Snapshot
+     * @param array<string,string> $oa
      */
     public function updateStartupScript(array $oa): string
     {
+        $ba = [];
+
         if (in_array($oa['id'], $this->ids, true)) {
             $url = $this->api::STARTUP_SCRIPTS_URL . '/' . $oa['id'];
         } else {
@@ -127,7 +140,7 @@ class StartupScripts
         (isset($oa['name'])) ? $ba['name'] = $oa['name'] : null;
         (isset($oa['script'])) ? $ba['script'] = $oa['script'] : null;
         (isset($oa['type'])) ? $ba['type'] = $oa['type'] : null;
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('PATCH', $url, $body);
     }
@@ -135,6 +148,7 @@ class StartupScripts
     /**
      * createStartupScript
      * Creates a Startup Script
+     * @param array<string,string> $oa
      */
     public function createStartupScript(array $oa): string
     {
@@ -158,7 +172,7 @@ class StartupScripts
         }
         $ba['script'] = base64_encode($oa['script']);
 
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('POST', $this->api::STARTUP_SCRIPTS_URL, $body);
     }

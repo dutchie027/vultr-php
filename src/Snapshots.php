@@ -21,14 +21,14 @@ class Snapshots
     /**
      * Reference to \API object
      *
-     * @var object
+     * @var API
      */
     protected $api;
 
     /**
      * Array of All Snapshot IDs
      *
-     * @var array
+     * @var array<int>
      */
     public $ids = [];
 
@@ -42,7 +42,7 @@ class Snapshots
     /**
      * Array of Snapshot Information
      *
-     * @var array
+     * @var array<string>
      */
     public $snapshots = [];
 
@@ -109,6 +109,7 @@ class Snapshots
     /**
      * updateSnapshot
      * Updates description of Snapshot
+     * @param array<string,string> $options
      */
     public function updateSnapshot(array $options): string
     {
@@ -119,7 +120,7 @@ class Snapshots
         }
         $ba['description'] = $this->d_label;
         (isset($options['description'])) ? $ba['description'] = $options['description'] : null;
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('PUT', $url, $body);
     }
@@ -127,6 +128,7 @@ class Snapshots
     /**
      * createSnapshot
      * Creates a Snapshot
+     * @param array<string,string> $oa
      */
     public function createSnapshot(array $oa): string
     {
@@ -136,7 +138,7 @@ class Snapshots
         $ba['instance_id'] = $oa['instance_id'];
         $ba['description'] = $this->d_label;
         (isset($oa['description'])) ? $ba['description'] = $oa['description'] : null;
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('POST', $this->api::SNAPSHOTS_URL, $body);
     }
@@ -148,7 +150,7 @@ class Snapshots
     public function createSnapshotFromURL(string $url): string
     {
         $ba['url'] = $url;
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('POST', $this->api::SNAPSHOTS_URL . '/create-from-url', $body);
     }

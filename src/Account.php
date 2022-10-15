@@ -19,7 +19,7 @@ class Account
     /**
      * Reference to \API object
      *
-     * @var object
+     * @var API
      */
     protected $api;
 
@@ -36,7 +36,7 @@ class Account
      * getAccountInfo
      * Gets account info
      */
-    public function getAccountInfo(): Psr7\Stream
+    public function getAccountInfo(): string
     {
         return $this->api->makeAPICall('GET', $this->api::ACCOUNT_URL);
     }

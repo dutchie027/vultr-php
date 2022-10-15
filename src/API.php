@@ -214,7 +214,7 @@ class API
     /**
      * Log Reference
      *
-     * @var string
+     * @var Logger
      */
     protected $p_log;
 
@@ -235,7 +235,7 @@ class API
     /**
      * Log Types
      *
-     * @var array
+     * @var array<string>
      */
     protected $log_literals = [
         'debug',
@@ -255,6 +255,7 @@ class API
 
     /**
      * Default constructor
+     * @param array<string,string> $attributes
      */
     public function __construct(string $token, array $attributes = [], Guzzle $guzzle = null)
     {
@@ -308,7 +309,7 @@ class API
      * getLogLocation
      * Alias to Get Log Path
      */
-    public function getLogLocation()
+    public function getLogLocation(): string
     {
         return $this->pGetLogPath();
     }
@@ -317,7 +318,7 @@ class API
      * getAPIToken
      * Returns the stored API Token
      */
-    private function getAPIToken()
+    private function getAPIToken(): string
     {
         return $this->p_token;
     }
@@ -506,7 +507,7 @@ class API
      * getLogPointer
      * Returns a referencd to the logger
      */
-    public function getLogPointer()
+    public function getLogPointer(): Logger
     {
         return $this->p_log;
     }
@@ -523,6 +524,8 @@ class API
     /**
      * setHeaders
      * Sets the headers using the API Token
+     *
+     * @return array<string,string>
      */
     public function setHeaders(): array
     {
@@ -537,7 +540,7 @@ class API
      * pGenRandomString
      * Generates a random string of $length
      */
-    public function pGenRandomString($length = 6): string
+    public function pGenRandomString(int $length = 6): string
     {
         $characters = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
         $charactersLength = strlen($characters);
@@ -562,16 +565,24 @@ class API
         try {
             $request = $this->guzzle->request($type, $url, $data);
 
-            return $request->getBody();
+            return $request->getBody()->getContents();
         } catch (RequestException $e) {
             if ($e->hasResponse()) {
-                $response = $e->getResponse();
-                $ja = json_decode($response->getBody()->getContents(), true);
+                $httpCode = $e->getCode();
 
-                throw new VultrAPIRequestException('An error occurred while performing the request to ' . $url . ' -> ' . ($ja['error'] ?? json_encode($ja)));
+                throw new VultrAPIRequestException('A HTTP Code ' . $httpCode . ' was thrown when calling $url');
             }
 
             throw new VultrAPIRequestException(('An unknown error ocurred while performing the request to ' . $url));
         }
+    }
+
+    /**
+     * returns a JSON body from a passed array
+     * @param array<mixed> $json
+     */
+    public function returnJSONBody(array $json): string
+    {
+        return json_encode($json) ?: '';
     }
 }

@@ -21,21 +21,21 @@ class LoadBalancers
     /**
      * Reference to \API object
      *
-     * @var object
+     * @var API
      */
     protected $api;
 
     /**
      * Array of All Reserved IP IDs
      *
-     * @var array
+     * @var array<int>
      */
     public $ids = [];
 
     /**
      * Array of IP Information
      *
-     * @var array
+     * @var array<string>
      */
     public $loadBalancer = [];
 
@@ -49,7 +49,7 @@ class LoadBalancers
     /**
      * Frontend Protocols
      *
-     * @var array
+     * @var array<string>
      */
     private $frontend_proto = [
         'HTTP',
@@ -60,7 +60,7 @@ class LoadBalancers
     /**
      * Backend Protocols
      *
-     * @var array
+     * @var array<string>
      */
     private $backend_proto = [
         'HTTP',
@@ -71,10 +71,6 @@ class LoadBalancers
     /**
      * __construct
      * Takes reference from \API
-     *
-     * @param object $api API
-     *
-     * @return object
      */
     public function __construct(API $api)
     {
@@ -147,6 +143,7 @@ class LoadBalancers
     /**
      * createForwardingRule
      * List the fowarding rules for a Load Balancer.
+     * @param array<string,string> $oa
      *
      * @see https://www.vultr.com/api/v2/#operation/create-load-balancer-forwarding-rules
      */
@@ -173,7 +170,7 @@ class LoadBalancers
         $ba['backend_protocol'] = $oa['backend_protocol'];
         $ba['frontend_port'] = $oa['frontend_port'];
         $ba['backend_port'] = $oa['backend_port'];
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
         $url = $this->api::LOAD_BALANCERS_URL . '/' . $oa['load-balancer-id'] . '/forwarding-rules';
 
         return $this->api->makeAPICall('POST', $url, $body);
@@ -183,6 +180,7 @@ class LoadBalancers
     /**
      * getForwardingRule
      * List the fowarding rules for a Load Balancer.
+     * @param array<string,string> $oa
      *
      * @see https://www.vultr.com/api/v2/#operation/get-load-balancer-forwarding-rule
      */
@@ -201,6 +199,7 @@ class LoadBalancers
     /**
      * deleteForwardingRule
      * List the fowarding rules for a Load Balancer.
+     * @param array<string,string> $oa
      *
      * @see https://www.vultr.com/api/v2/#operation/delete-load-balancer-forwarding-rule
      */
@@ -232,25 +231,25 @@ class LoadBalancers
     /**
      * createLoadBalancer
      * Create a new Load Balancer in a particular region.
+     * @param array<string,string> $oa
      *
      * @see https://www.vultr.com/api/v2/#operation/create-load-balancer
      */
     public function createLoadBalancer(array $oa): string
     {
+        return '';
     }
 
     // TODO: Stubbed Out but Not finished
     /**
      * updateLoadBalancer
      * Create a new Load Balancer in a particular region.
-     *
-     * @var string
-     *
-     * @return bool
+     * @param array<string,string> $oa
      *
      * @see https://www.vultr.com/api/v2/#operation/update-load-balancer
      */
     public function updateLoadBalancer(array $oa): string
     {
+        return '';
     }
 }

@@ -15,13 +15,14 @@
 namespace dutchie027\Vultr;
 
 use dutchie027\Vultr\Exceptions\InvalidParameterException;
+use dutchie027\Vultr\Exceptions\VultrAPIException;
 
 class DNS
 {
     /**
      * Reference to \API object
      *
-     * @var object
+     * @var API
      */
     protected $api;
 
@@ -35,14 +36,14 @@ class DNS
     /**
      * Default value for TTL
      *
-     * @var string
+     * @var int
      */
     private $d_ttl = 300;
 
     /**
      * Valid values for DNS Sec Settings
      *
-     * @var array
+     * @var array<string>
      */
     private $valid_dnssec = [
         'enabled',
@@ -52,7 +53,7 @@ class DNS
     /**
      * Valid Values for New Record Types
      *
-     * @var array
+     * @var array<string>
      */
     private $valid_types = [
         'A',
@@ -69,7 +70,7 @@ class DNS
     /**
      * Records which require a priority setting
      *
-     * @var array
+     * @var array<string>
      */
     private $priority_records = [
         'MX',
@@ -79,10 +80,6 @@ class DNS
     /**
      * __construct
      * Takes reference from \API
-     *
-     * @param object $api API
-     *
-     * @return object
      */
     public function __construct(API $api)
     {
@@ -156,6 +153,7 @@ class DNS
     /**
      * getRecord
      * Get a Specific DNS Record
+     * @param array<string,string> $oa
      */
     public function getRecord(array $oa): string
     {
@@ -175,8 +173,9 @@ class DNS
     /**
      * deleteRecord
      * Delete a Specific DNS Record
+     * @param array<string,string> $oa
      */
-    public function deleteRecord(arrahy $oa): string
+    public function deleteRecord(array $oa): string
     {
         if (!isset($oa['domain'])) {
             throw new InvalidParameterException('Domain Not Set');
@@ -194,6 +193,7 @@ class DNS
     /**
      * updateDomain
      * Update A Domain
+     * @param array<string,string> $oa
      */
     public function updateDomain(array $oa): string
     {
@@ -210,7 +210,7 @@ class DNS
             throw new InvalidParameterException("dns_sec must be enabled/disabled. It's not one of those");
         }
         $ba['dns_sec'] = $oa['dns_sec'];
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('PUT', $this->api::DNS_URL . '/' . $oa['domain'], $body);
     }
@@ -218,10 +218,12 @@ class DNS
     /**
      * updateSOA
      * Update An SOA
+     * @param array<string,string> $oa
      */
     public function updateSOA(array $oa): string
     {
         $execute = false;
+        $ba = [];
 
         if (!isset($oa['domain'])) {
             throw new InvalidParameterException('Domain Not Set');
@@ -246,15 +248,18 @@ class DNS
         }
 
         if ($execute) {
-            $body = json_encode($ba);
+            $body = $this->api->returnJSONBody($ba);
 
             return $this->api->makeAPICall('PATCH', $url, $body);
         }
+
+        throw new VultrAPIException('Nothing to execute on line ' . __LINE__);
     }
 
     /**
      * createDomain
      * Create New DNS Domain
+     * @param array<string,string> $oa
      */
     public function createDomain(array $oa): string
     {
@@ -281,7 +286,7 @@ class DNS
         if (isset($oa['dns_sec'])) {
             $ba['dns_sec'] = $oa['dns_sec'];
         }
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('POST', $this->api::DNS_URL, $body);
     }
@@ -289,6 +294,7 @@ class DNS
     /**
      * createRecord
      * Create New DNS Record
+     * @param array<string,string> $oa
      */
     public function createRecord(array $oa): string
     {
@@ -336,7 +342,7 @@ class DNS
         $ba['name'] = $oa['name'];
         $ba['type'] = $oa['type'];
         $ba['data'] = $oa['data'];
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('POST', $url, $body);
     }
@@ -344,10 +350,12 @@ class DNS
     /**
      * updateRecord
      * Update A DNS Record
+     * @param array<string,string> $oa
      */
     public function updateRecord(array $oa): string
     {
         $exe = false;
+        $ba = [];
 
         if (!isset($oa['domain'])) {
             throw new InvalidParameterException('Domain is not set');
@@ -386,13 +394,15 @@ class DNS
         }
 
         if ($exe) {
-            $body = json_encode($ba);
+            $body = $this->api->returnJSONBody($ba);
 
             return $this->api->makeAPICall('PATCH', $url, $body);
         }
+
+        throw new VultrAPIException('Nothing to execute on line ' . __LINE__);
     }
 
-    private function validateDomain($domain): bool
+    private function validateDomain(string $domain): bool
     {
         if (!preg_match("/([0-9a-z-]+\.)?[0-9a-z-]+\.[a-z]{2,7}/", $domain)) {
             throw new InvalidParameterException('Domain is not valid');

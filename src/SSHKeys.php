@@ -21,14 +21,14 @@ class SSHKeys
     /**
      * Reference to \API object
      *
-     * @var object
+     * @var API
      */
     protected $api;
 
     /**
      * Array of All SSH Key IDs
      *
-     * @var array
+     * @var array<int>
      */
     public $ids = [];
 
@@ -42,7 +42,7 @@ class SSHKeys
     /**
      * Array of SSH Key Information
      *
-     * @var array
+     * @var array<string>
      */
     public $sshKey = [];
 
@@ -109,6 +109,7 @@ class SSHKeys
     /**
      * updateSSHKey
      * Updates SSH Key
+     * @param array<string,string> $oa
      */
     public function updateSSHKey(array $oa): string
     {
@@ -123,7 +124,7 @@ class SSHKeys
         if (!isset($ba['name']) && !isset($ba['ssh_key'])) {
             throw new InvalidParameterException("You didn't provide any details to update - either a new key or a new description");
         }
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('PATCH', $url, $body);
     }
@@ -131,6 +132,7 @@ class SSHKeys
     /**
      * createSSHKey
      * Creates a SSH Key
+     * @param array<string,string> $oa
      */
     public function createSSHKey(array $oa): string
     {
@@ -147,12 +149,12 @@ class SSHKeys
         }
         $ba['ssh_key'] = $oa['ssh_key'];
         $ba['name'] = $oa['name'];
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('POST', $this->api::SSH_KEYS_URL, $body);
     }
 
-    private function validateKey($value): bool
+    private function validateKey(string $value): bool
     {
         $key_parts = explode(' ', $value, 3);
 
@@ -176,7 +178,7 @@ class SSHKeys
             return false;
         }
 
-        $check = base64_decode(substr($key, 0, 16), true);
+        $check = base64_decode(substr($key, 0, 16), true) ?: '';
         $check = preg_replace("/[^\w\-]/", '', $check);
 
         if ((string) $check !== (string) $algorithm) {

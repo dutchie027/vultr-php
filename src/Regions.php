@@ -19,56 +19,56 @@ class Regions
     /**
      * Reference to \API object
      *
-     * @var object
+     * @var API
      */
     protected $api;
 
     /**
      * Array containing Region IDs
      *
-     * @var array
+     * @var array<int>
      */
     public $ids = [];
 
     /**
      * Array containing Cities
      *
-     * @var array
+     * @var array<string>
      */
     public $cities = [];
 
     /**
      * Array containing Countries
      *
-     * @var array
+     * @var array<string>
      */
     public $countries = [];
 
     /**
      * Array containing Continents
      *
-     * @var array
+     * @var array<string>
      */
     public $continents = [];
 
     /**
      * Array containing Names
      *
-     * @var array
+     * @var array<string>
      */
     public $names = [];
 
     /**
      * Array containing block IDs
      *
-     * @var array
+     * @var array<int>
      */
     public $block_ids = [];
 
     /**
      * Array containing DDoS IDs
      *
-     * @var array
+     * @var array<int>
      */
     public $ddos_ids = [];
 
@@ -89,7 +89,7 @@ class Regions
     /**
      * Cached region data.
      *
-     * @var array
+     * @var array<mixed>
      */
     private $region_data = [];
 
@@ -116,6 +116,7 @@ class Regions
     /**
      * getRegions
      * Gets the regions with associated data from API
+     * @return array<mixed>
      */
     public function getRegions(): array
     {
@@ -150,6 +151,7 @@ class Regions
     /**
      * getIds
      * Returns the array of ususble IDs
+     * @return array<int>
      */
     public function getIds(): array
     {
@@ -159,6 +161,7 @@ class Regions
     /**
      * getDDOSIds
      * Returns array of IDs that allow DDOS
+     * @return array<int>
      */
     public function getDDOSIds(): array
     {
@@ -168,6 +171,7 @@ class Regions
     /**
      * getBlockIds
      * Returns array of IDs that allow block storage
+     * @return array<int>
      */
     public function getBlockIds(): array
     {

@@ -19,14 +19,14 @@ class Applications
     /**
      * Reference to \API object
      *
-     * @var object
+     * @var API
      */
     protected $api;
 
     /**
      * Array of Application IDs
      *
-     * @var array
+     * @var array<int>
      */
     public $ids = [];
 
@@ -40,21 +40,21 @@ class Applications
     /**
      * Array of Names
      *
-     * @var array
+     * @var array<string>
      */
     protected $names = [];
 
     /**
      * Array of Short Names
      *
-     * @var array
+     * @var array<string>
      */
     protected $short_names = [];
 
     /**
      * Array of Deployable Names
      *
-     * @var array
+     * @var array<string>
      */
     protected $deploy_names = [];
 
@@ -72,7 +72,7 @@ class Applications
      * List Applicaitons
      * Lists available applicaitons
      */
-    public function listApplications(): Psr7\Stream
+    public function listApplications(): string
     {
         return $this->api->makeAPICall('GET', $this->api::APPLICATIONS_URL);
     }

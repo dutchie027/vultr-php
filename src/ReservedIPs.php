@@ -21,21 +21,21 @@ class ReservedIPs
     /**
      * Reference to \API object
      *
-     * @var object
+     * @var API
      */
     protected $api;
 
     /**
      * Array of All Reserved IP IDs
      *
-     * @var array
+     * @var array<int>
      */
     public $ids = [];
 
     /**
      * Array of IP Information
      *
-     * @var array
+     * @var array<string>
      */
     public $reservedIP = [];
 
@@ -109,6 +109,7 @@ class ReservedIPs
      * createReservedIP
      * Create a new Reserved IP.
      * The region and ip_type attributes are required.
+     * @param array<string,string> $oa
      *
      * @see https://www.vultr.com/api/v2/#operation/create-reserved-ip
      */
@@ -125,7 +126,7 @@ class ReservedIPs
         $ba['ip_type'] = $oa['ip_type'];
 
         (isset($oa['label'])) ? $ba['label'] = $oa['label'] : null;
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('POST', $this->api::RESERVED_IPS_URL, $body);
     }
@@ -133,6 +134,7 @@ class ReservedIPs
     /**
      * attachReservedIP
      * Attach a Reserved IP to an instance_id.
+     * @param array<string,string> $oa
      *
      * @see https://www.vultr.com/api/v2/#operation/attach-reserved-ip
      */
@@ -148,7 +150,7 @@ class ReservedIPs
         }
         $ip = $oa['reserved_ip'];
 
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('POST', $this->api::RESERVED_IPS_URL . '/' . $ip . '/attach', $body);
     }
@@ -169,6 +171,7 @@ class ReservedIPs
     /**
      * convertInstanceIPToReservedIP
      * Convert ip_address on instance_id into a Reserved IP.
+     * @param array<string,string> $oa
      *
      * @see https://www.vultr.com/api/v2/#operation/convert-reserved-ip
      */
@@ -180,7 +183,7 @@ class ReservedIPs
         $ba['ip_address'] = $oa['ip_address'];
 
         (isset($oa['label'])) ? $ba['label'] = $oa['label'] : null;
-        $body = json_encode($ba);
+        $body = $this->api->returnJSONBody($ba);
 
         return $this->api->makeAPICall('POST', $this->api::RESERVED_IPS_URL . '/convert', $body);
     }
@@ -189,7 +192,7 @@ class ReservedIPs
      * checkReservedIP
      * Checks's if an IP ID is valid or not
      */
-    public function checkReservedIP($id): bool
+    public function checkReservedIP(string $id): bool
     {
         if (in_array($id, $this->ids, true)) {
             return true;

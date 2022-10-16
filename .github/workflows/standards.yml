@@ -1,4 +1,5 @@
 # https://help.github.com/en/categories/automating-your-workflow-with-github-actions
+name: PHPStan Check
 
 on:
   pull_request:

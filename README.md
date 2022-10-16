@@ -3,7 +3,7 @@
 [![Latest Stable Version](https://poser.pugx.org/dutchie027/vultr/v)](//packagist.org/packages/dutchie027/vultr)
 [![Total Downloads](https://poser.pugx.org/dutchie027/vultr/downloads)](//packagist.org/packages/dutchie027/vultr)
 [![License](https://poser.pugx.org/dutchie027/vultr/license)](//packagist.org/packages/dutchie027/vultr)
-[![CodeFactor](https://www.codefactor.io/repository/github/dutchie027/vultr-php/badge)](https://www.codefactor.io/repository/github/dutchie027/vultr-php)
+[![CodeFactor](https://www.codefactor.io/repository/github/dutchie027/vultr-php/badge)](https://www.codefactor.io/repository/github/dutchie027/vultr-php)[![PHPStan Check](https://github.com/dutchie027/vultr-php/actions/workflows/standards.yml/badge.svg)](https://github.com/dutchie027/vultr-php/actions/workflows/standards.yml)
 
 PHP Library Intended to Interact with [Vultr's v2 API](https://www.vultr.com/api/v2)
 

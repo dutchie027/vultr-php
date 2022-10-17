@@ -5,3 +5,4 @@ test.php
 /resources/
 /.build/
 .php-cs-fixer.cache
+vultr.ini

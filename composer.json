@@ -22,11 +22,17 @@
         "friendsofphp/php-cs-fixer": "^3.10",
         "phpstan/phpstan": "^1.8",
         "phpunit/phpunit": "^9",
+        "composer/composer": "^2.4",
         "psalm/phar": "^4.27"
     },
     "autoload": {
         "psr-4": {
             "dutchie027\\Vultr\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "dutchie027\\Test\\Vultr\\": "tests/"
         }
     },
     "support": {
@@ -42,10 +48,15 @@
         }
     ],
     "scripts": {
+        "post-install-cmd": [
+            "dutchie027\\Vultr\\Init\\Setup::generateBlankIni"
+        ],
         "fix": "./vendor/bin/php-cs-fixer fix",
         "test": "./vendor/bin/phpunit",
         "stan": "./vendor/bin/phpstan --no-progress",
-        "psalm": "./vendor/bin/psalm.phar --show-info=true",
+        "genini": "dutchie027\\Vultr\\Init\\Setup::generateBlankIni",
+        "psalmi": "./vendor/bin/psalm.phar --show-info=true",
+        "psalmn": "./vendor/bin/psalm.phar --show-info=false",
         "runall": [
             "@fix",
             "@test",
@@ -56,6 +67,9 @@
         "test": "Runs phpunit tests",
         "fix": "Runs PHP-CS Fixer",
         "stan": "Runs phpstan to check standards",
+        "psalmi": "Runs psalm and SHOWS info messages",
+        "psalmn": "Runs psalm and DOES NOT show info, only error messages",
+        "genini": "Generates blank ini for testing",
         "runall": "Runs all tests (fixer, phpunit, phpstan)"
     }
 }

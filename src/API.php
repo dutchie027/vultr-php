@@ -14,11 +14,10 @@
 
 namespace dutchie027\Vultr;
 
+use dutchie027\Vultr\Config\Config;
 use dutchie027\Vultr\Exceptions\VultrAPIRequestException;
-use GuzzleHttp\Client as Guzzle;
+use GuzzleHttp\Client;
 use GuzzleHttp\Exception\RequestException;
-use Monolog\Handler\StreamHandler;
-use Monolog\Logger;
 
 class API
 {
@@ -198,55 +197,6 @@ class API
     public const USERS_URL = self::API_URL . '/users';
 
     /**
-     * API Token
-     *
-     * @var string
-     */
-    protected $p_token;
-
-    /**
-     * Log Directory
-     *
-     * @var string
-     */
-    protected $p_log_location;
-
-    /**
-     * Log Reference
-     *
-     * @var Logger
-     */
-    protected $p_log;
-
-    /**
-     * Log Name
-     *
-     * @var string
-     */
-    protected $p_log_name;
-
-    /**
-     * Log File Tag
-     *
-     * @var string
-     */
-    protected $p_log_tag = 'vultr';
-
-    /**
-     * Log Types
-     *
-     * @var array<string>
-     */
-    protected $log_literals = [
-        'debug',
-        'info',
-        'notice',
-        'warning',
-        'critical',
-        'error',
-    ];
-
-    /**
      * The Guzzle HTTP client instance.
      *
      * @var \GuzzleHttp\Client
@@ -254,73 +204,20 @@ class API
     public $guzzle;
 
     /**
+     * The Guzzle HTTP client instance.
+     *
+     * @var Config
+     */
+    protected $config;
+
+    /**
      * Default constructor
-     * @param array<string,string> $attributes
      */
-    public function __construct(string $token, array $attributes = [], Guzzle $guzzle = null)
+    public function __construct(string $configLoc = null)
     {
-        $this->p_token = $token;
+        $this->config = null === $configLoc ? new Config() : new Config($configLoc);
 
-        if (isset($attributes['log_dir']) && is_dir($attributes['log_dir'])) {
-            $this->p_log_location = $attributes['log_dir'];
-        } else {
-            $this->p_log_location = sys_get_temp_dir();
-        }
-
-        if (isset($attributes['log_name'])) {
-            $this->p_log_name = $attributes['log_name'];
-
-            if (!preg_match("/\.log$/", $this->p_log_name)) {
-                $this->p_log_name .= '.log';
-            }
-        } else {
-            $this->p_log_name = $this->pGenRandomString() . '.' . time() . '.log';
-        }
-
-        if (isset($attributes['log_tag'])) {
-            $this->p_log = new Logger($attributes['log_tag']);
-        } else {
-            $this->p_log = new Logger($this->p_log_tag);
-        }
-
-        if (isset($attributes['log_level']) && in_array($attributes['log_level'], $this->log_literals, true)) {
-            if ($attributes['log_level'] == 'debug') {
-                $this->p_log->pushHandler(new StreamHandler($this->pGetLogPath(), \Monolog\Level::Debug));
-            } elseif ($attributes['log_level'] == 'info') {
-                $this->p_log->pushHandler(new StreamHandler($this->pGetLogPath(), \Monolog\Level::Info));
-            } elseif ($attributes['log_level'] == 'notice') {
-                $this->p_log->pushHandler(new StreamHandler($this->pGetLogPath(), \Monolog\Level::Notice));
-            } elseif ($attributes['log_level'] == 'warning') {
-                $this->p_log->pushHandler(new StreamHandler($this->pGetLogPath(), \Monolog\Level::Warning));
-            } elseif ($attributes['log_level'] == 'error') {
-                $this->p_log->pushHandler(new StreamHandler($this->pGetLogPath(), \Monolog\Level::Error));
-            } elseif ($attributes['log_level'] == 'critical') {
-                $this->p_log->pushHandler(new StreamHandler($this->pGetLogPath(), \Monolog\Level::Critical));
-            } else {
-                $this->p_log->pushHandler(new StreamHandler($this->pGetLogPath(), \Monolog\Level::Warning));
-            }
-        } else {
-            $this->p_log->pushHandler(new StreamHandler($this->pGetLogPath(), \Monolog\Level::Info));
-        }
-        $this->guzzle = $guzzle ?: new Guzzle();
-    }
-
-    /**
-     * getLogLocation
-     * Alias to Get Log Path
-     */
-    public function getLogLocation(): string
-    {
-        return $this->pGetLogPath();
-    }
-
-    /**
-     * getAPIToken
-     * Returns the stored API Token
-     */
-    private function getAPIToken(): string
-    {
-        return $this->p_token;
+        $this->guzzle = new Client();
     }
 
     /**
@@ -504,24 +401,6 @@ class API
     }
 
     /**
-     * getLogPointer
-     * Returns a referencd to the logger
-     */
-    public function getLogPointer(): Logger
-    {
-        return $this->p_log;
-    }
-
-    /**
-     * pGetLogPath
-     * Returns full path and name of the log file
-     */
-    protected function pGetLogPath(): string
-    {
-        return $this->p_log_location . '/' . $this->p_log_name;
-    }
-
-    /**
      * setHeaders
      * Sets the headers using the API Token
      *
@@ -532,7 +411,7 @@ class API
         return [
             'User-Agent' => 'php-api-dutchie027/' . self::LIBRARY_VERSION,
             'Content-Type' => 'application/json',
-            'Authorization' => 'Bearer ' . $this->getAPIToken(),
+            'Authorization' => 'Bearer ' . $this->config->getToken(),
         ];
     }
 

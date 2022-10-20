@@ -19,10 +19,21 @@ composer require dutchie027/vultr
 // require the composer library
 require_once ('vendor/autoload.php');
 
-//make the connction to the API for use
-$api = new dutchie027\Vultr\API(VULTR_API_KEY);
+// make the connction to the API for use
+// this will use "vultr.ini" with the KVPs created
+// at composer load. As a minimum you need the API
+$api = new dutchie027\Vultr\API();
 
 ...
+```
+### vultr.ini
+This file will be created when you donload the library using composer. If you don't generate one at initial load/run time with composer
+simply have the minimum Key/Value Pair in the `[api]` key with the `TOKEN` being your API token from the My Vultr Portal.
+
+```ini
+# minimum vultr.ini
+[api]
+TOKEN='8675309TOMMY30918IN'
 ```
 
 ## General Information
@@ -65,30 +76,8 @@ Once you have the API token, you can simply connect with it or you can add optio
 require_once ('vendor/autoload.php');
 
 // Instantiate with defaults
-$api = new dutchie027\Vultr\API(VULTR_API_KEY);
-
-// Instantiate without defaults, this allows you to change things
-// like log location, directory, the tag and possible future settings.
-$settings = [
- 'log_dir' => '/tmp',
- 'log_name' => 'vultri',
- 'log_tag' => 'vultr-api',
- 'log_level' => 'error'
-];
-
-$api = new dutchie027\Vultr\API(VULTR_API_KEY, $settings);
+$api = new dutchie027\Vultr\API();
 ```
-
-#### Settings
-
-The default settings are fine, however you might want to override the defaults or use your own.**NOTE: All settings are optional and you don't need to provide any**.
-
-| Field       | Type   | Description                                                                                                                                                                                 | Default Value                                                                          |
-| ----------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------- |
-| `log_dir`   | string | The directory where the log file is stored                                                                                                                                                  | [sys_get_temp_dir()](https://www.php.net/manual/en/function.sys-get-temp-dir.php)      |
-| `log_name`  | string | The name of the log file that is created in `log_dir`. If you don't put .log at the end, it will append it                                                                                  | 6 random characters + [time()](https://www.php.net/manual/en/function.time.php) + .log |
-| `log_tag`   | string | If you share this log file with other applications, this is the tag used in the log file                                                                                                    | vultr                                                                                  |
-| `log_level` | string | The level of logging the application will do. This must be either `debug`, `info`, `notice`, `warning`, `critical` or `error`. If it is not one of those values it will fail to the default | `warning`                                                                              |
 
 ### Account
 
@@ -99,7 +88,7 @@ Once you have a client, you can ask for the basic information about your account
 require_once ('vendor/autoload.php');
 
 // Instantiate with defaults
-$api = new dutchie027\Vultr\API(VULTR_API_KEY);
+$api = new dutchie027\Vultr\API();
 
 // Lets get the account info and what else this API key can do
 print_r(json_decode($api->account()->getAccountInfo(), true));
@@ -114,7 +103,7 @@ print_r(json_decode($api->account()->getAccountInfo(), true));
 require_once ('vendor/autoload.php');
 
 // Instantiate with defaults
-$api = new dutchie027\Vultr\API(VULTR_API_KEY);
+$api = new dutchie027\Vultr\API();
 
 $config = [
     'region' => 'ewr',
@@ -161,7 +150,7 @@ You will be returned with a JSON payload that includes the newly created Block I
 require_once ('vendor/autoload.php');
 
 // Instantiate with defaults
-$api = new dutchie027\Vultr\API(VULTR_API_KEY);
+$api = new dutchie027\Vultr\API();
 
 $config = [
     'blockid' => '8692c434-08fa-4efb-a0fb-966a338aee07',
@@ -183,7 +172,7 @@ Block storage can only be updated once every 60 seconds. To update the storage y
 require_once ('vendor/autoload.php');
 
 // Instantiate with defaults
-$api = new dutchie027\Vultr\API(VULTR_API_KEY);
+$api = new dutchie027\Vultr\API();
 
 $api->blockStorage()->deleteBlockStorage($blockid);
 ```
@@ -197,7 +186,7 @@ The block ID is in the form of a GUID (something like 8692c434-08fa-4efb-a0fb-96
 require_once ('vendor/autoload.php');
 
 // Instantiate with defaults
-$api = new dutchie027\Vultr\API(VULTR_API_KEY);
+$api = new dutchie027\Vultr\API();
 
 $json_return = $api->blockStorage()->getBlockStorage($blockid);
 ```
@@ -211,7 +200,7 @@ The block ID is in the form of a GUID (something like 8692c434-08fa-4efb-a0fb-96
 require_once ('vendor/autoload.php');
 
 // Instantiate with defaults
-$api = new dutchie027\Vultr\API(VULTR_API_KEY);
+$api = new dutchie027\Vultr\API();
 
 $config = [
  'block_id' => '98772323-044a-4efb-a0fb-1234338abb07',
@@ -231,7 +220,7 @@ All three values are required in the `$config`. The `block_id` is the ID of the 
 require_once ('vendor/autoload.php');
 
 // Instantiate with defaults
-$api = new dutchie027\Vultr\API(VULTR_API_KEY);
+$api = new dutchie027\Vultr\API();
 
 $config = [
  'block_id' => '98772323-044a-4efb-a0fb-1234338abb07',
@@ -252,7 +241,7 @@ For the most part, this is a support class, but if you want to use it you can.  
 require_once ('vendor/autoload.php');
 
 // Instantiate with defaults
-$api = new dutchie027\Vultr\API(VULTR_API_KEY);
+$api = new dutchie027\Vultr\API();
 
 // Print various information about the Regions. All pretty self-explanatory
 $api->regions()->listIds();
@@ -267,10 +256,6 @@ $api->regions()->listNames();
 * Bring in more of the function(s) from Vultr
 * Document the class(es) with proper doc blocks better
 * Move the documentation in to separate markdowns
-* Rework the error functions to be cleaner
-* Fix the STDOUT and create a handler to deal with displaying JSON returned
-* Clean up the code a bit more
-* Stuff I'm obviously missing...
 
 ## Contributing
 

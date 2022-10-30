@@ -13,7 +13,7 @@ class Setup
      * PHPSTAN will throw. It thinks the constnats aren't used, when in actuality they
      * are. They're called dynamically via the KVP_SECTIONS constant in a loop to create
      * each section's respective KVP in the default .ini file.
-     * 
+     *
      * NOTE also I had to omit the @ before the moniker above otherwise it would throw another
      * error as there is no error on the following line(s) between comments to ignore.
      */

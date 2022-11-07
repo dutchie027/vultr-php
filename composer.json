@@ -48,7 +48,7 @@
         }
     ],
     "scripts": {
-        "post-install-cmd": [
+        "post-package-install": [
             "dutchie027\\Vultr\\Init\\Setup::generateBlankIni"
         ],
         "fix": "./vendor/bin/php-cs-fixer fix",

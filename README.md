@@ -27,13 +27,27 @@ $api = new dutchie027\Vultr\API();
 ...
 ```
 ### vultr.ini
-This file will be created when you donload the library using composer. If you don't generate one at initial load/run time with composer
-simply have the minimum Key/Value Pair in the `[api]` key with the `TOKEN` being your API token from the My Vultr Portal.
+This file drives the main configuration of the software. By default, it looks for the file in the root directory of your project using the name vultr.ini. If you want, you can give it another name and specifiy the full .ini path in the class instantiation.
+
+The minimum Key/Value Pair in the `[api]` key with the `TOKEN` being your API token from the My Vultr Portal.
 
 ```ini
 # minimum vultr.ini
 [api]
 TOKEN='8675309TOMMY30918IN'
+```
+
+The full settings that can be supplied in the .ini are:
+
+```ini
+# full vultr.ini
+[api]
+TOKEN='12345
+
+[log]
+LOG_PREFIX='vultr'
+LOG_LEVEL=200
+LOG_DIR='/var/log/'
 ```
 
 ## General Information
